@@ -1,6 +1,6 @@
 import cv2
 from pyclass.Recognition.DetectorModule import FaceDetector
-
+import time
 
 if __name__ == '__main__':
     screen = cv2.VideoCapture(0)
@@ -10,7 +10,6 @@ if __name__ == '__main__':
         image, faces = faceDetector.updateData()
         cv2.imshow('img', image)
         k = cv2.waitKey(30) & 0xff
-
         print(faces)
 
     faceDetector.screen.release()
