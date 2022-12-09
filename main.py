@@ -1,15 +1,14 @@
 import cv2
-from pyclass.Recognition.DetectorModule import FaceDetector
+from pyclass.Recognition.FaceDetector import FaceDetector
+from pyclass.Recognition.BodyDetector import BodyDetector
 import time
 
 if __name__ == '__main__':
-    screen = cv2.VideoCapture(0)
-    faceDetector = FaceDetector(screen)
-    k = 0
-    while k != 27:
+    faceDetector = FaceDetector()
+    bodyDetector = BodyDetector()
+    while cv2.waitKey(30) & 0xff != 27:
         image, faces = faceDetector.updateData()
         cv2.imshow('img', image)
-        k = cv2.waitKey(30) & 0xff
         print(faces)
 
     faceDetector.screen.release()
