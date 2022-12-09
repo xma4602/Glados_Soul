@@ -4,9 +4,9 @@ from os import listdir
 from os.path import isfile, join
 
 
-class FaceDetector:
+class FaceDetector(cv2.CascadeClassifier):
     def __init__(self, screen, pathXML="data/faces_xml/"):
-        self.faceCascade = cv2.CascadeClassifier()
+        super().__init__()
         self.screen = screen
         self.xmls = [pathXML + file for file in listdir(pathXML) if isfile(join(pathXML, file))]
 
@@ -20,8 +20,8 @@ class FaceDetector:
 
         # Retrieve all faces analysing by xml shapes
         for xml in self.xmls:
-            self.faceCascade.load(xml)
-            data = self.faceCascade.detectMultiScale(
+            self.load(xml)
+            data = self.detectMultiScale(
                 gray,
                 scaleFactor=1.3,
                 minNeighbors=4,
