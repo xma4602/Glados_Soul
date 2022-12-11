@@ -1,14 +1,13 @@
 import cv2
-from pyclass.Recognition.FaceDetector import FaceDetector
-from pyclass.Recognition.BodyDetector import BodyDetector
-import time
+from pyclass.Recognition.Video import Video
+from pyclass.Recognition.VideoFlags import VideoFlags as vf
 
 if __name__ == '__main__':
-    faceDetector = FaceDetector()
-    bodyDetector = BodyDetector()
-    while cv2.waitKey(30) & 0xff != 27:
-        image, faces = faceDetector.updateData()
-        cv2.imshow('img', image)
-        print(faces)
+    video = Video(0, flags=vf.VIDEOFACE)
 
-    faceDetector.screen.release()
+    while cv2.waitKey(30) & 0xff != 27:
+        image, data = video.fetchData()
+        cv2.imshow('img', image)
+        print(data)
+
+    video.release()
