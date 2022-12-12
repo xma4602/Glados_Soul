@@ -17,6 +17,7 @@ while(state):
             print("Завершение работы")
             os.system('systemctl poweroff')  # os.system('shutdown /p /f') на винде
         case "reboot":
+            print("Перезагрузка")
             subprocess.check_call('reboot')  # os.system('shutdown -r -t 0') на винде
         case "clone":
             way = input("\nВведите путь для копирования репозитория: ")
@@ -44,6 +45,7 @@ while(state):
                 print("\nЧто-то пошло не так... :(")
 
         case "exit":
+            print("Выход из программы")
             state = False
         case _:
             print("Неизвестная команда!")
