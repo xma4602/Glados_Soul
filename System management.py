@@ -7,46 +7,42 @@ state = True   # выключатель
 while(state):
 
     print("\nВведите команду или help для просмотра доступных команд: ")
-    ans = input()
+    answer = input()
+    match answer:
+        case "help":
+            print("\nДоступные команды:")
+            for i in range(len(commands)):
+                print(commands[i])
+        case "off":
+            print("Завершение работы")
+            os.system('systemctl poweroff')  # os.system('shutdown /p /f') на винде
+        case "reboot":
+            subprocess.check_call('reboot')  # os.system('shutdown -r -t 0') на винде
+        case "clone":
+            way = input("\nВведите путь для копирования репозитория: ")
+            link = input("\nВведите ссылку на репозиторий GitHub: ")
+            cmd = "git clone " + link
 
-    if (ans == "help"):
-        print("\nДоступные команды:")
-        for i in range (len(commands)):
-            print(commands[i])
+            os.chdir(way)
+            p = subprocess.run(cmd, shell=True)
 
-    elif (ans == "off"):
-        os.system('systemctl poweroff')  # os.system('shutdown /p /f') на винде
+            if p.returncode == 0:
+                print("\nУспех!!!")
+            else:
+                print("\nЧто то пошло не так :(")
+        case "update":
+            way = input("\nВведите путь для обновления репозитория: ")
+            cmd = "git pull"
 
-    elif (ans == "reboot"):
-        subprocess.check_call('reboot')   # os.system('shutdown -r -t 0') на винде
+            os.chdir(way)
+            p = subprocess.run(cmd, shell=True)
 
-    elif (ans == "clone"):
-        way = input("\nВведите путь для копирования репозитория: ")
-        link = input("\nВведите ссылку на репозиторий GitHub: ")
-        cmd = "git clone " + link
-        
-        os.chdir(way)
-        p = subprocess.run(cmd, shell=True)
+            if p.returncode == 0:
+                print("\nУспех!!!")
+            else:
+                print("\nЧто то пошло не так :(")
+        case "exit":
+            state = False
+        case _:
+            print("Неизвестная команда!")
 
-        if p.returncode == 0:
-            print("\nУспех!!!")
-        else: 
-            print("\nЧто то пошло не так :(")
-
-    elif(ans == "update"):
-        way = input("\nВведите путь для обновления репозитория: ")
-        cmd = "git pull"
-
-        os.chdir(way)
-        p = subprocess.run(cmd, shell=True)
-
-        if p.returncode == 0:
-            print("\nУспех!!!")
-        else: 
-            print("\nЧто то пошло не так :(")
-
-    elif(ans == "exit"):
-        state = False
-
-    else:
-        print("\nНеизвеcтная команда!!!\n")
