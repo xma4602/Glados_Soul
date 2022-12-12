@@ -22,25 +22,27 @@ while(state):
             way = input("\nВведите путь для копирования репозитория: ")
             link = input("\nВведите ссылку на репозиторий GitHub: ")
             cmd = "git clone " + link
-
-            os.chdir(way)
-            p = subprocess.run(cmd, shell=True)
-
-            if p.returncode == 0:
+            try:
+                os.chdir(way)
+                p = subprocess.run(cmd, shell=True)
                 print("\nУспех!!!")
-            else:
-                print("\nЧто то пошло не так :(")
+            except FileNotFoundError:
+                print("\nФайл не найден!")
+            except BaseException:
+                print("\nЧто-то пошло не так... :(")
         case "update":
             way = input("\nВведите путь для обновления репозитория: ")
             cmd = "git pull"
 
-            os.chdir(way)
-            p = subprocess.run(cmd, shell=True)
-
-            if p.returncode == 0:
+            try:
+                os.chdir(way)
+                p = subprocess.run(cmd, shell=True)
                 print("\nУспех!!!")
-            else:
-                print("\nЧто то пошло не так :(")
+            except FileNotFoundError:
+                print("\nФайл не найден!")
+            except BaseException:
+                print("\nЧто-то пошло не так... :(")
+
         case "exit":
             state = False
         case _:
