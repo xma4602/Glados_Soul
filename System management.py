@@ -30,18 +30,22 @@ while (state):
             print("\nФайл не найден!")
         except BaseException:
             print("\nЧто-то пошло не так... :(")
-    elif answer.split()[0] == "update":
-        if len(answer) == 6:
-            print("Существуют ветки:\nmechanics_test\nrecognition_test\nsystem_test")
-            cmd = "git pull origin " + input("Введите ветку, которую надо обновить: ").strip()
+    elif answer == "update":
+        branches = {1: "mechanics_test", 2: "recognition_test", 3: "system_test"}
+        for i in branches.items():
+            print(f"{i[0]}: {i[1]}")
+        branch = input("Введите номер ветки: ")
+        branch = branches.get(branch, None)
+        if branch != None:
+            subprocess.run("git stash", shell=True)
+            subprocess.run(f"git checkout {branch}", shell=True)
+            p = subprocess.run(f"git pull origin {branch}", shell=True)
+            if p.returncode == 0:
+                print("\nУспех!!!")
+            else:
+                print("\nЧто-то пошло не так... :(")
         else:
-            cmd = "git pull origin " + answer.split()[1].strip()
-        p = subprocess.run(cmd, shell=True)
-        print("\nУспех!!!")
-        if p.returncode == 0:
-            print("\nФайл не найден!")
-        else:
-            print("\nЧто-то пошло не так... :(")
+            print("Неверно введен номер ветки")
 
     elif answer == "exit":
         print("Выход из программы")
