@@ -3,6 +3,7 @@ import subprocess
 
 commands = ("off", "reboot", "clone", "update", "exit")
 way = "/home/pi/Desktop/Glados_Soul"
+os.chdir(way)
 state = True  # выключатель
 while (state):
     answer = input("\nВведите команду или help для просмотра доступных команд: ")
@@ -32,18 +33,14 @@ while (state):
     elif answer.split()[0] == "update":
         if len(answer) == 6:
             print("Существуют ветки:\nmechanics_test\nrecognition_test\nsystem_test")
-            cmd = "git pull origin "
-            cmd += input("Введите ветку, которую надо обновить: ").strip()
+            cmd = "git pull origin " + input("Введите ветку, которую надо обновить: ").strip()
         else:
-            cmd = "git pull origin "
-            cmd += answer.split()[1].strip()
-        try:
-            os.chdir(way)
-            p = subprocess.run(cmd, shell=True)
-            print("\nУспех!!!")
-        except FileNotFoundError:
+            cmd = "git pull origin " + answer.split()[1].strip()
+        p = subprocess.run(cmd, shell=True)
+        print("\nУспех!!!")
+        if p.returncode == 0:
             print("\nФайл не найден!")
-        except BaseException:
+        else:
             print("\nЧто-то пошло не так... :(")
 
     elif answer == "exit":
