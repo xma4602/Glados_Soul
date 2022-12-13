@@ -34,7 +34,7 @@ while (state):
         branches = {1: "mechanics_test", 2: "recognition_test", 3: "system_test"}
         for i in branches.items():
             print(f"{i[0]}: {i[1]}")
-        branch = input("Введите номер ветки: ")
+        branch = int(input("Введите номер ветки: "))
         branch = branches.get(branch, None)
         if branch != None:
             subprocess.run("git stash", shell=True)
