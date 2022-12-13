@@ -5,9 +5,7 @@ commands = ("off", "reboot", "clone", "update", "exit")
 
 state = True  # выключатель
 while (state):
-
-    print("\nВведите команду или help для просмотра доступных команд: ")
-    answer = input()
+    answer = input("\nВведите команду или help для просмотра доступных команд: ")
     if answer == "help":
         print("\nДоступные команды:")
         for i in range(len(commands)):
