@@ -2,10 +2,11 @@ import os
 import subprocess
 
 commands = ("off", "reboot", "clone", "update", "exit")
-
+way = "/home/pi/Desktop/Glados_Soul"
 state = True  # выключатель
 while (state):
     answer = input("\nВведите команду или help для просмотра доступных команд: ")
+    answer.strip()
     if answer == "help":
         print("\nДоступные команды:")
         for i in range(len(commands)):
@@ -28,9 +29,14 @@ while (state):
             print("\nФайл не найден!")
         except BaseException:
             print("\nЧто-то пошло не так... :(")
-    elif answer == "update":
-        way = input("\nВведите путь для обновления репозитория: ")
-        cmd = "git pull"
+    elif answer.split()[0] == "update":
+        if len(answer) == 6:
+            print("Существуют ветки:\nmechanics_test\nrecognition_test\nsystem_test")
+            cmd = "git pull origin "
+            cmd += input("Введите ветку, которую надо обновить: ").strip()
+        else:
+            cmd = "git pull origin "
+            cmd += answer.split()[1].strip()
         try:
             os.chdir(way)
             p = subprocess.run(cmd, shell=True)
