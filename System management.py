@@ -23,9 +23,8 @@ while (state):
         link = input("\nВведите ссылку на репозиторий GitHub: ")
         cmd = "git clone " + link
         try:
-            os.chdir(way)
             p = subprocess.run(cmd, shell=True)
-            print("\nУспех!!!")
+            print("\nУспех!")
         except FileNotFoundError:
             print("\nФайл не найден!")
         except BaseException:
@@ -39,7 +38,7 @@ while (state):
         if branch != None:
             subprocess.run("git stash", shell=True)
             subprocess.run(f"git checkout {branch}", shell=True)
-            p = subprocess.run(f"git pull origin {branch}", shell=True)
+            p = subprocess.run(f"git pull --ff-only origin {branch}", shell=True)
             if p.returncode == 0:
                 print("\nУспех!!!")
             else:
