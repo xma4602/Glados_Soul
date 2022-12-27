@@ -22,9 +22,9 @@ while (state):
         cmd = "git clone " + input("\nВведите ссылку на репозиторий GitHub: ").strip()
         p = subprocess.run(cmd, shell=True)
         if p.returncode == 0:
-            print("\nУспех!")
+            print("\nРепозиторий успешно склонирован")
         else:
-            print("\nЧто-то пошло не так... :(")
+            print("\nКлонирование не удалось")
     elif answer == "update":
         branches = {1: "mechanics_test", 2: "recognition_test", 3: "system_test"}
         for i in branches.items():
@@ -36,13 +36,13 @@ while (state):
             subprocess.run(f"git checkout {branch}", shell=True)
             p = subprocess.run(f"git pull --ff-only origin {branch}", shell=True)
             if p.returncode == 0:
-                print("\nУспех!!!")
+                print("\nВетка обновлена")
             else:
-                print("\nЧто-то пошло не так... :(")
+                print("\nПроизошла ошибка")
         else:
             print("Неверно введен номер ветки")
     elif answer == "exit":
         print("Выход из программы")
         state = False
     else:
-        print("Неизвестная команда!")
+        print("Неизвестная команда")
