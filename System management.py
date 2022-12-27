@@ -6,7 +6,7 @@ way = "/home/pi/Desktop/Glados_Soul"
 os.chdir(way)
 state = True  # выключатель
 while (state):
-    answer = input("\nВведите команду или help для просмотра доступных команд: ")
+    answer = input("\nВведите команду: ")
     answer.strip()
     if answer == "help":
         print("\nДоступные команды:")
@@ -19,15 +19,11 @@ while (state):
         print("Перезагрузка")
         subprocess.check_call('reboot')  # os.system('shutdown -r -t 0') на винде
     elif answer == "clone":
-        way = input("\nВведите путь для копирования репозитория: ")
-        link = input("\nВведите ссылку на репозиторий GitHub: ")
-        cmd = "git clone " + link
-        try:
-            p = subprocess.run(cmd, shell=True)
+        cmd = "git clone " + input("\nВведите ссылку на репозиторий GitHub: ").strip()
+        p = subprocess.run(cmd, shell=True)
+        if p.returncode == 0:
             print("\nУспех!")
-        except FileNotFoundError:
-            print("\nФайл не найден!")
-        except BaseException:
+        else:
             print("\nЧто-то пошло не так... :(")
     elif answer == "update":
         branches = {1: "mechanics_test", 2: "recognition_test", 3: "system_test"}
@@ -45,7 +41,6 @@ while (state):
                 print("\nЧто-то пошло не так... :(")
         else:
             print("Неверно введен номер ветки")
-
     elif answer == "exit":
         print("Выход из программы")
         state = False
