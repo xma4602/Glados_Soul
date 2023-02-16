@@ -1,7 +1,8 @@
 import functions.SystemManagement as SystemManagement
+import functions.GitControl as GitControl
 
 #список команд
-Commands = ('system power off', 'system reboot',)
+Commands = ('system power off', 'system reboot', 'git update', 'git clone',)
 
 
 def __CheckCommand(command=None):
@@ -23,7 +24,17 @@ def Function(command = None):
     """
     if not __CheckCommand(command):
         return 'Неизвестная команда'
+
+#блок SystemManagement
     if command == 'system power off':
         return(SystemManagement.SystemManagement('off'))
     elif command == 'system reboot':
         return(SystemManagement.SystemManagement('reboot'))
+
+#блок GitControl
+    elif command[:10] == 'git update':
+        return(GitControl.Git('update', command[10:]))
+    elif command[:9] == 'git clone':
+        return(GitControl.Git('clone', command[9:]))
+
+
