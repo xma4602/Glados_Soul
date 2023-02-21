@@ -1,15 +1,13 @@
 def show(info=[]):
-    for item in info:
-        if type(item) is str:
-            showString(item)
-        elif type(item) is dict:
+    if type(info) is dict:
             showDict(info)
-
-
-def showString(info):
-    print(info)
-
+    elif type(info) in [list, tuple, set]:
+        for item in info:
+            show(item)
+    else:
+        print(info)
 
 def showDict(info):
     for k, v in info.items():
         print(f'{k}: {v}')
+
