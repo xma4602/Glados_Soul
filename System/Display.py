@@ -9,5 +9,5 @@ def show(info=[]):
 
 def showDict(info):
     for k, v in info.items():
-        print(f"{k}: {v}")
+        print(f'{k}: {v}')
 
