@@ -20,7 +20,7 @@ def execute(cmd, params):
     if cmd == commands.get(0):
         return _help()
     elif cmd == commands.get(1):
-        return _executeSystem(params)
+        return _executeUpdating(params)
     elif cmd == commands.get(2):
         return _executeUpdating(params)
     else:
@@ -40,4 +40,4 @@ def _executeSystem(params):
 
 
 def _executeUpdating(params):
-    return upd.update(params[0])
+    return upd.update(params)
