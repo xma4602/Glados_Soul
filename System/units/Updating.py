@@ -37,4 +37,7 @@ def update(params):
     subprocess.run(f"git checkout {branch}", shell=True)
     p = subprocess.run(f"git pull --ff-only origin {branch}", shell=True)
 
-    return p.returncode
+    if p.returncode < 0:
+        return "Ошибка обновления"
+    else:
+        return "Обновление прошло успешно"
