@@ -32,10 +32,9 @@ def update(params):
     if params[0] not in _branches.values():
         return "Нет такой ветки"
 
-    # branch = params[0]
-    # subprocess.run("git stash", shell=True)
-    # subprocess.run(f"git checkout {branch}", shell=True)
-    # p = subprocess.run(f"git pull --ff-only origin {branch}", shell=True)
-    #
-    # return p.returncode
-    return "working"
+    branch = params[0]
+    subprocess.run("git stash", shell=True)
+    subprocess.run(f"git checkout {branch}", shell=True)
+    p = subprocess.run(f"git pull --ff-only origin {branch}", shell=True)
+
+    return p.returncode
