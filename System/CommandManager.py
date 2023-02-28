@@ -1,5 +1,5 @@
-import System.units.System as sys
-import System.units.Updating as upd
+import units.System as sys
+import units.Updating as upd
 
 commands = {
     0: 'help',
@@ -22,7 +22,7 @@ def execute(cmd, params):
     elif cmd == commands.get(1):
         return _executeUpdating(params)
     elif cmd == commands.get(2):
-        return _executeUpdating(params)
+        return _executeSystem(params)
     else:
         return f'Не найдено команды {cmd}'
 

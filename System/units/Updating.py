@@ -2,17 +2,17 @@ import enum
 import subprocess
 
 _branches = {
-    1: "system_test",
-    2: "mechanics_test",
-    3: "recognition_test",
+    "s_t": "system_test",
+    "m_t": "mechanics_test",
+    "r_t": "recognition_test",
 
-    4: "system_dev",
-    5: "mechanics_dev",
-    6: "recognition_dev",
+    "s_d": "system_dev",
+    "m_d": "mechanics_dev",
+    "r_d": "recognition_dev",
 
-    7: "system",
-    8: "mechanics",
-    9: "recognition",
+    "s_": "system",
+    "m_": "mechanics",
+    "r_": "recognition",
 }
 
 
@@ -25,14 +25,16 @@ class Branches(enum.Enum):
 def help():
     return ['update [branch]', 'where [branch] is:', _branches]
 
-
 def update(params):
     if len(params) == 0:
         return ["Укажите какую ветку обновить", _branches]
-    if params[0] not in _branches.values():
+    elif params[0] in _branches.values():
+        branch = params[0]
+    elif params[0] in _branches.keys():
+        branch = _branches.get(params[0])
+    else:
         return "Нет такой ветки"
 
-    branch = params[0]
     subprocess.run("git stash", shell=True)
     subprocess.run(f"git checkout {branch}", shell=True)
     p = subprocess.run(f"git pull --ff-only origin {branch}", shell=True)
