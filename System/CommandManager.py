@@ -1,10 +1,10 @@
-import units.System as sys
-import units.Updating as upd
+import System.units.System as sys
+import System.units.Updating as upd
 
 commands = {
     0: 'help',
     1: 'update',
-    2: 'system'
+    2: "system"
 }
 
 
