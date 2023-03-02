@@ -14,19 +14,17 @@ class RegularDay(enum.Enum):
     saturday = 6
     sunday = 7
 
-class Alarm(TimeEvent):
-    _regular = RegularDay.never
-    _note = "Будильник" #заголвок или подпись к будильнику
-    def SetNote(self, note: str):
+
+class AlarmClock(TimeEvent):
+    _regular = [RegularDay.never, ]
+    _note = "Будильник"  # заголвок или подпись к будильнику
+
+    def set_note(self, note: str):
         '''
         Задает будильнику заголовок
         :param note: заголвок
         '''
-        _note = str
+        self._note = str
 
-
-    def SetRegularMode(self, day = -1):
-        _regular = day
-
-
-
+    def set_regular_mode(self, day=-1):
+        self._regular.append(day)
