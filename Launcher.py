@@ -4,7 +4,8 @@ import System.Display as disp
 
 _way = "/home/pi/Desktop/Glados_Soul"
 # os.chdir(_way)
-state = True  # выключатель
+global state
+state = True# выключатель
 
 while (state):
     answer = input("\nВведите команду: ").strip()
@@ -15,4 +16,8 @@ while (state):
     else:
         res = cm.execute(answer[0], answer[1:])
 
-    disp.show(res)
+    if res == "exit":
+        disp.show("Гладос остановлен")
+        state = False
+    else:
+        disp.show(res)

@@ -20,7 +20,7 @@ def malina_control(params):
     elif action == 'reboot':
         reboot()
     elif action == 'exit':
-        exit()
+        return "exit"
 
 def power_off():
     return os.system('systemctl poweroff')  # os.system('shutdown /p /f') на винде
@@ -30,6 +30,5 @@ def reboot():
     return subprocess.check_call('reboot')  # os.system('shutdown -r -t 0') на винде
 
 
-def exit():
-    #Launcher.state = False
-    return True
+#def exit():
+    #return "exit"
