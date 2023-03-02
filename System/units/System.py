@@ -7,6 +7,20 @@ actions = {
     3: 'exit'
 }
 
+def malina_control(params):
+    if len(params) == 0:
+        return ["Укажите какую ветку обновить", actions]
+    elif params[0] in actions.values():
+        action = params[0]
+    else:
+        return "Нет такой команды"
+
+    if action == 'power-off':
+        power_off()
+    elif action == 'reboot':
+        reboot()
+    elif action == 'exit':
+        exit()
 
 def power_off():
     return os.system('systemctl poweroff')  # os.system('shutdown /p /f') на винде

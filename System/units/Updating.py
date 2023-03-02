@@ -2,17 +2,17 @@ import enum
 import subprocess
 
 _branches = {
-    "s_t": "system_test",
-    "m_t": "mechanics_test",
-    "r_t": "recognition_test",
+    "st": "system_test",
+    "mt": "mechanics_test",
+    "rt": "recognition_test",
 
-    "s_d": "system_dev",
-    "m_d": "mechanics_dev",
-    "r_d": "recognition_dev",
+    "sd": "system_dev",
+    "md": "mechanics_dev",
+    "rd": "recognition_dev",
 
-    "s_": "system",
-    "m_": "mechanics",
-    "r_": "recognition",
+    "s": "system",
+    "m": "mechanics",
+    "r": "recognition",
 }
 
 
