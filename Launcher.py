@@ -11,7 +11,9 @@ while (state):
     answer = input("\nВведите команду: ").strip()
     answer = " ".join(answer.split()).split()
 
-    if len(answer) == 1:
+    if len(answer) == 0:
+        continue
+    elif len(answer) == 1:
         res = cm.execute(answer[0], [])
     else:
         res = cm.execute(answer[0], answer[1:])
