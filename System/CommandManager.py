@@ -17,15 +17,8 @@ def execute(cmd, params):
     if cmd == commands.get(0):
         return _help()
     elif cmd == commands.get(1):
-        return _executeUpdating(params)
+        return upd.update(params)
     elif cmd == commands.get(2):
-        return _executeSystem(params)
+        return sys.malina_control(params)
     else:
         return f'Не найдена команда {cmd}'
-
-
-def _executeSystem(params):
-    return sys.malina_control(params)
-
-def _executeUpdating(params):
-    return upd.update(params)
