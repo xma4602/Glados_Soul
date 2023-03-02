@@ -9,7 +9,7 @@ actions = {
 
 def malina_control(params):
     if len(params) == 0:
-        return ["Укажите какую ветку обновить", actions]
+        return ['system [action]', 'where [action] is:', actions]
     elif params[0] in actions.values():
         action = params[0]
     else:
@@ -33,7 +33,3 @@ def reboot():
 def exit():
     #Launcher.state = False
     return True
-
-
-def help():
-    return ['system [action]', 'where [action] is:', actions]
