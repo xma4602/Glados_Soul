@@ -1,6 +1,5 @@
-import os
 import System.CommandManager as cm
-import System.Display as disp
+import System.MessageManager as disp
 
 _way = "/home/pi/Desktop/Glados_Soul"
 # os.chdir(_way)

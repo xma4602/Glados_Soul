@@ -10,9 +10,12 @@ def show(info=()):
     else:
         print(info)
 
+
 def showDict(info):
     for k, v in info.items():
         print(f'{k}: {v}')
 
+
 def showList(info):
-    print(" ".join([str(x) for x in list(info)])) #элементы списка засовывает в строку
+    # элементы списка засовывает в строку
+    print(" ".join([str(x) for x in list(info)]))
