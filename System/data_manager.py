@@ -1,10 +1,10 @@
 import json
 import re
 import os
-from System.units.time.Notice import Notice
-from System.units.time.TimeEvent import TimeEvent
-from System.units.time.Timer import Timer
-from System.units.time.AlarmClock import AlarmClock, RegularDay
+from System.units.time.notice import Notice
+from System.units.time.time_event import TimeEvent
+from System.units.time.timer import Timer
+from System.units.time.alarm_clock import AlarmClock, RegularDay
 from datetime import datetime, timedelta
 
 time_file = "time.json"
