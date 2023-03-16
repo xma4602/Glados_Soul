@@ -1,8 +1,8 @@
 from datetime import datetime
 from datetime import timedelta
 
-from src import parse
-from src.bot.notice import Notice
+from System.bot import parse
+from System.bot.notice import Notice
 
 
 class Task:

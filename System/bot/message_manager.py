@@ -1,7 +1,6 @@
-from src import data_manager
-from src.bot import vk_bot
-from src.bot.notice import Notice
-from src.bot.task import Task
+from System.bot import data_manager
+from System.bot.notice import Notice
+from System.bot.task import Task
 from datetime import datetime
 
 nearest_notice = data_manager.get_nearest_notice()

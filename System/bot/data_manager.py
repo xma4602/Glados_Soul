@@ -1,7 +1,7 @@
 import json
 import os
 from datetime import datetime
-from src.bot.notice import Notice
+from System.bot import Notice
 
 notice_file = "notice.json"
 

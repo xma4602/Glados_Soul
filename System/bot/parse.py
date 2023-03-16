@@ -1,8 +1,7 @@
 from datetime import datetime
 import re
 
-from src import message_manager
-from src.bot.task import Task
+from System.bot import Task, message_manager
 
 #Не менять, это айдишники вк
 users = {

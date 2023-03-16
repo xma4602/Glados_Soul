@@ -1,5 +1,5 @@
 import System.CommandManager as cm
-import System.MessageManager as disp
+import System.ConsoleManager as disp
 """ Включение лаунчера - включает гладос """
 _way = "/home/pi/Desktop/Glados_Soul"
 # os.chdir(_way)
