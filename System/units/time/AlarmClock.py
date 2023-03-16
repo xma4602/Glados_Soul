@@ -34,3 +34,12 @@ class AlarmClock(TimeEvent):
 
     def postpone(self, time: datetime):
         pass
+
+    def to_dict(self):
+        dict_copy = self.__dict__.copy()
+        list_of_regular = []
+        for item in dict_copy['regular']:
+            list_of_regular.append(item.value)
+        dict_copy['regular'] = list_of_regular
+        dict_copy['timedata'] = self.time.strftime(TimeEvent.time_format)
+        return dict_copy

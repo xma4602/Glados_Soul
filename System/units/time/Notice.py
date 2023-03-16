@@ -6,7 +6,7 @@ class Notice(TimeEvent):
     """
     Атрибуты:
     """
-    time_format = "%d.%m.%Y %H:%M:%S"
+
 
     def __init__(self, title: str, recipients_id: list, time: datetime, description: list):
         """
@@ -18,7 +18,7 @@ class Notice(TimeEvent):
         self.recipients_id = recipients_id
         self.description = description
         if isinstance(time, str):
-            self.time = datetime.strptime(time, Notice.time_format)
+            self.time = datetime.strptime(time, TimeEvent.time_format)
 
     def __str__(self):
         """
@@ -56,6 +56,6 @@ class Notice(TimeEvent):
         return message
 
     def to_dict(self):
-        d = self.__dict__
-        d['time'] = d['time'].strftime(Notice.time_format)
+        d = self.__dict__.copy
+        d['time'] = d['time'].strftime(TimeEvent.time_format)
         return d
