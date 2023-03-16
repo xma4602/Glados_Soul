@@ -84,3 +84,4 @@ def add_alarmclock(self, alarmclock: AlarmClock):
 
 def add_notice(self, notice: Notice):
     pass
+        DataManager.store_notice(notice)
