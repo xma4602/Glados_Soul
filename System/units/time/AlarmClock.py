@@ -22,8 +22,11 @@ class AlarmClock(TimeEvent):
     def __init__(self, time: datetime, reg=[RegularDay.never], title=None):
         super().__init__(time)
 
+        if RegularDay(-1) in reg and reg.size() > 0:
+            raise ValueError("Недопустимые аргументы в списке повторений будильника reg")
+
         if title is None:
-            title = f"Будильник{AlarmClock.count}"
+            title = f"Будильник {AlarmClock.count}"
             AlarmClock.count += 1
 
         self.regular = reg
@@ -31,5 +34,3 @@ class AlarmClock(TimeEvent):
 
     def postpone(self, time: datetime):
         pass
-
-
