@@ -1,6 +1,6 @@
 import json
 import re
-
+import os
 from System.units.time.Notice import Notice
 from System.units.time.TimeEvent import TimeEvent
 from System.units.time.Timer import Timer
@@ -11,12 +11,8 @@ time_file = "time.json"
 time_format = "%d.%m.%y %H:%M:%S"
 
 
-def get_nearest_event(self):
-    pass
 
-
-def store_time_event(obj: TimeEvent):
-    """Записывает в json файл уведомление, таймер или будильник"""
+"""def store_time_event(obj: TimeEvent):
     dict_copy = obj.__dict__.copy()
     list_of_regular = []
 
@@ -34,14 +30,45 @@ def store_time_event(obj: TimeEvent):
             event = load_next_time_event(file)
             timedata = datetime.strptime(event['timedata'], time_format)
 
-        file.write(json.dumps(dict_copy))
-
-
-def load_next_time_event(file):
-    print(file.tell())
-    a = file.readline()
-    return json.loads(a)
-
+        file.write(json.dumps(dict_copy))"""
 
 a = AlarmClock(datetime.now(), reg=(RegularDay.tuesday, RegularDay.friday))
-print(store_time_event(a))
+
+notice_file = "notice.json"
+
+#2
+def store_notice(notice: Notice):
+    notice = notice.to_dict()
+    notices = []
+
+    if os.path.getsize(notice_file) != 0:
+        with open(notice_file, 'r') as file:
+            notices = json.load(file)
+
+    notices.append(notice)
+
+    with open(notice_file, 'w') as file:
+        json.dump(notices, file, indent=4)
+
+
+def get_nearest_notice():
+    if os.path.getsize(notice_file) == 0:
+        return None
+    else:
+        notices = []
+        with open(notice_file, 'r') as file:
+            notices = json.load(file)
+
+        nearest_notice = notices[0]
+        nearest_time = datetime.strptime(nearest_notice['time'], Notice.time_format)
+        for notice in notices:
+            time = datetime.strptime(notice['time'], Notice.time_format)
+            if time < nearest_time:
+                nearest_notice = notice
+
+        notices.remove(nearest_notice)
+
+        with open(notice_file, 'w') as file:
+            json.dump(notices, file, indent=4)
+
+        return Notice.from_dict(nearest_notice)

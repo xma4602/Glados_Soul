@@ -1,9 +1,9 @@
-from System.bot import data_manager
+from System import DataManager
 from System.bot.notice import Notice
 from System.bot.task import Task
 from datetime import datetime
 
-nearest_notice = data_manager.get_nearest_notice()
+nearest_notice = DataManager.get_nearest_notice()
 
 
 def check_time():
@@ -14,7 +14,7 @@ def send_nearest_notice():
     global nearest_notice
     if nearest_notice is not None:
         send(nearest_notice)
-        nearest_notice = data_manager.get_nearest_notice()
+        nearest_notice = DataManager.get_nearest_notice()
 
 
 def new_task(task: Task):
@@ -29,4 +29,4 @@ def send(notice: Notice):
 
 def plan(notices: list):
     for notice in notices:
-        data_manager.store_notice(notice)
+        DataManager.store_notice(notice)
