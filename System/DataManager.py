@@ -52,6 +52,7 @@ def store_notice(notice: Notice):
 
 
 def get_nearest_notice():
+
     if os.path.getsize(notice_file) == 0:
         return None
     else:

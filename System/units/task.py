@@ -1,8 +1,8 @@
 from datetime import datetime
 from datetime import timedelta
 
-from System.bot import parse
-from System.bot.notice import Notice
+import parse
+from System.units.time.Notice import Notice
 
 
 class Task:
@@ -50,7 +50,7 @@ class Task:
 
         # если остаток больше часа, ставим напоминание за час
         remaining = (self.deadline - datetime.now()).total_seconds() // 3600
-        if remaining > 1:
+        if remaining >= 1:
             notices.append(
                 Notice(
                     title=f'Остался один час до окончания задачи \"{self.title}\"',
@@ -62,7 +62,7 @@ class Task:
 
             # если остаток больше дня, ставим напоминание за день
             remaining = (self.deadline - datetime.now()).days
-            if remaining > 1:
+            if remaining >= 1:
                 notices.append(
                     Notice(
                         title=f'Остался один день до окончания задачи \"{self.title}\"',
@@ -72,7 +72,7 @@ class Task:
                     )
                 )
                 # если остаток больше недели, ставим напоминание за неделю
-                if remaining > 7:
+                if remaining >= 7:
                     notices.append(
                         Notice(
                             title=f'Осталась одна неделя до окончания задачи \"{self.title}\"',

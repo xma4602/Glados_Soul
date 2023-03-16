@@ -7,7 +7,7 @@ import urllib3
 import vk_api, vk
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 
-from System.bot import message_manager
+import message_manager
 
 vk_session = vk_api.VkApi(
     token='vk1.a.fW6xhIXyLDwog_FX1fRTMiyEoVZL_b0ENm2J4y5lBKZ0hefDhJylNknLzd4I72GJ6--1rNhspg41efbhbJYPX1osNLmRCi9QBKo5v2AhBszehAZKPFUCby-7EeOkHOXXl_2Cp6Z8-0Hqo3yU9FF-B5811qznwiJq-uFEq_rOmUXkHde-9RvMTvm_T4WyFFNWsCd1baqaZA1mwaB69y9TSg')

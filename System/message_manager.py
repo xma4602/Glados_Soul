@@ -1,6 +1,5 @@
 from System import DataManager
-from System.bot.notice import Notice
-from System.bot.task import Task
+from units.task import Task
 from datetime import datetime
 import System.ConsoleManager as ConsoleManager
 import re
@@ -8,7 +7,7 @@ from System.units.time.AlarmClock import AlarmClock
 from System.units.time.Notice import Notice
 from System.units.time.Timer import Timer
 
-nearest_event = DataManager.get_nearest_event()
+nearest_event = DataManager.get_nearest_notice()
 
 def check_time():
     return nearest_notice.time <= datetime.now()
