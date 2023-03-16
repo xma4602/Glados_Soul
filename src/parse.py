@@ -4,6 +4,7 @@ import re
 from src import message_manager
 from src.bot.task import Task
 
+#Не менять, это айдишники вк
 users = {
     'гудков': '148866296',
     'мезенцев': '62393212',

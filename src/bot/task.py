@@ -19,18 +19,6 @@ class Task:
 
     """
 
-    def __init__(self, task_data):
-        """
-        Принимает список параметров и присваивает их полям
-        :param task_data: список параметров
-        """
-        # task_data = {title, manager_id, performers_id, deadline, description}
-        self.title = task_data['title']
-        self.manager_id = task_data['manager_id']
-        self.performers_id = task_data['performers_id']
-        self.deadline = task_data['deadline']
-        self.description = task_data['description']
-
     def __init__(self, title: str, manager_id: str, performers_id: list, deadline: datetime, description: list):
         self.title = title
         self.manager_id = manager_id
