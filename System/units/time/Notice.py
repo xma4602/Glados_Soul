@@ -17,8 +17,6 @@ class Notice(TimeEvent):
         self.title = title
         self.recipients_id = recipients_id
         self.description = description
-        if isinstance(time, str):
-            self.time = datetime.strptime(time, TimeEvent.time_format)
 
     def __str__(self):
         """
@@ -32,10 +30,11 @@ class Notice(TimeEvent):
 
     @classmethod
     def from_dict(cls, notice_data: dict):
+        time = datetime.strptime(TimeEvent.time_format)
         return Notice(
             notice_data['title'],
             notice_data['recipients_id'],
-            notice_data['time'],
+            time,
             notice_data['description'],
         )
 
@@ -56,6 +55,6 @@ class Notice(TimeEvent):
         return message
 
     def to_dict(self):
-        d = self.__dict__.copy
-        d['time'] = d['time'].strftime(TimeEvent.time_format)
-        return d
+        dict_copy = self.__dict__.copy()
+        dict_copy['time'] = dict_copy['time'].strftime(TimeEvent.time_format)
+        return dict_copy

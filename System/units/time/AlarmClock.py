@@ -41,5 +41,17 @@ class AlarmClock(TimeEvent):
         for item in dict_copy['regular']:
             list_of_regular.append(item.value)
         dict_copy['regular'] = list_of_regular
-        dict_copy['timedata'] = self.time.strftime(TimeEvent.time_format)
+        dict_copy['time'] = self.time.strftime(TimeEvent.time_format)
         return dict_copy
+
+    @classmethod
+    def from_dict(cls, alarm_data: dict):
+        time = alarm_data['time'].strptime(TimeEvent.time_format)
+        list_of_regular = []
+        for item in alarm_data['regular']:
+            list_of_regular.append(RegularDay(item))
+        return AlarmClock(
+            time,
+            list_of_regular,
+            alarm_data['title']
+        )
