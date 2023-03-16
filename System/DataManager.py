@@ -24,13 +24,13 @@ def store_time_event(obj: TimeEvent):
         for item in dict_copy['regular']:
             list_of_regular.append(item.value)
         dict_copy['regular'] = list_of_regular
-    dict_copy['timedata'] = obj.timedata.strftime(time_format)
+    dict_copy['timedata'] = obj.time.strftime(time_format)
 
     with open(time_file, "r+") as file:
         event = load_next_time_event(file)
         timedata = datetime.strptime(event['timedata'], time_format)
 
-        while obj.timedata < timedata:
+        while obj.time < timedata:
             event = load_next_time_event(file)
             timedata = datetime.strptime(event['timedata'], time_format)
 
