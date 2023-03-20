@@ -1,11 +1,10 @@
-from System import data_manager
 from units.task import Task
 from datetime import datetime
 import System.console_manager as ConsoleManager
 import re
-from System.units.time.alarm_clock import AlarmClock
-from System.units.time.notice import Notice
-from System.units.time.timer import Timer
+from System.units.alarm_clock import AlarmClock
+from System.units.notice import Notice
+from System.units.timer import Timer
 
 nearest_event = DataManager.get_nearest_notice()
 

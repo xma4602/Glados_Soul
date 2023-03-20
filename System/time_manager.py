@@ -1,10 +1,9 @@
 import re
 from datetime import datetime
 
-from System import data_manager
-from System.units.time.alarm_clock import AlarmClock
-from System.units.time.notice import Notice
-from System.units.time.timer import Timer
+from System.units.alarm_clock import AlarmClock
+from System.units.notice import Notice
+from System.units.timer import Timer
 
 
 def parse(time: str):

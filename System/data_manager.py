@@ -1,16 +1,12 @@
 import json
-import re
 import os
-from System.units.time.notice import Notice
-from System.units.time.time_event import TimeEvent
-from System.units.time.timer import Timer
-from System.units.time.alarm_clock import AlarmClock, RegularDay
-from datetime import datetime, timedelta
+from System.units.notice import Notice
+from System.units.time_event import TimeEvent
+from System.units.alarm_clock import AlarmClock, RegularDay
+from datetime import datetime
 
 time_file = "time.json"
 time_format = "%d.%m.%y %H:%M:%S"
-
-
 
 """def store_time_event(obj: TimeEvent):
     dict_copy = obj.__dict__.copy()
@@ -34,42 +30,44 @@ time_format = "%d.%m.%y %H:%M:%S"
 
 a = AlarmClock(datetime.now(), reg=(RegularDay.tuesday, RegularDay.friday))
 
-notice_file = "notice.json"
-
-#2
-def store_notice(notice: Notice):
-    notice = notice.to_dict()
-    notices = []
-
-    if os.path.getsize(notice_file) != 0:
-        with open(notice_file, 'r') as file:
-            notices = json.load(file)
-
-    notices.append(notice)
-
-    with open(notice_file, 'w') as file:
-        json.dump(notices, file, indent=4)
+event_file = "notice.json"
 
 
-def get_nearest_notice():
+# 2
+def store_event(event: TimeEvent):
+    event = event.to_dict()
+    events = []
 
-    if os.path.getsize(notice_file) == 0:
+    if os.path.getsize(event_file) != 0:
+        with open(event_file, 'r') as file:
+            events = json.loads(file)
+
+    for i in events:
+        if TimeEvent.compare(events[i], events[i + 1]) == 1:
+            events.insert(i, event)
+
+    with open(event_file, 'w') as file:
+        json.dump(events, file, indent=4)
+
+
+def get_nearest_event():
+    if os.path.getsize(event_file) == 0:
         return None
-    else:
-        notices = []
-        with open(notice_file, 'r') as file:
-            notices = json.load(file)
 
-        nearest_notice = notices[0]
-        nearest_time = datetime.strptime(nearest_notice['time'], Notice.time_format)
-        for notice in notices:
-            time = datetime.strptime(notice['time'], Notice.time_format)
-            if time < nearest_time:
-                nearest_notice = notice
+    events = []
+    with open(event_file, 'r') as file:
+        events = json.load(file)
 
-        notices.remove(nearest_notice)
+    nearest_event = events[0]
+    nearest_time = datetime.strptime(nearest_event['time'], TimeEvent.time_format)
+    for event in events:
+        time = datetime.strptime(event['time'], TimeEvent.time_format)
+        if time < nearest_event:
+            nearest_event = event
 
-        with open(notice_file, 'w') as file:
-            json.dump(notices, file, indent=4)
+    events.remove(nearest_event)
 
-        return Notice.from_dict(nearest_notice)
+    with open(event_file, 'w') as file:
+        json.dump(events, file, indent=4)
+
+    return Notice.from_dict(nearest_event)
