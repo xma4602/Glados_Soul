@@ -8,10 +8,10 @@ class TimeEvent:
         self.time = time
 
     @classmethod
-    def compare(cls, event1, event2):
-        if event1 < event2:
+    def compare_dict(cls, event1, event2):
+        if event1.time < event2.time:
             return -1
-        if event1 > event2:
+        if event1.time > event2.time:
             return 1
-        if event1 == event2:
+        if event1.time == event2.time:
             return 0
