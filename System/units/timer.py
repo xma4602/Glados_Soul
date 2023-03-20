@@ -6,6 +6,8 @@ class Timer(TimeEvent):
 
     def __init__(self, time: timedelta):
         self.time = datetime.now() + time
+        self.class_name = self.__class__.__name__
+
 
     def to_dict(self):
         dict_copy = self.__dict__.copy()

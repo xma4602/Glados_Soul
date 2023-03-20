@@ -34,8 +34,8 @@ def send(notice: Notice):
 
 def plan(notices: list):
     for notice in notices:
-        data_manager.store_notice(notice)
+        data_manager.store_event(notice)
 
 
 def add_event(event):
-    data_manager.store_notice(event)
+    data_manager.store_event(event)

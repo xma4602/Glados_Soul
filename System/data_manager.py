@@ -1,27 +1,26 @@
 import json
-import os
-from System.units.notice import Notice
-from System.units.time_event import TimeEvent
-from System.units.alarm_clock import AlarmClock, RegularDay
-from System.units.timer import Timer
 from datetime import datetime
 
-event_file = "notice.json"
+from System.units.alarm_clock import AlarmClock
+from System.units.notice import Notice
+from System.units.time_event import TimeEvent
+from System.units.timer import Timer
 
+event_file = "notice.json"
 
 # 2
 def store_event(event):
     events = []
     with open(event_file, 'r') as file:
-        events = json.loads(file)
+        events = json.load(file)
         if len(events) == 0:
+            event = event.to_dict()
             events.append(event)
         else:
-            for i in range(len(events)):
-                item = TimeEvent.from_dict(events[i])
-                if TimeEvent.compare(event, item) == 1:
+            for index in range(len(events)):
+                if event.time < TimeEvent.get_datetime(events[index]):
                     event = event.to_dict()
-                    events.insert(i + 1, event)
+                    events.insert(index, event)
                     break
 
     with open(event_file, 'w') as file:
@@ -36,8 +35,6 @@ def get_nearest_event():
             return None
 
         nearest_event = events[0]
-        nearest_time = datetime.strptime(nearest_event['time'], TimeEvent.time_format)
-
         events.remove(nearest_event)
 
     with open(event_file, 'w') as file:
