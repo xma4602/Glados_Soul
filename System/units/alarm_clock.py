@@ -31,6 +31,7 @@ class AlarmClock(TimeEvent):
 
         self.regular = reg
         self.title = title
+        self.class_name = self.__class__.__name__
 
     def postpone(self, time: datetime):
         pass

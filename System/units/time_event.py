@@ -16,4 +16,11 @@ class TimeEvent:
         if event1.time == event2.time:
             return 0
 
+    @classmethod
+    def from_dict(cls, event: dict):
+        time = event['time'].strptime(TimeEvent.time_format)
+        return TimeEvent(
+            time
+        )
+
 
