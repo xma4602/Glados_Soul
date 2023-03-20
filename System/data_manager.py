@@ -45,6 +45,7 @@ def store_event(event: TimeEvent):
     for i in events:
         if TimeEvent.compare(events[i], events[i + 1]) == 1:
             events.insert(i, event)
+            break
 
     with open(event_file, 'w') as file:
         json.dump(events, file, indent=4)
