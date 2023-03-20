@@ -1,8 +1,8 @@
 from datetime import datetime
 import re
 
-import message_manager
-from units.task import Task
+from System import message_manager
+from System.units.task import Task
 
 #Не менять, это айдишники вк
 users = {

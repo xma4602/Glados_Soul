@@ -1,5 +1,5 @@
 import System.command_manager as cm
-import System.console_manager as disp
+import System.units.console as disp
 """ Включение лаунчера - включает гладос """
 _way = "/home/pi/Desktop/Glados_Soul"
 # os.chdir(_way)
