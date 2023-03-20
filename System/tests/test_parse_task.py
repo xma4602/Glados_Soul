@@ -1,4 +1,4 @@
-import parse
+from System.units import parse
 
 task = '#задача  \n' \
        'Написать бота  \n' \

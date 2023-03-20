@@ -1,5 +1,6 @@
 import enum
 import subprocess
+
 """ Обновление кода гладоса """
 _branches = {
     "st": "system_test",
@@ -24,6 +25,7 @@ class Branches(enum.Enum):
 
 def help():
     return ['update [branch]', 'where [branch] is:', _branches]
+
 
 def update(params):
     if len(params) == 0:

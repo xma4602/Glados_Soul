@@ -1,8 +1,8 @@
 from datetime import datetime
 from datetime import timedelta
 
-import parse
-from systems.units.time.notice import Notice
+from System.units import parse
+from System.units.notice import Notice
 
 
 class Task:
