@@ -17,6 +17,8 @@ class Notice(TimeEvent):
         self.title = title
         self.recipients_id = recipients_id
         self.description = description
+        self.class_name = self.__class__.__name__
+
 
     def __str__(self):
         """
@@ -30,7 +32,7 @@ class Notice(TimeEvent):
 
     @classmethod
     def from_dict(cls, notice_data: dict):
-        time = datetime.strptime(TimeEvent.time_format)
+        time = TimeEvent.get_datetime(notice_data)
         return Notice(
             notice_data['title'],
             notice_data['recipients_id'],

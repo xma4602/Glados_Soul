@@ -5,7 +5,7 @@ from System.units import console
 from System.units.notice import Notice
 from System.units.task import Task
 
-nearest_event = data_manager.get_nearest_event()
+nearest_event = data_manager.get_nearest_event(None)
 output = console
 
 
@@ -20,7 +20,7 @@ def send_nearest_notice():
     global nearest_event
     if nearest_event is not None:
         send(nearest_event)
-        nearest_event = data_manager.replace_nearest_event(nearest_event)
+        nearest_event = data_manager.get_nearest_event(nearest_event)
 
 
 def new_task(task: Task):
@@ -34,8 +34,10 @@ def send(notice: Notice):
 
 def plan(notices: list):
     for notice in notices:
-        data_manager.store_notice(notice)
+        data_manager.store_event(notice)
 
 
 def add_event(event):
-    data_manager.store_notice(event)
+    data_manager.store_event(event)
+
+

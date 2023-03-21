@@ -18,9 +18,10 @@ class TimeEvent:
 
     @classmethod
     def from_dict(cls, event: dict):
-        time = event['time'].strptime(TimeEvent.time_format)
-        return TimeEvent(
-            time
-        )
+        time = datetime.strptime(event['time'], TimeEvent.time_format)
+        return TimeEvent(time)
 
+    @classmethod
+    def get_datetime(cls, event: dict):
+        return datetime.strptime(event['time'], TimeEvent.time_format)
 
