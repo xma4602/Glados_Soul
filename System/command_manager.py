@@ -1,5 +1,5 @@
-import System.units.systems as sys
-import System.units.updating as upd
+import System.modules.systems as sys
+import System.modules.updating as upd
 """ Файл, отвечающий за считывание команды из терминала и его запускание"""
 commands = {
     0: 'help',
