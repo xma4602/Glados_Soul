@@ -42,12 +42,10 @@ def get_nearest_event():
 
     with open(event_file, 'w') as file:
         json.dump(events, file, indent=4)
+
     if nearest_event['class_name'] == 'AlarmClock':
         return AlarmClock.from_dict(nearest_event)
     if nearest_event['class_name'] == 'Notice':
         return Notice.from_dict(nearest_event)
     if nearest_event['class_name'] == 'Timer':
         return Timer.from_dict(nearest_event)
-
-
-
