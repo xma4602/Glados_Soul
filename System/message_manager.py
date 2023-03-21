@@ -5,7 +5,7 @@ from System.units import console
 from System.units.notice import Notice
 from System.units.task import Task
 
-nearest_event = data_manager.get_nearest_event(None)
+nearest_event = data_manager.start()
 output = console
 
 
@@ -18,9 +18,8 @@ def check_time():
 
 def send_nearest_notice():
     global nearest_event
-    if nearest_event is not None:
-        send(nearest_event)
-        nearest_event = data_manager.get_nearest_event(nearest_event)
+    send(nearest_event)
+    nearest_event = data_manager.get_nearest_event(nearest_event)
 
 
 def new_task(task: Task):
@@ -39,5 +38,3 @@ def plan(notices: list):
 
 def add_event(event):
     data_manager.store_event(event)
-
-

@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 import enum
 
 from System.units.time_event import TimeEvent
@@ -47,7 +47,7 @@ class AlarmClock(TimeEvent):
 
     @classmethod
     def from_dict(cls, alarm_data: dict):
-        time = alarm_data['time'].strptime(TimeEvent.time_format)
+        time = datetime.strptime(alarm_data['time'], TimeEvent.time_format)
         list_of_regular = []
         for item in alarm_data['regular']:
             list_of_regular.append(RegularDay(item))
