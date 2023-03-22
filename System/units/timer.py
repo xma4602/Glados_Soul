@@ -16,7 +16,7 @@ class Timer(TimeEvent):
 
     @classmethod
     def from_dict(cls, timer_data: dict):
-        time = timer_data['time'].strptime(TimeEvent.time_format)
+        time = datetime.strptime(timer_data['time'], TimeEvent.time_format)
         return Timer(
             time
         )
