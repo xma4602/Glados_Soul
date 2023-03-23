@@ -33,6 +33,15 @@ class AlarmClock(TimeEvent):
         self.title = title
         self.class_name = self.__class__.__name__
 
+    def __str__(self):
+        """
+        Отображает содержимое в строку
+        :return: строка, представляющая экземпляр
+        """
+        return f"AlarmClock(title=\"{self.title}\", " \
+               f"reg={self.regular}, " \
+               f"time={self.time}, )"
+
     def postpone(self, time: datetime):
         pass
 

@@ -96,3 +96,20 @@ def start():
 
     event_class = eval(event['class_name'])  # создаем объект того же класса, что и event
     return event_class.from_dict(event)
+
+
+def get_fired_events():
+    fired_events = []
+    with open(fired_events_file, 'r') as file:
+        fired_events = json.load(file)
+
+    if len(fired_events) == 0:
+        return None
+
+    for i in (range(len(fired_events))):
+        event_class = eval(fired_events[i]['class_name'])
+        fired_events[i] = event_class.from_dict(fired_events[i])
+
+    return fired_events
+
+
