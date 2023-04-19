@@ -45,7 +45,7 @@ def close_room():
 
 def is_opened():
     if opened:
-        return True
+        return 'Лаборатория открыта'
     else:
         day = datetime.now().isoweekday()
         timetable = {}

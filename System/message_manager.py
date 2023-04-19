@@ -1,12 +1,13 @@
 from datetime import datetime
 
 from System import data_manager
-from System.modules import console
+from System.modules import bot
 from System.units.notice import Notice
 from System.units.task import Task
 
 nearest_event = data_manager.start()
-output = console
+# output = console
+output = bot
 
 
 def check_time():
@@ -28,7 +29,7 @@ def new_task(task: Task):
 
 
 def send(notice: Notice):
-    output.send(notice.message_everyone())
+    output.send(notice.message_everyone(), notice.recipients_id)
 
 
 def plan(notices: list):

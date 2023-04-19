@@ -1,7 +1,7 @@
 from datetime import datetime
 from datetime import timedelta
 
-from System.modules import parse
+from System import data_manager
 from System.units.notice import Notice
 
 
@@ -39,7 +39,7 @@ class Task:
 
     def notice_recipients(self) -> Notice:
         return Notice(
-            title='Вам поступила новая задача от ' + parse.id_to_names([self.manager_id])[0],
+            title='Вам поступила новая задача от ' + data_manager.id_to_names([self.manager_id])[0],
             recipients_id=self.performers_id,
             time=datetime.now(),
             description=[self.title] + self.description
@@ -83,4 +83,3 @@ class Task:
                     )
 
         return notices
-

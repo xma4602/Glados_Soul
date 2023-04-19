@@ -8,6 +8,20 @@ from System.units.timer import Timer
 event_file = "notice.json"
 fired_events_file = "fired_event.json"
 
+# Не менять, это айдишники вк
+users = {
+    'гудков': '148866296',
+    'мезенцев': '62393212',
+    'макурин': '210242776',
+    'ханов': '257165020',
+    'ган': '83886005',
+    'казанцев': '134621926',
+    'юсупов': '100822494',
+    'фунин': '168944389',
+    'мурзина': '739900329',
+    'маркарян': '322610705'
+}
+
 
 def store_event(event):
     """
@@ -113,3 +127,27 @@ def get_fired_events():
     return fired_events
 
 
+def id_to_names(users_id: list):
+    """
+    Получиет имена пользователей и возвращает их id
+    :param users_id: список фамилий пользователей
+    :return: список соответствующих фамилиям id
+    """
+    names = []
+    for user_id in users_id:
+        for name, id in users.items():
+            if int(id) == user_id:
+                names.append(name)
+                break
+
+    return names
+
+
+def names_to_id(users_surnames: list):
+    """
+    Получиет имена пользователей и возвращает их id
+    :param users_surnames: список фамилий пользователей
+    :return: список соответствующих фамилиям id
+    """
+    # по ключам фамилий из словаря users формируем список id
+    return [users[surname.lower()] for surname in users_surnames]

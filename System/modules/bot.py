@@ -29,15 +29,15 @@ def send(message: str, ids: list):
 
 async def bot(event):
     if event.type == VkBotEventType.MESSAGE_NEW:
-        message = event.object.message.get('text').lower()
+        message = event.object.parse.get('text').lower()
         sender_id = list(event.object.values())[0].get('from_id')
         if event.from_user:
             message_manager.new_message(message, sender_id)
 
 
 async def sender():
-    pass
-
+    if message_manager.check_time():
+        message_manager.send_nearest_notice()
     await asyncio.sleep(60)
 
 
