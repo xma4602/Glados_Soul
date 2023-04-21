@@ -5,7 +5,7 @@ import System.modules.systems as sys
 import System.modules.updating as upd
 
 from System.message_manager import send
-from System.data_manager import names_to_id
+from System.data_manager import names_to_id, is_user
 from System.modules import room
 from System.units.notice import Notice
 from System.units.task import Task
@@ -53,14 +53,16 @@ def parse(text: str, sender_id: str):
     # если в заголовке тег задачи, отправляем на парсинг задачи
     if re.search('задач', title) is not None:
         new_task(sender_id, text[1:])
-        # команда открытия лабы
+    # команда открытия лабы
     elif re.search('открыл', title) is not None:
         open_room(sender_id)
+    # команда закрытия лабы
     elif re.search('закрыл', title) is not None:
         close_room(sender_id)
     # вопрос, открыта ли лаба
     elif re.search('(.*откр.*лаб.*)|(.*лаб.*откр.*)', title) is not None:
         is_opened(sender_id)
+    # ответ на нераспознанную команду
     else:
         unknown_command(sender_id)
 
@@ -145,22 +147,42 @@ def is_opened(sender_id: str):
 
 
 def open_room(sender_id: str):
-    room.open_room()
-    message = Notice(
-        'Лаборатория переведена в состояние ОТКРЫТО',
-        [sender_id],
-        datetime.now(),
-        []
-    )
+    message = None
+    if is_user(sender_id):
+        room.close_room()
+        message = Notice(
+            'Лаборатория переведена в состояние ОТКРЫТО',
+            [sender_id],
+            datetime.now(),
+            []
+        )
+    else:
+        message = Notice(
+            'У вас нет доступа к этой команде',
+            [sender_id],
+            datetime.now(),
+            []
+        )
+
     send(message)
 
 
 def close_room(sender_id):
-    room.close_room()
-    message = Notice(
-        'Лаборатория переведена в состояние ЗАКРЫТО',
-        [sender_id],
-        datetime.now(),
-        []
-    )
+    message = None
+    if is_user(sender_id):
+        room.close_room()
+        message = Notice(
+            'Лаборатория переведена в состояние ЗАКРЫТО',
+            [sender_id],
+            datetime.now(),
+            []
+        )
+    else:
+        message = Notice(
+            'У вас нет доступа к этой команде',
+            [sender_id],
+            datetime.now(),
+            []
+        )
+
     send(message)

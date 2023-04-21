@@ -23,6 +23,13 @@ users = {
 }
 
 
+def is_user(id: str):
+    for i in users.values():
+        if id == int(i):
+            return True
+    return False
+
+
 def store_event(event):
     """
     Сохраняет событие в файл

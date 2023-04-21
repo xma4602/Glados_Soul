@@ -7,7 +7,6 @@ class Notice(TimeEvent):
     Атрибуты:
     """
 
-
     def __init__(self, title: str, recipients_id: list, time: datetime, description: list):
         """
         Принимает список параметров и присваивает их полям
@@ -18,7 +17,6 @@ class Notice(TimeEvent):
         self.recipients_id = recipients_id
         self.description = description
         self.class_name = self.__class__.__name__
-
 
     def __str__(self):
         """
@@ -39,6 +37,16 @@ class Notice(TimeEvent):
             time,
             notice_data['description'],
         )
+
+    def message_somebody(self):
+        """
+        Формирует текст уведомления для одного получателя
+        :return: строка текста уведомления
+        """
+        message = self.title + '\n\n'
+        for des in self.description:
+            message += des + '\n'
+        return message
 
     def message_everyone(self):
         """

@@ -1,7 +1,6 @@
 import json
-from pprint import pprint
 import httplib2
-from apiclient import discovery
+# from apiclient import discovery
 from oauth2client.service_account import ServiceAccountCredentials
 import gspread
 from datetime import datetime
@@ -12,7 +11,7 @@ CREDENTIALS_FILE = 'C:/Users/regis/Glados_Soul/System/google_token.json'
 spreadsheet_id = '1SI-jXi1w74PJbuObw59MhZX6LgTyoTm_MFTbQ3bU8Us'
 timetable_file = 'timetable.json'
 
-
+'''
 def load_timetable():
     """
     Загружает данные таблицы в файл
@@ -31,6 +30,7 @@ def load_timetable():
     with open(timetable_file, 'w') as file:
         json.dump(values, file, indent=4)
     return
+'''
 
 
 def open_room():
@@ -47,12 +47,16 @@ def is_opened():
     if opened:
         return 'Лаборатория открыта'
     else:
-        day = datetime.now().isoweekday()
+        return 'Лаборатория закрыта'
+        '''
+         day = datetime.now().isoweekday()
         timetable = {}
         with open(timetable_file, 'r') as file:
             timetable = json.load(file)
         return f"Лаба откроется по расписанию в {timetable['values'][0][day]}"
+        '''
 
 
-load_timetable()
+
+# load_timetable()
 print(is_opened())

@@ -29,7 +29,7 @@ def new_task(task: Task):
 
 
 def send(notice: Notice):
-    output.send(notice.message_everyone(), notice.recipients_id)
+    output.send(notice.message_somebody(), notice.recipients_id)
 
 
 def plan(notices: list):
