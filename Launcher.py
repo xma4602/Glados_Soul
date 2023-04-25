@@ -14,7 +14,7 @@ from System.modules.bot import longpoll
 async def handle(event):
     if event.type == VkBotEventType.MESSAGE_NEW:
         message = event.object.get('message').get('text')
-        sender_id = event.object.get('message').get('from_id')
+        sender_id = str(event.object.get('message').get('from_id'))
         if event.from_user:
             command_manager.parse(message, sender_id)
 

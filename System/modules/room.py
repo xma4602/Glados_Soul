@@ -48,6 +48,7 @@ def is_opened():
         return 'Лаборатория открыта'
     else:
         return 'Лаборатория закрыта'
+
         '''
          day = datetime.now().isoweekday()
         timetable = {}
@@ -55,8 +56,4 @@ def is_opened():
             timetable = json.load(file)
         return f"Лаба откроется по расписанию в {timetable['values'][0][day]}"
         '''
-
-
-
 # load_timetable()
-print(is_opened())

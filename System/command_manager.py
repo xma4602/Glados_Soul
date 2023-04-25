@@ -60,7 +60,7 @@ def parse(text: str, sender_id: str):
     elif re.search('закрыл', title) is not None:
         close_room(sender_id)
     # вопрос, открыта ли лаба
-    elif re.search('(.*откр.*лаб.*)|(.*лаб.*откр.*)', title) is not None:
+    elif re.search('(.*откр.*лаб.*)|(.*лаб.*откр.*)|(.*лаб.*ест.*)|(.*ест.*лаб.*)', title) is not None:
         is_opened(sender_id)
     # ответ на нераспознанную команду
     else:
@@ -149,7 +149,7 @@ def is_opened(sender_id: str):
 def open_room(sender_id: str):
     message = None
     if is_user(sender_id):
-        room.close_room()
+        room.open_room()
         message = Notice(
             'Лаборатория переведена в состояние ОТКРЫТО',
             [sender_id],

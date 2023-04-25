@@ -1,9 +1,9 @@
 import json
-from datetime import datetime, time, timedelta
-from System.units.alarm_clock import AlarmClock
-from System.units.notice import Notice
+from datetime import datetime, timedelta
+
+
 from System.units.time_event import TimeEvent
-from System.units.timer import Timer
+from System.units.notice import Notice
 
 event_file = "notice.json"
 fired_events_file = "fired_event.json"
@@ -25,7 +25,7 @@ users = {
 
 def is_user(id: str):
     for i in users.values():
-        if id == int(i):
+        if id == i:
             return True
     return False
 
