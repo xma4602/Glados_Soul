@@ -48,7 +48,6 @@ def is_opened():
         return 'Лаборатория открыта'
     else:
         return 'Лаборатория закрыта'
-
         '''
          day = datetime.now().isoweekday()
         timetable = {}

@@ -1,5 +1,5 @@
-from System.modules import parse
-
+from System.command_manager import parse
+#from System.modules.bot import send
 task = '#задача  \n' \
        'Написать бота  \n' \
        'Ханов  ,     Макурин  \n' \
@@ -7,4 +7,5 @@ task = '#задача  \n' \
        '  сделайте     пожалуйста бота \n' \
        'очень нужно '
 
-parse.message(task, '148866296')
+#parse.message(task, '148866296')
+parse(task, '441449409')

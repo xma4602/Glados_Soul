@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from System.units.time_event import TimeEvent
 from System.units.notice import Notice
 
-event_file = "notice.json"
+event_file = 'notice.json'
 fired_events_file = "fired_event.json"
 
 # Не менять, это айдишники вк
@@ -19,7 +19,8 @@ users = {
     'юсупов': '100822494',
     'фунин': '168944389',
     'мурзина': '739900329',
-    'маркарян': '322610705'
+    'маркарян': '322610705',
+    'семенова': '441449409'
 }
 
 
