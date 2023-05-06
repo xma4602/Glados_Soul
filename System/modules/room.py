@@ -7,7 +7,7 @@ from datetime import datetime
 
 opened = False
 test_sheet_link = 'https://docs.google.com/spreadsheets/d/1SI-jXi1w74PJbuObw59MhZX6LgTyoTm_MFTbQ3bU8Us/edit#gid=0'
-CREDENTIALS_FILE = 'C:/Users/regis/Glados_Soul/System/google_token.json'
+CREDENTIALS_FILE = '/System/files/google_token.json'
 spreadsheet_id = '1SI-jXi1w74PJbuObw59MhZX6LgTyoTm_MFTbQ3bU8Us'
 timetable_file = 'timetable.json'
 

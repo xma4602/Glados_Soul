@@ -1,31 +1,26 @@
 import json
 from datetime import datetime, timedelta
 
-
 from System.units.time_event import TimeEvent
 from System.units.notice import Notice
 
-event_file = 'notice.json'
-fired_events_file = "fired_event.json"
+event_file = 'files/notice.json'
+fired_events_file = "files/fired_event.json"
+users_file = 'files/council.json'
 
-# Не менять, это айдишники вк
-users = {
-    'гудков': '148866296',
-    'мезенцев': '62393212',
-    'макурин': '210242776',
-    'ханов': '257165020',
-    'ган': '83886005',
-    'казанцев': '134621926',
-    'юсупов': '100822494',
-    'фунин': '168944389',
-    'мурзина': '739900329',
-    'маркарян': '322610705',
-    'семенова': '441449409'
-}
+users = {}
+
+
+def get_users():
+    global users
+    with open(users_file, 'r') as file:
+        users = json.load(file, indent=4)
 
 
 def is_user(id: str):
-    for i in users.values():
+    if len(users) == 0:
+        get_users()
+    for i in users.keys():
         if id == i:
             return True
     return False

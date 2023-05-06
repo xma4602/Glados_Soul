@@ -5,8 +5,8 @@ from System.modules import bot
 from System.units.notice import Notice
 
 nearest_event = data_manager.start()
-# output = console
-output = bot
+output = console
+#output = bot
 
 
 def check_time():
