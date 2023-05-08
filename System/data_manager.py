@@ -2,24 +2,23 @@ import json
 from datetime import datetime, timedelta
 
 from System.units.time_event import TimeEvent
-from System.units.notice import Notice
 
 event_file = 'files/notice.json'
 fired_events_file = "files/fired_event.json"
-users_file = 'files/council.json'
-
+council_file = 'files/council.json'
+vk_group_file = 'files/vk_bot_keys.json'
 users = {}
 
 
-def get_users():
+def get_council():
     global users
-    with open(users_file, 'r') as file:
-        users = json.load(file, indent=4)
+    with open(council_file, 'r') as file:
+        users = json.load(file)
 
 
-def is_user(id: str):
+def is_council(id: str):
     if len(users) == 0:
-        get_users()
+        get_council()
     for i in users.keys():
         if id == i:
             return True
@@ -154,3 +153,9 @@ def names_to_id(users_surnames: list):
     """
     # по ключам фамилий из словаря users формируем список id
     return [users[surname.lower()] for surname in users_surnames]
+
+
+def get_vk_group_data():
+    with open(vk_group_file, 'r') as file:
+        data = json.load(file)
+    return data

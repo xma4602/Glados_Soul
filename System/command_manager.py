@@ -3,9 +3,8 @@ from datetime import datetime
 
 import System.modules.systems as sys
 import System.modules.updating as upd
+from System import data_manager, message_manager
 
-from System.message_manager import send
-from System.data_manager import names_to_id, is_user
 from System.modules import room
 from System.units.notice import Notice
 from System.units.task import Task
@@ -34,7 +33,6 @@ def execute(cmd, params):
 
 
 # главный метод парсинга сообщения
-
 def parse(text: str, sender_id: str):
     """
     Получает и текст сообщения и обрабатывает его.
@@ -53,6 +51,8 @@ def parse(text: str, sender_id: str):
     # если в заголовке тег задачи, отправляем на парсинг задачи
     if re.search('задач', title) is not None:
         new_task(sender_id, text[1:])
+    if re.search('прив|здрав', title) is not None:
+        hello(sender_id)
     # команда открытия лабы
     elif re.search('открыл', title) is not None:
         open_room(sender_id)
@@ -60,7 +60,7 @@ def parse(text: str, sender_id: str):
     elif re.search('закрыл', title) is not None:
         close_room(sender_id)
     # вопрос, открыта ли лаба
-    elif re.search('(.*откр.*лаб.*)|(.*лаб.*откр.*)|(.*лаб.*ест.*)|(.*ест.*лаб.*)', title) is not None:
+    elif re.search('(.*открыт.*лаб.*)|(.*лаб.*открыт.*)|(.*лаб.*ест.*)|(.*ест.*лаб.*)', title) is not None:
         is_opened(sender_id)
     # ответ на нераспознанную команду
     else:
@@ -77,7 +77,7 @@ def new_task(sender_id: str, task_data: list):
     """
 
     # вызываем методы парсинга для каждого поля
-    task_data[1] = names_to_id(task_data[1].replace(',', '').split())
+    task_data[1] = data_manager.names_to_id(task_data[1].replace(',', '').split())
     task_data[2] = pasrse_time(task_data[2])
 
     return Task(
@@ -133,7 +133,7 @@ def unknown_command(sender_id: str):
         datetime.now(),
         []
     )
-    send(message)
+    message_manager.send(message)
 
 
 def is_opened(sender_id: str):
@@ -143,12 +143,12 @@ def is_opened(sender_id: str):
         datetime.now(),
         []
     )
-    send(message)
+    message_manager.send(message)
 
 
 def open_room(sender_id: str):
     message = None
-    if is_user(sender_id):
+    if data_manager.is_council(sender_id):
         room.open_room()
         message = Notice(
             'Лаборатория переведена в состояние ОТКРЫТО',
@@ -164,12 +164,12 @@ def open_room(sender_id: str):
             []
         )
 
-    send(message)
+    message_manager.send(message)
 
 
 def close_room(sender_id):
     message = None
-    if is_user(sender_id):
+    if data_manager.is_council(sender_id):
         room.close_room()
         message = Notice(
             'Лаборатория переведена в состояние ЗАКРЫТО',
@@ -185,4 +185,14 @@ def close_room(sender_id):
             []
         )
 
-    send(message)
+    message_manager.send(message)
+
+
+def hello(sender_id):
+    message = Notice(
+        'Привет!',
+        [sender_id],
+        datetime.now(),
+        []
+    )
+    message_manager.send(message)
