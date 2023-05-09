@@ -19,10 +19,7 @@ def get_council():
 def is_council(id: str):
     if len(users) == 0:
         get_council()
-    for i in users.keys():
-        if id == i:
-            return True
-    return False
+    return id in users.keys()
 
 
 def store_event(event):

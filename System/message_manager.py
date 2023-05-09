@@ -2,7 +2,7 @@ import asyncio
 from datetime import datetime
 
 from System import data_manager
-from System.modules import bot
+from System.modules import vk_bot
 from System.units.notice import Notice
 
 # nearest_event = data_manager.start()
