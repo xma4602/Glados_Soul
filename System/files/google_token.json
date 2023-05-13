@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "glados-381318",
+  "private_key_id": "34808ce4e3062f05b2f84ceac267b0dafd91e739",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCo5bHSaSuprRtj\nJAMz3fWo/wRXoBk+MlNzW2z2nDYcCRNrytKgjPqUy987GbaBqw2D+VvY+GSwE8rF\nMKOq++Pag5q4SiI738MC3hBS8XJrU0JIH/Td+zs1Wewhpzd3SJOw2pbE6AFvsjqr\nDghijoeD4CZL3t8S3eGTBOBXsXJfWTHq2VENCQeJe8eOOUQb3pOunre1GatseLbD\nZ5dGWdLFKMjQ053MaOsNvbcZatP79cklQf+fEhGSS8KFITdtXonyJc90feoFmifg\nb+11pE3h7gSe52VgtRdH7KY8XZkXA9JaTlRA027cYOqvd2sqR2/b3OgFADgSW1O8\nQf/wZ7LHAgMBAAECgf8fAgyjlKtve1iL2xC7dQSlAizJ6Zq40ISBqUdX/1Xvz7rB\nD3ub/kYDC2rwbsgTBlR05lL2gqP5r6iKi2OBAL3UYFUHgJTIaUxkOmDE2Y8oJSEG\nHNfX6Uf1g4zWoNyOCcUTsw37GJ0q5I3g2bKwZXp7u6tMQp6x2AqR81M8xlc5Kdqm\nMCBMrGZYlEic1ZlBt8gFwJqdRPwzvGOOhR5N9LoByCFFJNqjjXgwcLjGHH4tjfct\niVi9lCVIHRfmXtisaR5m3agwEsiSYKEx2KLaoNaup4uXPB5c7wywGE8ckSzu8eAx\n1JB+clrazxwh5Sw674kAmhc+zen8I0gvSDyI9qECgYEA0DtCoxZkGZv3R7QVELeR\nbpHTq9sBGw346Tz+nZ4FemszseETcM5KUzdBRNVoYOLdCHFxUEtaHTgkPyTFjSuj\n5ya7UC5cCbCR9UYC6waNhtsj6+xxQD8mEZtr7PwVqJ2rQ5uP8rr5UHRc2wRGt3X1\n5zAS/5ByAIlDELbGvIPEnlcCgYEAz6R3OOzXlqxFJ6h6MuVM8A7+GjHvK8IPpc23\nAA9p9oLDUpGptliAC6CCYMIyBJYdawLIYZAKRtCSaBGTg+O7xH8+mjdCtrDASriD\nt8+w9ltAr9870Cwqu3qxwwUKdesSyeZ44nrl1fS9cgfCGoK02rXvhz6olUdzZ2Rz\nhcgk6RECgYEAtWsL8Z7uc0lpNbV1rOzh7h1q942E9xdDR6H2i0hDqZaAoXdhQqTY\nKIw5d0ke+VpuDI8ZlEUyK8bf/YuB+i6NTDR4ebEKSv7lC3aF0FITN+zw7PlA6iKa\nfjiU3RH7pL5JmkuMLIQt9qSKyd595hUFuvgtdS9Zw5HTNlqn51I+GV0CgYEAjiTI\neO+ppjvIG536CV1vjea1jLkiQZJXo+lvnVrv7xEVJTESPQHYphz7I8HM+9bHzLna\n8u7oGhIuJ4/grCj6IUn6URgDU40sFfq6MNq9CejuH3dyOtABcNZNWnPY9WA3PH/J\nwUDgldc02Rr2ha90n0Rs9Oiv/4EqP11EuBCLNAECgYEAySIZFtYc+U+2sfr0hc8y\nS+ynW2Oq/cOT2mvnJeJIhl5p5u98LhpkeGH7pH8MKXaC59ARKeaMssjD1Y9ABO6G\nplcLyuPD1MJdxtA/mPAkGMVSttD298lCmQ1kSaYHGzFlGDNDrSp+wvlkTR5gCMaf\nJ0ygcuL5znZf5JaAndxI2vM=\n-----END PRIVATE KEY-----\n",
+  "client_email": "glados@glados-381318.iam.gserviceaccount.com",
+  "client_id": "114423957285289044836",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/glados%40glados-381318.iam.gserviceaccount.com"
+}

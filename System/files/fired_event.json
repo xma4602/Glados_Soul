@@ -1,0 +1,108 @@
+[
+    {
+        "time": "21.03.2023 21:10:21",
+        "regular": [
+            -1
+        ],
+        "title": "\u0411\u0443\u0434\u0438\u043b\u044c\u043d\u0438\u043a 0",
+        "class_name": "AlarmClock"
+    },
+    {
+        "time": "21.03.2023 19:10:38",
+        "regular": [
+            -1
+        ],
+        "title": "\u0411\u0443\u0434\u0438\u043b\u044c\u043d\u0438\u043a 0",
+        "class_name": "AlarmClock"
+    },
+    {
+        "time": "21.03.2023 21:57:25",
+        "regular": [
+            -1
+        ],
+        "title": "\u0411\u0443\u0434\u0438\u043b\u044c\u043d\u0438\u043a 0",
+        "class_name": "AlarmClock"
+    },
+    {
+        "time": "22.03.2023 09:20:00",
+        "regular": [
+            -1
+        ],
+        "title": "\u0411\u0443\u0434\u0438\u043b\u044c\u043d\u0438\u043a 0",
+        "class_name": "AlarmClock"
+    },
+    {
+        "time": "22.03.2023 10:38:12",
+        "regular": [
+            -1
+        ],
+        "title": "\u0411\u0443\u0434\u0438\u043b\u044c\u043d\u0438\u043a 0",
+        "class_name": "AlarmClock"
+    },
+    {
+        "time": "22.03.2023 10:40:17",
+        "regular": [
+            -1
+        ],
+        "title": "\u0411\u0443\u0434\u0438\u043b\u044c\u043d\u0438\u043a 0",
+        "class_name": "AlarmClock"
+    },
+    {
+        "time": "22.03.2023 10:42:21",
+        "regular": [
+            -1
+        ],
+        "title": "\u0411\u0443\u0434\u0438\u043b\u044c\u043d\u0438\u043a 0",
+        "class_name": "AlarmClock"
+    },
+    {
+        "time": "19.03.2023 17:53:52",
+        "title": "Test notice",
+        "recipients_id": [
+            1
+        ],
+        "description": "\u041f\u043e\u043f\u044b\u0442\u043a\u0430 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u0443\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u0435",
+        "class_name": "Notice"
+    },
+    {
+        "time": "22.03.2023 16:49:15",
+        "regular": [
+            -1
+        ],
+        "title": "Test alarm",
+        "class_name": "AlarmClock"
+    },
+    {
+        "time": "22.03.2023 16:49:45",
+        "regular": [
+            -1
+        ],
+        "title": "Test alarm",
+        "class_name": "AlarmClock"
+    },
+    {
+        "time": "22.03.2023 16:51:11",
+        "regular": [
+            -1
+        ],
+        "title": "Test alarm",
+        "class_name": "AlarmClock"
+    },
+    {
+        "time": "22.03.2023 16:53:52",
+        "regular": [
+            -1
+        ],
+        "title": "Test alarm",
+        "class_name": "AlarmClock"
+    },
+    {
+        "time": "25.03.2023 17:51:11",
+        "title": "Test notice",
+        "recipients_id": [
+            1
+        ],
+        "description": "\u041f\u043e\u043f\u044b\u0442\u043a\u0430 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u0443\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u0435",
+        "class_name": "Notice"
+    }
+]
