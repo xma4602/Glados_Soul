@@ -10,6 +10,10 @@ vk_group_file = 'files/vk_bot_keys.json'
 users = {}
 
 
+def dump(file, *args):
+    json.dump(args, file, indent=4, ensure_ascii=False)
+
+
 def get_council():
     global users
     with open(council_file, 'r') as file:
@@ -42,7 +46,7 @@ def store_event(event):
                     break
 
     with open(event_file, 'w') as file:
-        json.dump(events, file, indent=4)
+        dump(file, events)
 
 
 def get_nearest_event(old_event=None):
@@ -60,7 +64,7 @@ def get_nearest_event(old_event=None):
         if old_event is not None:  # если передано старое событие, то удаляет его из списка
             events.pop(0)
             with open(event_file, 'w') as file:
-                json.dump(events, file, indent=4)  # записывает измененный список обратно в файл
+                dump(file, events)  # записывает измененный список обратно в файл
 
         nearest_event = events[0]  # получаем ближайшее событие
         event_class = eval(nearest_event['class_name'])  # создаем объект того же класса, что и nearest_event
@@ -94,7 +98,7 @@ def start():
         delta = datetime.now() - TimeEvent.get_datetime(event)
 
     with open(event_file, 'w') as file:  # записываем в файл список запданированных событий без просрочек
-        json.dump(events, file, indent=4)
+        dump(file, events)
 
     load_fired_events = []  # список из файла просроченных событий
     if len(fired_events) != 0:
@@ -149,7 +153,11 @@ def names_to_id(users_surnames: list):
     :return: список соответствующих фамилиям id
     """
     # по ключам фамилий из словаря users формируем список id
-    return [users[surname.lower()] for surname in users_surnames]
+    for i in range(len(users_surnames)):
+        for id, name in users.items():
+            if users_surnames[i] == name:
+                users_surnames[i] = id
+    return users_surnames
 
 
 def get_vk_group_data():
