@@ -1,9 +1,10 @@
 import asyncio
 import vk_api
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
+from vk_api.exceptions import ApiError
 
 from System import command_manager, data_manager
-
+from System.modules.logger import Logger
 
 keys = data_manager.get_vk_group_data()
 vk = vk_api.VkApi(token=keys['api_token'])
@@ -30,8 +31,13 @@ async def listener(loop):
 
 def send(message: str, ids: list):
     for ID in ids:
-        api.messages.send(
-            message=message,
-            peer_id=int(ID),
-            random_id=0,
-        )
+        try:
+            api.messages.send(
+                message=message,
+                peer_id=int(ID),
+                random_id=0,
+            )
+            message = message.replace('\n', ' ')
+            Logger.message.info(f'"{message}" отправлено на ID: {ID}')
+        except ApiError:
+            Logger.message.warning(f'Не удалось отправить сообщение на ID:{ID}')

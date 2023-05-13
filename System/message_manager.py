@@ -4,11 +4,12 @@ from datetime import datetime
 from System import data_manager
 from System.modules import vk_bot
 from System.units.notice import Notice
+from System.modules.logger import Logger
 
 # nearest_event = data_manager.start()
 nearest_event = None
-output = bot
-input = bot
+output = vk_bot
+input = vk_bot
 
 
 async def listener(loop):
@@ -30,6 +31,8 @@ def send_nearest_notice():
 
 def send(notice: Notice):
     output.send(notice.message_somebody(), notice.recipients_id)
+
+
 
 
 def plan(notices: list):
