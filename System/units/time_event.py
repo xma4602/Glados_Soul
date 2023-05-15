@@ -25,3 +25,7 @@ class TimeEvent:
     def get_datetime(cls, event: dict):
         return datetime.strptime(event['time'], TimeEvent.time_format)
 
+    @classmethod
+    def datetime_to_str(cls, date: datetime):
+        return datetime.strftime(TimeEvent.time_format)
+
