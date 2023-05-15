@@ -19,8 +19,8 @@ class Notice(TimeEvent):
         self.description = description
         self.class_name = self.__class__.__name__
 
-        Logger.notice.info(f'Создано напоминание на {self.time.strftime(TimeEvent.time_format)} \
-        "{title}" для {recipients_id}')
+        # Logger.notice.info(f'Создано напоминание на {self.time.strftime(TimeEvent.time_format)} \
+        # "{title}" для {recipients_id}')
 
     def __str__(self):
         """
