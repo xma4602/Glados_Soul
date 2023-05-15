@@ -2,14 +2,29 @@ import asyncio
 from datetime import datetime
 
 from System import data_manager
-from System.modules import vk_bot
+from System.modules import vk_bot, console
 from System.units.notice import Notice
-from System.modules.logger import Logger
 
-# nearest_event = data_manager.start()
-nearest_event = None
-output = vk_bot
-input = vk_bot
+global nearest_event
+global output
+global input
+
+
+def start():
+    global nearest_event
+    global output
+    global input
+
+    nearest_event = data_manager.get_nearest_event()
+
+    if data_manager.config['message_in'] is 'vk':
+        input = vk_bot
+    else:
+        input = console
+    if data_manager.config['message_out'] is 'vk':
+        output = vk_bot
+    else:
+        output = console
 
 
 async def listener(loop):
@@ -31,8 +46,6 @@ def send_nearest_notice():
 
 def send(notice: Notice):
     output.send(notice.message_somebody(), notice.recipients_id)
-
-
 
 
 def plan(notices: list):
