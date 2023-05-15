@@ -50,9 +50,8 @@ def mess_start():
     return message
 
 
-message = Logger('message', INFO)
-
-mess_start()
+def start():
+    mess_start()
 
 
 def mess_info(text: str, ID):
@@ -66,6 +65,8 @@ def mess_warning(text: str, ID):
     text = f"'{text}' FAILED send to id:{ID}"
     message._logger.warning(text)
 
+
+message = Logger('message', INFO)
 # notice = logging.getLogger('notice')
 #
 #
