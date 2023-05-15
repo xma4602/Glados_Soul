@@ -3,7 +3,8 @@ import socket
 from threading import Thread
 
 from System import message_manager
-
+from System import data_manager
+from System import command_manager
 
 def sender():
     loop = asyncio.new_event_loop()
@@ -28,8 +29,10 @@ def listener():
 
 
 if __name__ == '__main__':
-    threads = []
+    data_manager.start()
+    message_manager.start()
 
+    threads = []
     print(f"Поток прослушивания сообщений: запущен")
     t = Thread(target=listener)
     threads.append(t)

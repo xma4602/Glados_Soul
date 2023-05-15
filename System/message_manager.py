@@ -17,14 +17,18 @@ def start():
 
     nearest_event = data_manager.get_nearest_event()
 
-    if data_manager.config['message_in'] is 'vk':
+    if data_manager.message_out() == 'vk':
         input = vk_bot
     else:
         input = console
-    if data_manager.config['message_out'] is 'vk':
+    if data_manager.message_in() == 'vk':
         output = vk_bot
     else:
         output = console
+
+    input.start()
+    if input != output:
+        output.start()
 
 
 async def listener(loop):

@@ -6,10 +6,14 @@ from vk_api.exceptions import ApiError
 from System import command_manager, data_manager
 import System.modules.logger as log
 
-keys = data_manager.get_vk_group_data()
-vk = vk_api.VkApi(token=keys['api_token'])
-longpoll = VkBotLongPoll(vk, keys['group_id'])
-api = vk.get_api()
+
+def start():
+    global api
+    global longpoll
+    keys = data_manager.get_vk_group_data()
+    vk = vk_api.VkApi(token=keys['api_token'])
+    longpoll = VkBotLongPoll(vk, keys['group_id'])
+    api = vk.get_api()
 
 
 async def handle(event):

@@ -1,9 +1,7 @@
 import json
 from datetime import datetime, timedelta
 from System.units.time_event import TimeEvent
-
-global config
-
+from System.units.notice import Notice
 
 def start():
     global config
@@ -150,3 +148,10 @@ def get_vk_group_data():
     with open(config['vk_keys'], 'r') as file:
         data = json.load(file)
     return data
+
+
+def message_in():
+    return config['message_in']
+
+def message_out():
+    return config['message_in']
