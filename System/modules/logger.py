@@ -3,9 +3,9 @@ from logging import INFO, WARNING
 import json
 import sys
 
-mess_in_file = True
+mess_in_file = False
 
-_log_folder = 'files\\log\\'
+_log_folder = 'System\\files\\log\\'
 _std_format = '%(asctime)s - %(levelname)s - %(message)s'
 message_file_info = _log_folder + 'message_info.log'
 message_file_warning = _log_folder + 'message_warning.log'
@@ -40,9 +40,6 @@ class Logger:
         self._logger.addHandler(message_handler)
 
 
-message = Logger('message', INFO)
-
-
 def mess_start():
     global message
     if mess_in_file:
@@ -53,15 +50,21 @@ def mess_start():
     return message
 
 
+message = Logger('message', INFO)
+
+mess_start()
+
+
 def mess_info(text: str, ID):
     global message
-    text = f"'{message}' send to id:{ID}"
-    message.info(text)
+    text = f"'{text}' send to id:{ID}"
+    message._logger.info(text)
+
 
 def mess_warning(text: str, ID):
     global message
-    text = f"'{message}' send to id:{ID}"
-    message.warning(text)
+    text = f"'{text}' FAILED send to id:{ID}"
+    message._logger.warning(text)
 
 # notice = logging.getLogger('notice')
 #

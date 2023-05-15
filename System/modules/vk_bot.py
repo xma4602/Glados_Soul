@@ -4,7 +4,7 @@ from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 from vk_api.exceptions import ApiError
 
 from System import command_manager, data_manager
-from System.modules.logger import Logger
+import System.modules.logger as log
 
 keys = data_manager.get_vk_group_data()
 vk = vk_api.VkApi(token=keys['api_token'])
@@ -38,6 +38,6 @@ def send(message: str, ids: list):
                 random_id=0,
             )
             message = message.replace('\n', ' ')
-            Logger.message.info(f'"{message}" отправлено на ID: {ID}')
+            log.mess_info(message, ID)
         except ApiError:
-            Logger.message.warning(f'Не удалось отправить сообщение на ID:{ID}')
+            log.mess_warning(message, ID)

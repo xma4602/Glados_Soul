@@ -6,7 +6,7 @@ from System.units.time_event import TimeEvent
 event_file = 'files/notice.json'
 fired_events_file = "files/fired_event.json"
 council_file = 'files/council.json'
-vk_group_file = 'files/vk_bot_keys.json'
+vk_group_file = 'System/files/vk_bot_keys.json'
 users = {}
 
 
