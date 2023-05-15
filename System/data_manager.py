@@ -72,7 +72,7 @@ def get_nearest_event(old_event=None):
         return event_class.from_dict(nearest_event)
 
 
-def start():
+def check_fired_events():
     """
     Используется единожды при запуске, возвращает ближайшее не просроченное событие
     """
@@ -81,11 +81,7 @@ def start():
     with open(event_file, 'r+') as file:  # считываем список событий
         events = json.load(file)
 
-    if len(events) == 0:  # возвращаем none, если событий нет
-        return None
-
     fired_events = []  # список просроченных событий
-
     event = events[0]  # получаем ближайшее событие
     delta = datetime.now() - TimeEvent.get_datetime(event)  # вычисляем разницу между сейчас и временем события
     while delta > timedelta(hours=1):
@@ -107,12 +103,6 @@ def start():
         with open(fired_events_file, 'w') as file:
             load_fired_events += fired_events  # добавляем в список новые просрочки
             json.dump(load_fired_events, file, indent=4)  # загружаем все обратно в файл
-
-    if event is None:  # если ближайших непросроченных событий нет, то возвращаем none
-        return None
-
-    event_class = eval(event['class_name'])  # создаем объект того же класса, что и event
-    return event_class.from_dict(event)
 
 
 def get_fired_events():
