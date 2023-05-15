@@ -2,13 +2,13 @@
   "message_out": "vk",
   "message_in": "vk",
 
-  "message_info": "message_info.log",
-  "message_warning": "message_warning.log",
-  "notice_info": "notice_info.log",
+  "message_info": "files/log/message_info.log",
+  "message_warning": "files/log/message_warning.log",
+  "notice_info": "files/log/notice_info.log",
 
-  "council": "council.json",
-  "vk_keys": "vk_bot_keys.json",
-  "events": "notice.json",
-  "fired": "fired_event.json",
-  "google_keys": "google_token.json"
+  "council": "files/council.json",
+  "vk_keys": "files/vk_bot_keys.json",
+  "events": "files/notice.json",
+  "fired": "files/fired_event.json",
+  "google_keys": "files/google_token.json"
 }
