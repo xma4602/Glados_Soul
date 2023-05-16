@@ -9,13 +9,16 @@ from System.modules import room
 from System.units.notice import Notice
 from System.units.task import Task
 
-""" Файл, отвечающий за считывание команды из терминала и его запускание"""
-commands = {
-    0: 'help',
-    # 1: 'update',
-    2: "system"
-}
 
+def start():
+    global commands
+    commands = {
+        'task':'задач',
+        'hello':'прив|здрав',
+        'open':'открыл',
+        'close':'закрыл',
+        'is_open':'(.*открыт.*лаб.*)|(.*лаб.*открыт.*)|(.*закрыт.*лаб.*)|(.*лаб.*закрыт.*)|(.*лаб.*ест.*)|(.*ест.*лаб.*)'
+    }
 
 def _help():
     return ['[command]', 'where [command] is:', commands]
@@ -49,18 +52,18 @@ def parse(text: str, sender_id: str):
 
     title = text[0].lower()
     # если в заголовке тег задачи, отправляем на парсинг задачи
-    if re.search('задач', title) is not None:
+    if re.search(commands['task'], title) is not None:
         new_task(sender_id, text[1:])
-    if re.search('прив|здрав', title) is not None:
+    if re.search(commands['hello'], title) is not None:
         hello(sender_id)
     # команда открытия лабы
-    elif re.search('открыл', title) is not None:
+    elif re.search(commands['open'], title) is not None:
         open_room(sender_id)
     # команда закрытия лабы
-    elif re.search('закрыл', title) is not None:
+    elif re.search(commands['close'], title) is not None:
         close_room(sender_id)
     # вопрос, открыта ли лаба
-    elif re.search('(.*открыт.*лаб.*)|(.*лаб.*открыт.*)|(.*лаб.*ест.*)|(.*ест.*лаб.*)', title) is not None:
+    elif re.search(commands['is_open'], title) is not None:
         is_opened(sender_id)
     # ответ на нераспознанную команду
     else:

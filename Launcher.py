@@ -2,8 +2,7 @@ import asyncio
 import socket
 from threading import Thread
 
-from System import message_manager
-from System import data_manager
+from System import message_manager, data_manager, command_manager
 from System.modules import logger
 
 
@@ -32,6 +31,7 @@ def listener():
 if __name__ == '__main__':
     data_manager.start()
     message_manager.start()
+    command_manager.start()
     logger.start()
 
     threads = []
