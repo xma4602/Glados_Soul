@@ -1,6 +1,7 @@
 {
   "message_out": "vk",
   "message_in": "vk",
+  "logger_output": "console",
 
   "message_info": "files/log/message_info.log",
   "message_warning": "files/log/message_warning.log",
