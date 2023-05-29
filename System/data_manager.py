@@ -59,8 +59,7 @@ def get_nearest_event(old_event=None):
             events.pop(0)
             with open(config['events'], 'w') as file:
                 dump(file, events)  # записывает измененный список обратно в файл
-
-        nearest_event = events[0]  # получаем ближайшее событие
+        nearest_event = events[0][0]  # получаем ближайшее событие
         event_class = eval(nearest_event['class_name'])  # создаем объект того же класса, что и nearest_event
 
         return event_class.from_dict(nearest_event)

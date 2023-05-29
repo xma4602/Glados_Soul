@@ -2,8 +2,13 @@ import datetime
 
 from System.data_manager import start
 start()
+
+from System.message_manager import start as st
+st()
 from System.message_manager import send
 from System.units.notice import Notice
+from System.modules.logger import start
+start()
 
 
 title = 'бот работает'

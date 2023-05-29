@@ -42,6 +42,6 @@ def send(message: str, ids: list):
                 random_id=0,
             )
             message = message.replace('\n', ' ')
-            log.mess_info(message, ID)
+            log.mess_send_info(message, ID, "outgoing")
         except ApiError:
-            log.mess_warning(message, ID)
+            log.mess_send_warning(message, ID, "outgoing")

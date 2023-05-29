@@ -3,13 +3,15 @@ from logging import INFO, WARNING
 import json
 import sys
 
-mess_in_file = False
+mess_in_file = True
 
 _log_folder = 'System\\files\\log\\'
 _std_format = '%(asctime)s - %(levelname)s - %(message)s'
 message_file_info = _log_folder + 'message_info.log'
 message_file_warning = _log_folder + 'message_warning.log'
 notice_file = _log_folder + 'notice.log'
+
+global message
 
 
 class Logger:
@@ -40,6 +42,17 @@ class Logger:
         self._logger.addHandler(message_handler)
 
 
+def log_message(_type: str, _id: int, _message: str, _status: str):
+    mess_dict = {
+        "type": _type,
+        "user_id": _id,
+        "message": _message,
+        "status": _status
+    }
+    text = json.dumps(mess_dict, ensure_ascii=False)
+    return text
+
+
 def mess_start():
     global message
     if mess_in_file:
@@ -51,22 +64,34 @@ def mess_start():
 
 
 def start():
+    global message
+    message = Logger('message', INFO)
     mess_start()
 
 
-def mess_info(text: str, ID):
+def mess_send_info(text: str, id):
     global message
-    text = f"'{text}' send to id:{ID}"
+    text = log_message('input', id, text, 'success')
     message._logger.info(text)
 
 
-def mess_warning(text: str, ID):
+def mess_send_warning(text: str, id):
     global message
-    text = f"'{text}' FAILED send to id:{ID}"
+    text = log_message('input', id, text, 'success')
     message._logger.warning(text)
 
 
-message = Logger('message', INFO)
+def mess_parse_info(text: str, id):
+    global message
+    text = log_message('output', id, text, 'success')
+    message._logger.info(text)
+
+
+def mess_parse_warning(text: str, id):
+    global message
+    text = log_message('output', id, text, 'success')
+    message._logger.warning(text)
+
 # notice = logging.getLogger('notice')
 #
 #
