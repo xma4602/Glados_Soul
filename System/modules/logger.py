@@ -71,25 +71,25 @@ def start():
 
 def mess_send_info(text: str, id):
     global message
-    text = log_message('input', id, text, 'success')
+    text = log_message('output', id, text, 'success')
     message._logger.info(text)
 
 
 def mess_send_warning(text: str, id):
     global message
-    text = log_message('input', id, text, 'success')
+    text = log_message('output', id, text, 'success')
     message._logger.warning(text)
 
 
 def mess_parse_info(text: str, id):
     global message
-    text = log_message('output', id, text, 'success')
+    text = log_message('input', id, text, 'success')
     message._logger.info(text)
 
 
 def mess_parse_warning(text: str, id):
     global message
-    text = log_message('output', id, text, 'success')
+    text = log_message('input', id, text, 'success')
     message._logger.warning(text)
 
 # notice = logging.getLogger('notice')
