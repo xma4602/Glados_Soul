@@ -22,6 +22,7 @@ async def handle(event):
         sender_id = str(event.object.get('message').get('from_id'))
         if event.from_user:
             command_manager.parse(message, sender_id)
+            log.mess_parse_info(message, sender_id)
 
 
 async def listener(loop):
@@ -42,6 +43,6 @@ def send(message: str, ids: list):
                 random_id=0,
             )
             message = message.replace('\n', ' ')
-            log.mess_send_info(message, ID, "outgoing")
+            log.mess_send_info(message, ID)
         except ApiError:
-            log.mess_send_warning(message, ID, "outgoing")
+            log.mess_send_warning(message, ID)

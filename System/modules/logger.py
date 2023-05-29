@@ -42,7 +42,7 @@ class Logger:
         self._logger.addHandler(message_handler)
 
 
-def log_message(_type: str, _id: int, _message: str, _status: str):
+def log_message(_type: str, _id: str, _message: str, _status: str):
     mess_dict = {
         "type": _type,
         "user_id": _id,
