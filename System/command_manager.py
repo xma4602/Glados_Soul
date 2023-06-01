@@ -1,38 +1,24 @@
 import re
 from datetime import datetime
 
-import System.modules.systems as sys
-import System.modules.updating as upd
 from System import data_manager, message_manager
 
 from System.modules import room
 from System.units.notice import Notice
 from System.units.task import Task
 
+global commands
+
 
 def start():
     global commands
     commands = {
-        'task':'задач',
-        'hello':'прив|здрав',
-        'open':'открыл',
-        'close':'закрыл',
-        'is_open':'(.*открыт.*лаб.*)|(.*лаб.*открыт.*)|(.*закрыт.*лаб.*)|(.*лаб.*закрыт.*)|(.*лаб.*ест.*)|(.*ест.*лаб.*)'
+        'task': 'задач',
+        'hello': 'прив|здрав',
+        'open': 'открыл',
+        'close': 'закрыл',
+        'is_open': '(.*открыт.*лаб.*)|(.*лаб.*открыт.*)|(.*закрыт.*лаб.*)|(.*лаб.*закрыт.*)|(.*лаб.*ест.*)|(.*ест.*лаб.*)'
     }
-
-def _help():
-    return ['[command]', 'where [command] is:', commands]
-
-
-def execute(cmd, params):
-    if cmd == commands.get(0):
-        return _help()
-    elif cmd == commands.get(1):
-        return upd.update(params)
-    elif cmd == commands.get(2):
-        return sys.malina_control(params)
-    else:
-        return f'Не найдена команда {cmd}'
 
 
 # главный метод парсинга сообщения
@@ -150,7 +136,6 @@ def is_opened(sender_id: str):
 
 
 def open_room(sender_id: str):
-    message = None
     if data_manager.is_council(sender_id):
         room.open_room()
         message = Notice(
@@ -171,7 +156,6 @@ def open_room(sender_id: str):
 
 
 def close_room(sender_id):
-    message = None
     if data_manager.is_council(sender_id):
         room.close_room()
         message = Notice(
