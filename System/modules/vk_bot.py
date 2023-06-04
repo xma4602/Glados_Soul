@@ -2,6 +2,7 @@ import asyncio
 import vk_api
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 from vk_api.exceptions import ApiError
+from requests.exceptions import ReadTimeout
 
 from System import command_manager, data_manager
 import System.modules.logger as log
@@ -28,11 +29,11 @@ async def handle(event):
 
 async def listener(loop):
     while True:
-        for event in longpoll.listen():
-            try:
+        try:
+            for event in longpoll.listen():
                 await asyncio.wait([loop.create_task(handle(event))])
-            except Exception:
-                continue
+        except ReadTimeout:
+            start()
 
 
 def send(message: str, ids: list):
