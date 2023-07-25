@@ -5,15 +5,14 @@ import sys
 from typing import List
 
 _std_format = '%(asctime)s - %(levelname)s - %(message)s'
-log_out = None  # вывод логов: 'file' или 'console'
-message_file_info = None
-message_file_warning = None
-notice_file = None  # пути к файлам логов
-
 global message
 
 
 class Logger:
+    """
+    Класс для удобного создания объекта лога
+    """
+
     def __init__(self, log_name: str, level):
         self.logger = logging.getLogger(log_name)  # создание логгера
         self.logger.setLevel(level)  # задание минимального уровня логирования
@@ -58,15 +57,21 @@ def log_message(_type: str, _id: str, _message: str, _status: str) -> str:
     return text
 
 
-def mess_start():
-    global message
+def init_message(log_out: str, file_info: str, file_warning: str) -> Logger:
+    """
+    Создает логгер для сообщений
+    :param log_out: вывод логов 'console' или 'file'
+    :param file_info: путь к файлу для записи логов info
+    :param file_warning: путь к файлу для записи логов warning
+    """
+    msg = Logger('message', INFO)
     if log_out == 'file':
-        message.add_file_handler(message_file_info, INFO)
-        message.add_file_handler(message_file_warning, WARNING)
+        msg.add_file_handler(file_info, INFO)
+        msg.add_file_handler(file_warning, WARNING)
     elif log_out == 'console':
-        message.add_console_handler(INFO)
+        msg.add_console_handler(INFO)
 
-    return message
+    return msg
 
 
 def mess_send_info(text: str, id):
@@ -94,7 +99,7 @@ def mess_parse_warning(text: str, id):
 
 
 def start():
-    global message, log_out, message_file_info, message_file_warning
+    global message
 
     with open('config.json', 'r') as config_file:
         configs = json.load(config_file)
@@ -103,5 +108,4 @@ def start():
             message_file_info = configs['message_info']
             message_file_warning = configs['message_warning']
 
-    message = Logger('message', INFO)
-    mess_start()
+    message = init_message(log_out, message_file_info, message_file_warning)
