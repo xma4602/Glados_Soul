@@ -6,7 +6,7 @@ l.start()
 vk.start()
 
 
-l.mess_send_warning('hello', 3)
-l.mess_parse_warning('hi', 986898797)
-l.mess_send_info('info', 8)
+l.mess_output_warning('hello', 3)
+l.mess_input_warning('hi', 986898797)
+l.mess_output_info('info', 8)
 

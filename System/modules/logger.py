@@ -35,7 +35,7 @@ class Logger:
         message_handler.setFormatter(logging.Formatter(format_))
         self.logger.addHandler(message_handler)
 
-    def add_console_handler(self, level, format_=_std_format, stream=sys.stdout):
+    def add_console_handler(self, level, format_=_std_format, stream=sys.stdout) -> None:
         """Добавляет в логгер хэндлер для записи логов в консоль
         :param level: уровень минимального логирования хэндлера
         :param format_: формат записи логов, по умолчанию _std_format
@@ -74,27 +74,47 @@ def init_message(log_out: str, file_info: str, file_warning: str) -> Logger:
     return msg
 
 
-def mess_send_info(text: str, id):
+def mess_output_info(text: str, id: str):
+    """
+    Функция для записи лога исходящего сообщения уровня INFO
+    :param text: текст сообщения
+    :param id: id получателя сообщения
+    """
     global message
     text = log_message('output', id, text, 'success')
     message.logger.info(text)
 
 
-def mess_send_warning(text: str, id):
+def mess_output_warning(text: str, id: str) -> None:
+    """
+    Функция для записи лога исходящего сообщения уровня WARNING
+    :param text: текст сообщения
+    :param id: id получателя сообщения
+    """
     global message
-    text = log_message('output', id, text, 'success')
+    text = log_message('output', id, text, 'fail')
     message.logger.warning(text)
 
 
-def mess_parse_info(text: str, id):
+def mess_input_info(text: str, id: str) -> None:
+    """
+    Функция для записи лога входящего сообщения уровня INFO
+    :param text: текст сообщения
+    :param id: id отправителя сообщения
+    """
     global message
     text = log_message('input', id, text, 'success')
     message.logger.info(text)
 
 
-def mess_parse_warning(text: str, id):
+def mess_input_warning(text: str, id: str):
+    """
+    Функция для записи лога входящего сообщения уровня WARNING
+    :param text: текст сообщения
+    :param id: id отправителя сообщения
+    """
     global message
-    text = log_message('input', id, text, 'success')
+    text = log_message('input', id, text, 'fail')
     message.logger.warning(text)
 
 
