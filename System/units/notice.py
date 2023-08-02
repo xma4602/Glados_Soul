@@ -11,7 +11,10 @@ class Notice(TimeEvent):
     def __init__(self, title: str, recipients_id: list, time: datetime, description: list):
         """
         Принимает список параметров и присваивает их полям
-        :param notice_data: список параметров
+        :param title:  заголовок уведомления
+        :param recipients_id: список id получателей
+        :param time: время уведомления
+        :param description: описание уведомления
         """
         super().__init__(time)
         self.title = title

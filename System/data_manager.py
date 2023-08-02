@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from System.units.time_event import TimeEvent
 from System.units.notice import Notice
 
+
 def start():
     global config
     with open('config.json', 'r') as file:
@@ -49,7 +50,7 @@ def get_nearest_event(old_event=None):
     :params old_event: исполнившееся событие
     """
     events = []
-    with open(config['events'], 'r+') as file:
+    with open(config['events'], 'r') as file:
         events = json.load(file)  # считывает список событий из файла
 
     if len(events) == 0:  # если событий нет, то возвращает None
@@ -73,7 +74,7 @@ def check_fired_events():
     """
 
     events = []
-    with open(config['events'], 'r+') as file:  # считываем список событий
+    with open(config['events'], 'r') as file:  # считываем список событий
         events = json.load(file)
 
     fired_events = []  # список просроченных событий
@@ -88,7 +89,7 @@ def check_fired_events():
         event = events[0]
         delta = datetime.now() - TimeEvent.get_datetime(event)
 
-    with open(config['events'], 'w') as file:  # записываем в файл список запданированных событий без просрочек
+    with open(config['events'], 'w') as file:  # записываем в файл список запланированных событий без просрочек
         dump(file, events)
 
     load_fired_events = []  # список из файла просроченных событий
@@ -101,6 +102,9 @@ def check_fired_events():
 
 
 def get_fired_events():
+    """
+    Возвращает список просроченных событий
+    """
     fired_events = []
     with open(config['fired'], 'r') as file:
         fired_events = json.load(file)
@@ -153,6 +157,7 @@ def get_vk_group_data():
 
 def message_in():
     return config['message_in']
+
 
 def message_out():
     return config['message_in']

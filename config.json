@@ -6,6 +6,7 @@
   "message_info": "files/log/message_info.log",
   "message_warning": "files/log/message_warning.log",
   "notice_info": "files/log/notice_info.log",
+  "data_info": "files/log/data.log",
 
   "council": "files/council.json",
   "vk_keys": "files/vk_bot_keys.json",

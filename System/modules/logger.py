@@ -2,10 +2,13 @@ import logging
 from logging import INFO, WARNING
 import json
 import sys
-from typing import List
+from typing import Union
+from System.units.notice import Notice
 
 _std_format = '%(asctime)s - %(levelname)s - %(message)s'
-global message
+global message  # объект логирования сообщений
+global data  # объект логирования записи данных
+global notice  # объект логирования уведомлений
 
 
 class Logger:
@@ -46,7 +49,14 @@ class Logger:
         self.logger.addHandler(message_handler)
 
 
-def log_message(_type: str, _id: str, _message: str, _status: str) -> str:
+def message_to_text(_type: str, _id: str, _message: str, _status: str) -> str:
+    """
+    Формирует текст лога сообщений
+    :param _type: тип сообщения 'output' или 'input'
+    :param _id: id отправителя/получателя
+    :param _message: текст сообщения
+    :param _status: 'fail' или 'success'
+    """
     mess_dict = {
         "type": _type,
         "user_id": _id,
@@ -70,62 +80,115 @@ def init_message(log_out: str, file_info: str, file_warning: str) -> Logger:
         msg.add_file_handler(file_warning, WARNING)
     elif log_out == 'console':
         msg.add_console_handler(INFO)
+    else:
+        raise ValueError('Unexpected value for log out')
 
     return msg
 
 
-def mess_output_info(text: str, id: str):
+def init_log_info(name: str, log_out: str, file: str) -> Logger:
+    """
+    Возвращает объект Logger с одним хэндлером уровня INFO
+    :param name: имя логгера
+    :param log_out: путь вывода логов
+    :param file: путь к файлу логирования
+    """
+    log = Logger(name, INFO)
+    if log_out == 'file':
+        log.add_file_handler(file, INFO)
+    elif log_out == 'console':
+        log.add_console_handler(INFO)
+    else:
+        raise ValueError('Unexpected value for log out')
+    return log
+
+
+def mess_output_info(text: str, _id: str):
     """
     Функция для записи лога исходящего сообщения уровня INFO
     :param text: текст сообщения
-    :param id: id получателя сообщения
+    :param _id: id получателя сообщения
     """
     global message
-    text = log_message('output', id, text, 'success')
+    text = message_to_text('output', _id, text, 'success')
     message.logger.info(text)
 
 
-def mess_output_warning(text: str, id: str) -> None:
+def mess_output_warning(text: str, _id: str) -> None:
     """
     Функция для записи лога исходящего сообщения уровня WARNING
     :param text: текст сообщения
-    :param id: id получателя сообщения
+    :param _id: id получателя сообщения
     """
     global message
-    text = log_message('output', id, text, 'fail')
+    text = message_to_text('output', _id, text, 'fail')
     message.logger.warning(text)
 
 
-def mess_input_info(text: str, id: str) -> None:
+def mess_input_info(text: str, _id: str) -> None:
     """
     Функция для записи лога входящего сообщения уровня INFO
     :param text: текст сообщения
-    :param id: id отправителя сообщения
+    :param _id: id отправителя сообщения
     """
     global message
-    text = log_message('input', id, text, 'success')
+    text = message_to_text('input', _id, text, 'success')
     message.logger.info(text)
 
 
-def mess_input_warning(text: str, id: str):
+def mess_input_warning(text: str, _id: str):
     """
     Функция для записи лога входящего сообщения уровня WARNING
     :param text: текст сообщения
-    :param id: id отправителя сообщения
+    :param _id: id отправителя сообщения
     """
     global message
-    text = log_message('input', id, text, 'fail')
+    text = message_to_text('input', _id, text, 'fail')
     message.logger.warning(text)
 
 
+def data_log_read(file: str, _data: Union[dict, list]) -> None:
+    global data
+    pass
+
+
+def data_log_write(file: str, _data: Union[dict, list]) -> None:
+    pass
+
+
+def data_event_del(file: str, event: dict) -> None:
+    pass
+
+
+def data_event_add(file: str, event: dict) -> None:
+    pass
+
+
+def notice_to_text(obj: dict) -> str:
+    pass
+
+
+def notice_create(obj: Notice) -> None:
+    global notice
+    txt = notice_to_text(obj.to_dict())
+    notice.logger.info(txt)
+
+
+def notice_send() -> None:
+    pass
+
+
 def start():
-    global message
+    global message, data, notice
 
     with open('config.json', 'r') as config_file:
         configs = json.load(config_file)
         log_out = configs['logger_output']
-        if log_out == 'file':
-            message_file_info = configs['message_info']
-            message_file_warning = configs['message_warning']
+        message_file_info = configs['message_info']
+        message_file_warning = configs['message_warning']
+        data_file = configs['data_info']
+        notice_file = configs['notice_info']
 
     message = init_message(log_out, message_file_info, message_file_warning)
+    data = init_log_info('data', log_out, data_file)
+    notice = init_log_info('notice', log_out, notice_file)
