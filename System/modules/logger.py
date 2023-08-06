@@ -3,7 +3,6 @@ from logging import INFO, WARNING
 import json
 import sys
 from typing import Union
-from System.units.notice import Notice
 
 _std_format = '%(asctime)s - %(levelname)s - %(message)s'
 global message  # объект логирования сообщений
@@ -168,7 +167,7 @@ def notice_to_text(obj: dict) -> str:
     pass
 
 
-def notice_create(obj: Notice) -> None:
+def notice_create(obj) -> None:
     global notice
     txt = notice_to_text(obj.to_dict())
     notice.logger.info(txt)

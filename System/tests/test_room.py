@@ -1,6 +1,13 @@
 from System import command_manager
-
-command_manager.parse('Открыл', '257165020')
-command_manager.parse('А лаба сейчас открыта?', '257165020')
-command_manager.parse('Закрыл', '257165020')
-command_manager.parse('А лаба сейчас открыта?', '257165020')
+from System import data_manager, message_manager
+from System.modules import logger, room
+id = '441449409'
+command_manager.start()
+data_manager.start()
+message_manager.start()
+logger.start()
+room.load_timetable()
+command_manager.parse('Открыл', id)
+command_manager.parse('А лаба сейчас открыта?', id)
+command_manager.parse('Закрыл', id)
+command_manager.parse('А лаба сейчас открыта?', id)
