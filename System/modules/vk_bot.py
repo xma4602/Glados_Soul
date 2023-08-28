@@ -7,11 +7,9 @@ from requests.exceptions import ReadTimeout
 from System import command_manager, configurator
 import System.modules.logger as log
 
-global api
-global longpoll
-
 
 def start():
+    global longpoll, api
     keys = configurator.get_vk_group_data()
     vk = vk_api.VkApi(token=keys['api_token'])
     longpoll = VkBotLongPoll(vk, keys['group_id'])

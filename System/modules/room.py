@@ -9,17 +9,17 @@ opened = False
 # test_sheet_link = 'https://docs.google.com/spreadsheets/d/1SI-jXi1w74PJbuObw59MhZX6LgTyoTm_MFTbQ3bU8Us/edit#gid=0'  # ссылка на таблицу с расписанием
 spreadsheet_id = configurator.spreadsheet_id()
 credentials_file = configurator.credentials_file()
-times = ('08:00 - 09:35',
-         '09:45 - 11:20',
-         '11:30 - 13:05',
-         '13:30 - 15:05',
-         '15:15 - 16:50',
-         '17:00 - 18:35',
-         '18:45 - 20:15',
-         '20:20 - 21:55')
-statuses = ('Лаборатория закрыта',
-            'Есть небольшой шанс на то, что в лабе кто-то есть',
-            'Лаборатория открыта')
+times = ('08:00-09:35',
+         '09:45-11:20',
+         '11:30-13:05',
+         '13:30-15:05',
+         '15:15-16:50',
+         '17:00-18:35',
+         '18:45-20:15',
+         '20:20-21:55')
+statuses = ('⛔ закрыто',
+            '⚠ возможно открыто',
+            '✅ открыто')
 
 
 def load_timetable() -> list[str]:
@@ -79,10 +79,11 @@ def get_rasp(values: list[str]) -> str:
 
 
 def is_opened():
+    values = load_timetable()
+    answer = ""
     if opened:
-        return 'Лаборатория открыта'
+        answer = '✅ Лаборатория открыта'
     else:
-        values = load_timetable()
-        return "Лаборатория закрыта\n\n Расписание на сегодня: \n"+get_rasp(values)
-
-
+        answer = "⛔ Лаборатория закрыта"
+    answer += "\n\nРасписание на сегодня: \n" + get_rasp(values)
+    return answer

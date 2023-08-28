@@ -24,6 +24,7 @@ def start():
         data = create_logger('data', configurator.log_data_file())
         notice = create_logger('notice', configurator.log_notice_file())
 
+
 class Logger:
     """
     Класс для удобного создания объекта лога
@@ -99,7 +100,7 @@ def init_message(log_out: str, file_info: str, file_warning: str) -> Logger:
     return msg
 
 
-def init_log_info(name: str, log_out: str, file: str) -> Logger:
+def create_logger(name: str, log_out: str = 'console', file: str = None) -> Logger:
     """
     Возвращает объект Logger с одним хэндлером уровня INFO
     :param name: имя логгера
@@ -189,4 +190,3 @@ def notice_create(obj) -> None:
 
 def notice_send() -> None:
     pass
-
