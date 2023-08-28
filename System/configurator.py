@@ -1,8 +1,13 @@
 import json
+import yaml
 
 global config
-with open('config.json', 'r') as file:
-    config = json.load(file)
+with open('config.yaml', 'r') as file:
+    config = yaml.load(file, Loader=yaml.FullLoader)
+
+
+# with open('config.json', 'r') as file:
+#    config = json.load(file)
 
 
 def message_in():
