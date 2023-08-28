@@ -6,11 +6,13 @@ import gspread
 from datetime import datetime
 from json import JSONDecodeError
 
+from System import configurator
+
 opened = False
-test_sheet_link = 'https://docs.google.com/spreadsheets/d/1SI-jXi1w74PJbuObw59MhZX6LgTyoTm_MFTbQ3bU8Us/edit#gid=0'  # ссылка на таблицу с расписанием
-CREDENTIALS_FILE = 'files/google_token.json'
-spreadsheet_id = '1SI-jXi1w74PJbuObw59MhZX6LgTyoTm_MFTbQ3bU8Us'
-timetable_file = 'files/timetable.json'  # путь к файлу, где будет храниться спарсенная таблица
+# test_sheet_link = 'https://docs.google.com/spreadsheets/d/1SI-jXi1w74PJbuObw59MhZX6LgTyoTm_MFTbQ3bU8Us/edit#gid=0'  # ссылка на таблицу с расписанием
+spreadsheet_id = configurator.spreadsheet_id()
+timetable_file = configurator.timetable_file()  # путь к файлу, где будет храниться спарсенная таблица
+credentials_file = configurator.credentials_file()
 
 
 def load_timetable():
@@ -18,7 +20,7 @@ def load_timetable():
     Загружает данные таблицы в файл
     """
     credentials = ServiceAccountCredentials.from_json_keyfile_name(
-        CREDENTIALS_FILE,
+        credentials_file,
         ['https://www.googleapis.com/auth/spreadsheets']
     )
     httpAuth = credentials.authorize(httplib2.Http())
