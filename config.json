@@ -4,17 +4,10 @@
     "in": "vk"
   },
   "logging": {
-    "out": "files",
-    "message": {
-      "info": "files/log/message_info.log",
-      "warning": "files/log/message_warning.log"
-    },
-    "data": {
-      "info": "files/log/data.log"
-    },
-    "notice": {
-      "info": "files/log/notice_info.log"
-    }
+    "out": "console",
+    "message_file": "files/log/message.log",
+    "data_file": "files/log/data.log",
+    "notice_file": "files/log/notice.log"
   },
   "vk": {
     "keys": "files/vk_bot_keys.json"

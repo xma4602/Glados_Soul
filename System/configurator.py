@@ -1,10 +1,8 @@
 import json
 
-
-def start():
-    global config
-    with open('config.json', 'r') as file:
-        config = json.load(file)
+global config
+with open('config.json', 'r') as file:
+    config = json.load(file)
 
 
 def message_in():
@@ -16,7 +14,8 @@ def message_out():
 
 
 def get_vk_group_data():
-    return config['vk']['keys']
+    with open(config['vk']['keys'], 'r') as file:
+        return json.load(file)
 
 
 def council_file():
@@ -41,3 +40,19 @@ def timetable_file():
 
 def spreadsheet_id():
     return config['room']['spreadsheet']
+
+
+def log_out():
+    return config['logging']['out']
+
+
+def log_message_file():
+    return config['logging']['message_file']
+
+
+def log_data_file():
+    return config['logging']['data_file']
+
+
+def log_notice_file():
+    return config['logging']['notice_file']
