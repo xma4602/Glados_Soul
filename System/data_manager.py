@@ -155,9 +155,4 @@ def get_vk_group_data():
     return data
 
 
-def message_in():
-    return config['message_in']
 
-
-def message_out():
-    return config['message_in']
