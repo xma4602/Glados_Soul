@@ -1,7 +1,5 @@
 import json
 
-from System.modules import vk_bot, console
-
 
 def start():
     global config
@@ -10,19 +8,11 @@ def start():
 
 
 def message_in():
-    messanger = config['system']['in']
-    if messanger == 'vk':
-        return vk_bot
-    if messanger == 'console':
-        return console
+    return config['system']['in']
 
 
 def message_out():
-    messanger = config['system']['out']
-    if messanger == 'vk':
-        return vk_bot
-    if messanger == 'console':
-        return console
+    return config['system']['out']
 
 
 def get_vk_group_data():

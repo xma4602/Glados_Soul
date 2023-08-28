@@ -2,6 +2,7 @@ import asyncio
 from datetime import datetime
 
 from System import data_manager, configurator
+from System.modules import vk_bot, console
 from System.units.notice import Notice
 
 global nearest_event
@@ -15,7 +16,17 @@ def start():
     global input
 
     input = configurator.message_in()
+    if input == 'vk':
+        input = vk_bot
+    else:
+        input = console
+
     output = configurator.message_in()
+    if output == 'vk':
+        output = vk_bot
+    else:
+        output = console
+
     input.start()
     if input != output:
         output.start()
