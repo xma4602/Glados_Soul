@@ -10,7 +10,7 @@ def start():
 
 
 def message_in():
-    messanger = config['message_in']
+    messanger = config['system']['in']
     if messanger == 'vk':
         return vk_bot
     if messanger == 'console':
@@ -18,7 +18,7 @@ def message_in():
 
 
 def message_out():
-    messanger = config['message_out']
+    messanger = config['system']['out']
     if messanger == 'vk':
         return vk_bot
     if messanger == 'console':
@@ -26,18 +26,28 @@ def message_out():
 
 
 def get_vk_group_data():
-    with open(config['vk_keys'], 'r') as file:
-        data = json.load(file)
-    return data
+    return config['vk']['keys']
 
 
 def council_file():
-    return config['council']
+    return config['data']['council']
 
 
 def events_file():
-    return config['events']
+    return config['data']['events']
 
 
 def fired_events_file():
-    return config['fired']
+    return config['data']['fired']
+
+
+def credentials_file():
+    return config['room']['keys']
+
+
+def timetable_file():
+    return config['room']['timetable']
+
+
+def spreadsheet_id():
+    return config['room']['spreadsheet']
