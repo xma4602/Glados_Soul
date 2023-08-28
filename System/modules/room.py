@@ -13,14 +13,14 @@ opened = False
 spreadsheet_id = configurator.spreadsheet_id()
 timetable_file = configurator.timetable_file()  # путь к файлу, где будет храниться спарсенная таблица
 credentials_file = configurator.credentials_file()
-times = (('08:00', '09:35'),
-         ('09:45', '11:20'),
-         ('11:30', '13:05'),
-         ('13:30', '15:05'),
-         ('15:15', '16:50'),
-         ('17:00', '18:35'),
-         ('18:45', '20:15'),
-         ('20:20', '21:55'))
+times = ('08:00 - 09:35',
+         '09:45 - 11:20',
+         '11:30 - 13:05',
+         '13:30 - 15:05',
+         '15:15 - 16:50',
+         '17:00 - 18:35',
+         '18:45 - 20:15',
+         '20:20 - 21:55')
 statuses = ('Лаборатория закрыта',
             'Есть небольшой шанс на то, что в лабе кто-то есть',
             'Лаборатория открыта')
@@ -80,7 +80,7 @@ def get_rasp(values: list[str]) -> str:
     stats = values[num:(num + 8)]
     rasp = ""
     for i in range(0, 7):
-        rasp += ' - '.join(times[i]) + ': ' + statuses[int(stats[i])] + '\n'
+        rasp += times[i] + ': ' + statuses[int(stats[i])] + '\n'
     return rasp
 
 
