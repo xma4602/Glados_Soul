@@ -3,14 +3,16 @@ import httplib2
 from apiclient import discovery
 from oauth2client.service_account import ServiceAccountCredentials
 import gspread
-from datetime import datetime, time
+from datetime import datetime
 from json import JSONDecodeError
 
+from System import configurator
+
 opened = False
-test_sheet_link = 'https://docs.google.com/spreadsheets/d/1UHRZeVOl2uzEZEVQs-dpBya6FmrvyXxZwM8D1cEzg68/edit#gid=1740180919'  # ссылка на таблицу с расписанием
-CREDENTIALS_FILE = 'files/google_token.json'
-spreadsheet_id = '1UHRZeVOl2uzEZEVQs-dpBya6FmrvyXxZwM8D1cEzg68'
-timetable_file = 'files/timetable.json'  # путь к файлу, где будет храниться спарсенная таблица
+# test_sheet_link = 'https://docs.google.com/spreadsheets/d/1SI-jXi1w74PJbuObw59MhZX6LgTyoTm_MFTbQ3bU8Us/edit#gid=0'  # ссылка на таблицу с расписанием
+spreadsheet_id = configurator.spreadsheet_id()
+timetable_file = configurator.timetable_file()  # путь к файлу, где будет храниться спарсенная таблица
+credentials_file = configurator.credentials_file()
 times = (('08:00', '09:35'),
          ('09:45', '11:20'),
          ('11:30', '13:05'),
@@ -29,7 +31,7 @@ def load_timetable():
     Загружает данные таблицы в файл
     """
     credentials = ServiceAccountCredentials.from_json_keyfile_name(
-        CREDENTIALS_FILE,
+        credentials_file,
         ['https://www.googleapis.com/auth/spreadsheets']
     )
     httpAuth = credentials.authorize(httplib2.Http())
@@ -40,10 +42,8 @@ def load_timetable():
         majorDimension='COLUMNS'
     ).execute()
     values = values['values'][0]
-    print(values)
-    get_rasp(values)  # убрать
     with open(timetable_file, 'w') as file:
-        json.dump(values, file, indent=4, ensure_ascii=False)
+        json.dump(values, file, indent=4)
 
 
 def open_room():
@@ -102,5 +102,4 @@ def is_opened():
             # лог на ошибку декодирования json
             return "Лаборатория закрыта"
 
-
-load_timetable()
+# load_timetable()
