@@ -2,8 +2,6 @@ import json
 
 from System.modules import vk_bot, console
 
-global config
-
 
 def start():
     global config
@@ -26,3 +24,20 @@ def message_out():
     if messanger == 'console':
         return console
 
+
+def get_vk_group_data():
+    with open(config['vk_keys'], 'r') as file:
+        data = json.load(file)
+    return data
+
+
+def council_file():
+    return config['council']
+
+
+def events_file():
+    return config['events']
+
+
+def fired_events_file():
+    return config['fired']

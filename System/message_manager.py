@@ -2,7 +2,6 @@ import asyncio
 from datetime import datetime
 
 from System import data_manager, configurator
-from System.modules import vk_bot, console
 from System.units.notice import Notice
 
 global nearest_event

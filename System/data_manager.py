@@ -3,9 +3,17 @@ from datetime import datetime, timedelta
 from System.units.time_event import TimeEvent
 from System.units.notice import Notice
 
+from System import configurator
+
 
 def start():
-    pass
+    global fired_events_file
+    global events_file
+    global council_file
+
+    fired_events_file = configurator.fired_events_file()
+    events_file = configurator.events_file()
+    council_file = configurator.council_file()
 
 
 def save(file_name, *args):
@@ -19,7 +27,7 @@ def load(str: file_name):
 
 
 def is_council(id: str):
-    users = load(config['council'])
+    users = load(council_file)
     return id in users.keys()
 
 
@@ -28,7 +36,7 @@ def store_event(event):
     Сохраняет событие в файл
     :param event: объект события
     """
-    events = load(config['events'])
+    events = load(events_file)
     if len(events) == 0:
         event = event.to_dict()
         events.append(event)
@@ -39,7 +47,7 @@ def store_event(event):
                 event = event.to_dict()
                 events.insert(index, event)
                 break
-    save(config['events'], events)
+    save(events_file, events)
 
 
 def get_nearest_event(old_event=None):
@@ -47,13 +55,13 @@ def get_nearest_event(old_event=None):
     Возвращает ближайшее событие
     :params old_event: исполнившееся событие
     """
-    events = load(config['events'])  # считывает список событий из файла
+    events = load(configurator.events_file())  # считывает список событий из файла
     if len(events) == 0:  # если событий нет, то возвращает None
         return None
     else:
         if old_event is not None:  # если передано старое событие, то удаляет его из списка
             events.pop(0)
-            save(config['events'], events)  # записывает измененный список обратно в файл
+            save(configurator.events_file(), events)  # записывает измененный список обратно в файл
         if len(events) == 0:
             return None
         nearest_event = events[0]  # получаем ближайшее событие
@@ -67,7 +75,7 @@ def check_fired_events():
     Используется единожды при запуске, возвращает ближайшее не просроченное событие
     """
 
-    events = load(config['events'])  # считываем список событий
+    events = load(configurator.events_file())  # считываем список событий
 
     fired_events = []  # список просроченных событий
     event = events[0]  # получаем ближайшее событие
@@ -81,19 +89,19 @@ def check_fired_events():
         event = events[0]
         delta = datetime.now() - TimeEvent.get_datetime(event)
 
-    save(config['events'], events) # записываем в файл список запланированных событий без просрочек
+    save(configurator.events_file(), events)  # записываем в файл список запланированных событий без просрочек
 
     if len(fired_events) != 0:
-        load_fired_events = load(config['fired']) # загружаем список просрочек из файла
+        load_fired_events = load(configurator.events_file())  # загружаем список просрочек из файла
         load_fired_events += fired_events  # добавляем в список новые просрочки
-        save(config['fired'], load_fired_events) # загружаем все обратно в файл
+        save(configurator.events_file(), load_fired_events)  # загружаем все обратно в файл
 
 
 def get_fired_events():
     """
     Возвращает список просроченных событий
     """
-    fired_events = load(config['fired'])
+    fired_events = load(fired_events_file)
 
     if len(fired_events) == 0:
         return None
@@ -133,6 +141,3 @@ def names_to_id(users_surnames: list):
             if users_surnames[i] == name:
                 users_surnames[i] = id
     return users_surnames
-
-
-
