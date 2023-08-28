@@ -4,11 +4,25 @@ import json
 import sys
 from typing import Union
 
+from System import configurator
+
 _std_format = '%(asctime)s - %(levelname)s - %(message)s'
 global message  # объект логирования сообщений
 global data  # объект логирования записи данных
 global notice  # объект логирования уведомлений
 
+
+def start():
+    global message, data, notice
+
+    if configurator.log_out() == 'console':
+        message = create_logger('message')
+        data = create_logger('data')
+        notice = create_logger('notice')
+    else:
+        message = create_logger('message', configurator.log_message_file())
+        data = create_logger('data', configurator.log_data_file())
+        notice = create_logger('notice', configurator.log_notice_file())
 
 class Logger:
     """
@@ -176,18 +190,3 @@ def notice_create(obj) -> None:
 def notice_send() -> None:
     pass
 
-
-def start():
-    global message, data, notice
-
-    with open('config.json', 'r') as config_file:
-        configs = json.load(config_file)
-        log_out = configs['logger_output']
-        message_file_info = configs['message_info']
-        message_file_warning = configs['message_warning']
-        data_file = configs['data_info']
-        notice_file = configs['notice_info']
-
-    message = init_message(log_out, message_file_info, message_file_warning)
-    data = init_log_info('data', log_out, data_file)
-    notice = init_log_info('notice', log_out, notice_file)

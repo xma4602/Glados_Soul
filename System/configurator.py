@@ -1,7 +1,5 @@
 import json
 
-
-
 global config
 with open('config.json', 'r') as file:
     config = json.load(file)
@@ -42,3 +40,19 @@ def timetable_file():
 
 def spreadsheet_id():
     return config['room']['spreadsheet']
+
+
+def log_out():
+    return config['logging']['out']
+
+
+def log_message_file():
+    return config['logging']['message_file']
+
+
+def log_data_file():
+    return config['logging']['data_file']
+
+
+def log_notice_file():
+    return config['logging']['notice_file']
