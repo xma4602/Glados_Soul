@@ -85,6 +85,8 @@ def get_rasp(values: list[str]) -> str:
 def is_opened():
     values = load_timetable()
     answer = ""
+    if datetime.now().time() > time(hour=21):
+        close_room()
     if opened:
         answer = '✅ Лаборатория открыта'
     else:
