@@ -3,14 +3,13 @@ import httplib2
 from apiclient import discovery
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
-from json import JSONDecodeError
 
 from System import configurator
 
 opened = False
 # test_sheet_link = 'https://docs.google.com/spreadsheets/d/1SI-jXi1w74PJbuObw59MhZX6LgTyoTm_MFTbQ3bU8Us/edit#gid=0'  # ссылка на таблицу с расписанием
-spreadsheet_id = '1UHRZeVOl2uzEZEVQs-dpBya6FmrvyXxZwM8D1cEzg68'
-credentials_file = 'files\\google_token.json'
+spreadsheet_id = configurator.spreadsheet_id()
+credentials_file = configurator.credentials_file()
 times = ('08:00 - 09:35',
          '09:45 - 11:20',
          '11:30 - 13:05',
