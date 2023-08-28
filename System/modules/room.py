@@ -1,7 +1,7 @@
 import httplib2
 from apiclient import discovery
 from oauth2client.service_account import ServiceAccountCredentials
-from datetime import datetime
+from datetime import datetime, time
 
 from System import configurator
 
@@ -69,11 +69,15 @@ def get_rasp(values: list[str]) -> str:
     """Возвращает расписание лабы на сегодняшний день"""
     week = 1 - curr_week() % 2
     day = datetime.now().weekday()
+    rasp = "\n\nРасписание на сегодня\n"
+    if datetime.now().time() > time(hour=21):
+        day += 1
+        rasp = "\n\nРасписание на завтра\n"
+
     rasp_day = week * 7 + day
     num = rasp_day * 8
     stats = values[num:(num + 8)]
-    rasp = ""
-    for i in range(0, 7):
+    for i in range(0, 8):
         rasp += times[i] + ': ' + statuses[int(stats[i])] + '\n'
     return rasp
 
@@ -85,5 +89,5 @@ def is_opened():
         answer = '✅ Лаборатория открыта'
     else:
         answer = "⛔ Лаборатория закрыта"
-    answer += "\n\nРасписание на сегодня: \n" + get_rasp(values)
+    answer += get_rasp(values)
     return answer
