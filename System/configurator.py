@@ -1,10 +1,10 @@
 import json
 
 
-def start():
-    global config
-    with open('config.json', 'r') as file:
-        config = json.load(file)
+
+global config
+with open('config.json', 'r') as file:
+    config = json.load(file)
 
 
 def message_in():
@@ -16,7 +16,8 @@ def message_out():
 
 
 def get_vk_group_data():
-    return config['vk']['keys']
+    with open(config['vk']['keys'], 'r') as file:
+        return json.load(file)
 
 
 def council_file():
