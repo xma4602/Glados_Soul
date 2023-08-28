@@ -21,7 +21,7 @@ def save(file_name, *args):
         json.dump(args, file, indent=4, ensure_ascii=False)
 
 
-def load(str: file_name):
+def load(file_name: str):
     with open(file_name, 'r') as file:
         return json.load(file)
 
@@ -120,6 +120,7 @@ def id_to_names(users_id: list):
     :return: список соответствующих фамилиям id
     """
     names = []
+    users = load(council_file)
     for user_id in users_id:
         for name, id in users.items():
             if int(id) == user_id:
@@ -136,6 +137,7 @@ def names_to_id(users_surnames: list):
     :return: список соответствующих фамилиям id
     """
     # по ключам фамилий из словаря users формируем список id
+    users = load(council_file)
     for i in range(len(users_surnames)):
         for id, name in users.items():
             if users_surnames[i] == name:
