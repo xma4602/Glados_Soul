@@ -1,19 +1,42 @@
 import asyncio
+import os
+import time
+from http.client import RemoteDisconnected
+
 import vk_api
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 from vk_api.exceptions import ApiError
 from requests.exceptions import ReadTimeout
+from requests.exceptions import ConnectionError
 
 from System import command_manager, configurator
 import System.modules.logger as log
 
+global vk, keys, longpoll, api
+
 
 def start():
-    global longpoll, api
+    print(f'Запуск модуля {os.path.basename(__file__)}')
+    global vk, keys, api
     keys = configurator.get_vk_group_data()
     vk = vk_api.VkApi(token=keys['api_token'])
-    longpoll = VkBotLongPoll(vk, keys['group_id'])
     api = vk.get_api()
+    connect()
+
+
+def connect():
+    global longpoll
+    connection_try_counter = 0
+    not_connected = True
+    while not_connected:
+        try:
+            longpoll = VkBotLongPoll(vk, keys['group_id'])
+            not_connected = False
+            log.vk_connect()
+        except ConnectionError as err:
+            connection_try_counter += 1
+            log.vk_connect_error(connection_try_counter, err)
+            time.sleep(10)
 
 
 async def handle(event):
@@ -30,8 +53,9 @@ async def listener(loop):
         try:
             for event in longpoll.listen():
                 await asyncio.wait([loop.create_task(handle(event))])
-        except ReadTimeout:
-            start()
+        except IOError as err:
+            log.vk_listener_error(err)
+            connect()
 
 
 def send(message: str, ids: list):

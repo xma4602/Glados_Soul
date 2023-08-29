@@ -1,4 +1,5 @@
 import logging
+import os
 from logging import INFO, WARNING
 import json
 import sys
@@ -13,6 +14,7 @@ global notice  # объект логирования уведомлений
 
 
 def start():
+    print(f'Запуск модуля {os.path.basename(__file__)}')
     global message, data, notice
 
     if configurator.log_out() == 'console':
@@ -158,6 +160,37 @@ def mess_input_warning(text: str, _id: str):
     """
     global message
     text = message_to_text('input', _id, text, 'fail')
+    message.logger.warning(text)
+
+
+def vk_connect_error(attempt_number: int, error):
+    """
+    Функция для записи лога попытки подключения уровня WARNING
+    :param attempt_number: номер попытки подключения
+    :param error: подробности ошибки подключения
+    """
+    global message
+    text = f'Ошибка подключения к VK №{attempt_number}: {error}'
+    message.logger.warning(text)
+
+
+def vk_connect():
+    """
+    Функция для записи лога попытки подключения уровня WARNING
+    """
+    global message
+    text = f'Подключение к VK: выполнено'
+    message.logger.info(text)
+
+
+def vk_listener_error(error):
+    """
+    Функция для записи лога попытки подключения уровня WARNING
+    :param attempt_number: номер попытки подключения
+    :param error: подробности ошибки подключения
+    """
+    global message
+    text = f'Ошибка модуля vk_bot: {error}'
     message.logger.warning(text)
 
 

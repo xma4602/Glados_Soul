@@ -1,4 +1,5 @@
 import json
+import os
 from datetime import datetime, timedelta
 from System.units.time_event import TimeEvent
 from System.units.notice import Notice
@@ -7,6 +8,7 @@ from System import configurator
 
 
 def start():
+    print(f'Запуск модуля {os.path.basename(__file__)}')
     global fired_events_file
     global events_file
     global council_file

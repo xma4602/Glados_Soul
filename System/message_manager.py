@@ -1,4 +1,5 @@
 import asyncio
+import os
 from datetime import datetime
 
 from System import data_manager, configurator
@@ -11,6 +12,7 @@ global input
 
 
 def start():
+    print(f'Запуск модуля {os.path.basename(__file__)}')
     global nearest_event
     global output
     global input
