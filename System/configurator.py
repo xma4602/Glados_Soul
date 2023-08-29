@@ -44,7 +44,11 @@ def timetable_file():
 
 
 def spreadsheet_id():
-    return config['room']['spreadsheet']
+    return config['room']['schedule']['spreadsheet']
+
+
+def schedule_enable():
+    return config['room']['schedule']['enable']
 
 
 def log_out():

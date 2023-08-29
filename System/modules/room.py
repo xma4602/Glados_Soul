@@ -6,6 +6,7 @@ from datetime import datetime
 from System import configurator
 
 opened = False
+schedule_enable = configurator.schedule_enable()
 spreadsheet_id = configurator.spreadsheet_id()
 credentials_file = configurator.credentials_file()
 times = ('08:00-09:35',
@@ -49,6 +50,20 @@ def close_room():
     opened = False
 
 
+def is_opened():
+    if datetime.now().hour < 8 or datetime.now().hour >= 21:  # с 21:00 по 8:00 лаборатория автоматически закрывается
+        close_room()
+    if opened:
+        answer = '✅ Лаборатория открыта\n\n'
+    else:
+        answer = "⛔ Лаборатория закрыта\n\n"
+
+    if schedule_enable:
+        values = load_timetable()
+        answer += parse_schedule(values)
+    return answer
+
+
 def current_week():
     today = datetime.now()
 
@@ -77,16 +92,3 @@ def parse_schedule(values: list[str]) -> str:
     for i in range(0, 8):
         schedule += f'{times[i]}: {statuses[int(stats[i])]}\n'
     return schedule
-
-
-def is_opened():
-    if datetime.now().hour < 8 or datetime.now().hour > 21:
-        close_room()
-
-    values = load_timetable()
-    if opened:
-        answer = '✅ Лаборатория открыта\n\n'
-    else:
-        answer = "⛔ Лаборатория закрыта\n\n"
-    answer += parse_schedule(values)
-    return answer

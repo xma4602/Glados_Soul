@@ -14,5 +14,6 @@ data:
   fired: files/fired_event.json
 room:
   keys: files/google_token.json
-  timetable: files/timetable.json
-  spreadsheet: 1UHRZeVOl2uzEZEVQs-dpBya6FmrvyXxZwM8D1cEzg68
+  schedule:
+    enable: false
+    spreadsheet: 1UHRZeVOl2uzEZEVQs-dpBya6FmrvyXxZwM8D1cEzg68
