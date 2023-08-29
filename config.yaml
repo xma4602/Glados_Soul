@@ -3,7 +3,7 @@ system:
   in: vk
 logging:
   out: console
-  file: files/log/log.log
+  file: files/log.log
 vk:
   keys: files/vk_bot_keys.json
 data:
@@ -13,5 +13,5 @@ data:
 room:
   keys: files/google_token.json
   schedule:
-    enable: false
+    enable: true
     spreadsheet: 1UHRZeVOl2uzEZEVQs-dpBya6FmrvyXxZwM8D1cEzg68

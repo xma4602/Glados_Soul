@@ -1,31 +1,33 @@
 import json
-import os
 from datetime import datetime, timedelta
 from System.units.time_event import TimeEvent
 from System.units.notice import Notice
 
-from System import configurator
-
+from System import config_manager
+from System.modules import logger
 
 def start():
-    print(f'Запуск модуля {os.path.basename(__file__)}')
+    logger.info('Запуск модуля data_manager')
     global fired_events_file
     global events_file
     global council_file
 
-    fired_events_file = configurator.fired_events_file()
-    events_file = configurator.events_file()
-    council_file = configurator.council_file()
+    fired_events_file = config_manager.fired_events_file()
+    events_file = config_manager.events_file()
+    council_file = config_manager.council_file()
 
 
 def save(file_name, *args):
+    logger.info('Сохранены данные', data=args)
     with open(file_name, 'w') as file:
         json.dump(args, file, indent=4, ensure_ascii=False)
 
 
 def load(file_name: str):
     with open(file_name, 'r') as file:
-        return json.load(file)
+        data = json.load(file)
+        logger.info('Загружены данные', data=data)
+        return data
 
 
 def is_council(id: str):
@@ -57,13 +59,13 @@ def get_nearest_event(old_event=None):
     Возвращает ближайшее событие
     :params old_event: исполнившееся событие
     """
-    events = load(configurator.events_file())  # считывает список событий из файла
+    events = load(config_manager.events_file())  # считывает список событий из файла
     if len(events) == 0:  # если событий нет, то возвращает None
         return None
     else:
         if old_event is not None:  # если передано старое событие, то удаляет его из списка
             events.pop(0)
-            save(configurator.events_file(), events)  # записывает измененный список обратно в файл
+            save(config_manager.events_file(), events)  # записывает измененный список обратно в файл
         if len(events) == 0:
             return None
         nearest_event = events[0]  # получаем ближайшее событие
@@ -77,7 +79,7 @@ def check_fired_events():
     Используется единожды при запуске, возвращает ближайшее не просроченное событие
     """
 
-    events = load(configurator.events_file())  # считываем список событий
+    events = load(config_manager.events_file())  # считываем список событий
 
     fired_events = []  # список просроченных событий
     event = events[0]  # получаем ближайшее событие
@@ -91,12 +93,12 @@ def check_fired_events():
         event = events[0]
         delta = datetime.now() - TimeEvent.get_datetime(event)
 
-    save(configurator.events_file(), events)  # записываем в файл список запланированных событий без просрочек
+    save(config_manager.events_file(), events)  # записываем в файл список запланированных событий без просрочек
 
     if len(fired_events) != 0:
-        load_fired_events = load(configurator.events_file())  # загружаем список просрочек из файла
+        load_fired_events = load(config_manager.events_file())  # загружаем список просрочек из файла
         load_fired_events += fired_events  # добавляем в список новые просрочки
-        save(configurator.events_file(), load_fired_events)  # загружаем все обратно в файл
+        save(config_manager.events_file(), load_fired_events)  # загружаем все обратно в файл
 
 
 def get_fired_events():

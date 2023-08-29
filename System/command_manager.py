@@ -1,10 +1,9 @@
 import re
-import os
 from datetime import datetime
 
 from System import data_manager, message_manager
 
-from System.modules import room
+from System.modules import room, logger
 from System.units.notice import Notice
 from System.units.task import Task
 
@@ -12,7 +11,7 @@ global commands
 
 
 def start():
-    print(f'Запуск модуля {os.path.basename(__file__)}')
+    logger.info('Запуск модуля command_manager')
     global commands
     commands = {
         'task': 'задач',

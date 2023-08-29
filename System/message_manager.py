@@ -1,8 +1,7 @@
 import asyncio
-import os
 from datetime import datetime
 
-from System import data_manager, configurator
+from System import data_manager, config_manager
 from System.modules import vk_bot, console
 from System.units.notice import Notice
 
@@ -12,18 +11,18 @@ global input
 
 
 def start():
-    print(f'Запуск модуля {os.path.basename(__file__)}')
+    print(f'Запуск модуля message_manager')
     global nearest_event
     global output
     global input
 
-    input = configurator.message_in()
+    input = config_manager.message_in()
     if input == 'vk':
         input = vk_bot
     else:
         input = console
 
-    output = configurator.message_in()
+    output = config_manager.message_in()
     if output == 'vk':
         output = vk_bot
     else:

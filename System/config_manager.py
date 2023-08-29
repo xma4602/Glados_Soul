@@ -2,12 +2,9 @@ import json
 import yaml
 
 global config
+print('Запуск модуля config_manager')
 with open('config.yaml', 'r') as file:
     config = yaml.load(file, Loader=yaml.FullLoader)
-
-
-# with open('config.json', 'r') as file:
-#    config = json.load(file)
 
 
 def message_in():
@@ -57,4 +54,3 @@ def log_out():
 
 def log_file():
     return config['logging']['file']
-
