@@ -55,13 +55,6 @@ def log_out():
     return config['logging']['out']
 
 
-def log_message_file():
-    return config['logging']['message_file']
+def log_file():
+    return config['logging']['file']
 
-
-def log_data_file():
-    return config['logging']['data_file']
-
-
-def log_notice_file():
-    return config['logging']['notice_file']

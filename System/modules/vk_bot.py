@@ -8,7 +8,7 @@ from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 from vk_api.exceptions import ApiError
 
-import System.modules.logger as log
+import System.modules.logger as logger
 from System import command_manager, configurator, data_manager
 
 global vk, keys, longpoll, api, keyboard_user, keyboard_council
