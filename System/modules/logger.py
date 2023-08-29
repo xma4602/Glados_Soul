@@ -49,7 +49,9 @@ class Logger:
         self.logger.setLevel(level)  # задание минимального уровня логирования
 
     def format_text(self, msg: str, **data) -> str:
-        return f"msg: {msg}; data: {json.dumps(data)}"
+        if len(data) == 0:
+            return msg
+        return f" {msg} data: {json.dumps(data)}"
 
     def set_formatters(self, format_: str) -> None:
         """
