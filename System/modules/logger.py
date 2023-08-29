@@ -3,6 +3,7 @@ from logging import INFO, WARNING
 import json
 import sys
 from typing import Union
+from System.units import notice as nt
 
 _std_format = '%(asctime)s - %(levelname)s - %(message)s'
 global message  # объект логирования сообщений
