@@ -1,36 +1,43 @@
-import json
 import httplib2
 from apiclient import discovery
 from oauth2client.service_account import ServiceAccountCredentials
-import gspread
 from datetime import datetime
-from json import JSONDecodeError
+
+from System import configurator
 
 opened = False
-test_sheet_link = 'https://docs.google.com/spreadsheets/d/1SI-jXi1w74PJbuObw59MhZX6LgTyoTm_MFTbQ3bU8Us/edit#gid=0'  # ссылка на таблицу с расписанием
-CREDENTIALS_FILE = 'files/google_token.json'
-spreadsheet_id = '1SI-jXi1w74PJbuObw59MhZX6LgTyoTm_MFTbQ3bU8Us'
-timetable_file = 'files/timetable.json'  # путь к файлу, где будет храниться спарсенная таблица
+schedule_enable = configurator.schedule_enable()
+spreadsheet_id = configurator.spreadsheet_id()
+credentials_file = configurator.credentials_file()
+times = ('08:00-09:35',
+         '09:45-11:20',
+         '11:30-13:05',
+         '13:30-15:05',
+         '15:15-16:50',
+         '17:00-18:35',
+         '18:45-20:15',
+         '20:20-21:55')
+statuses = ('⛔ закрыто',
+            '⚠ возможно открыто',
+            '✅ открыто')
 
 
-def load_timetable():
+def load_timetable() -> list[str]:
     """
     Загружает данные таблицы в файл
     """
     credentials = ServiceAccountCredentials.from_json_keyfile_name(
-        CREDENTIALS_FILE,
+        credentials_file,
         ['https://www.googleapis.com/auth/spreadsheets']
     )
-    httpAuth = credentials.authorize(httplib2.Http())
-    service = discovery.build('sheets', 'v4', http=httpAuth)
+    http_auth = credentials.authorize(httplib2.Http())
+    service = discovery.build('sheets', 'v4', http=http_auth)
     values = service.spreadsheets().values().get(
         spreadsheetId=spreadsheet_id,
-        range='B1:B8',
+        range='P2:P116',
         majorDimension='COLUMNS'
     ).execute()
-    values = values['values'][0][1:]
-    with open(timetable_file, 'w') as file:
-        json.dump(values, file, indent=4)
+    return values['values'][0]
 
 
 def open_room():
@@ -44,21 +51,44 @@ def close_room():
 
 
 def is_opened():
+    if datetime.now().hour < 8 or datetime.now().hour >= 21:  # с 21:00 по 8:00 лаборатория автоматически закрывается
+        close_room()
     if opened:
-        return 'Лаборатория открыта'
+        answer = '✅ Лаборатория открыта\n\n'
     else:
-        # return 'Лаборатория закрыта'
-        day = datetime.now().isoweekday()
-        timetable = {}
-        try:
-            with open(timetable_file, 'r') as file:
-                timetable = json.load(file)
-            return f"Лаба откроется по расписанию в {timetable[day - 1]}"
-        except FileNotFoundError:
-            # лог на ошибку отсутствия файла
-            return "Лаборатория закрыта"
-        except JSONDecodeError:
-            # лог на ошибку декодирования json
-            return "Лаборатория закрыта"
+        answer = "⛔ Лаборатория закрыта\n\n"
 
-# load_timetable()
+    if schedule_enable:
+        values = load_timetable()
+        answer += parse_schedule(values)
+    return answer
+
+
+def current_week():
+    today = datetime.now()
+
+    if today.month >= 9:
+        first_semester = datetime(year=today.year, month=9, day=1)
+        return datetime.now().isocalendar().week - first_semester.isocalendar().week
+    elif today.month < 2:
+        first_semester = datetime(year=today.year - 1, month=9, day=1)
+        return 52 - datetime.now().isocalendar().week + first_semester.isocalendar().week
+    else:
+        second_semester = datetime(year=today.year, month=9, day=1)
+        return datetime.now().isocalendar().week - second_semester.isocalendar().week
+
+
+def parse_schedule(values: list[str]) -> str:
+    """Возвращает расписание лабы на сегодняшний день"""
+    week = 1 - current_week() % 2
+    day = datetime.now().weekday()
+    schedule = "Расписание на сегодня\n"
+    if datetime.now().hour > 21:
+        day += 1
+        schedule = "Расписание на завтра\n"
+
+    num = (week * 7 + day) * 8
+    stats = values[num:(num + 8)]
+    for i in range(0, 8):
+        schedule += f'{times[i]}: {statuses[int(stats[i])]}\n'
+    return schedule

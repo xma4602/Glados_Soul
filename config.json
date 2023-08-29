@@ -1,16 +1,25 @@
 {
-  "message_out": "vk",
-  "message_in": "vk",
-  "logger_output": "console",
-
-  "message_info": "files/log/message_info.log",
-  "message_warning": "files/log/message_warning.log",
-  "notice_info": "files/log/notice_info.log",
-  "data_info": "files/log/data.log",
-
-  "council": "files/council.json",
-  "vk_keys": "files/vk_bot_keys.json",
-  "events": "files/notice.json",
-  "fired": "files/fired_event.json",
-  "google_keys": "files/google_token.json"
+  "system": {
+    "out": "vk",
+    "in": "vk"
+  },
+  "logging": {
+    "out": "console",
+    "message_file": "files/log/message.log",
+    "data_file": "files/log/data.log",
+    "notice_file": "files/log/notice.log"
+  },
+  "vk": {
+    "keys": "files/vk_bot_keys.json"
+  },
+  "data": {
+    "council": "files/council.json",
+    "events": "files/notice.json",
+    "fired": "files/fired_event.json"
+  },
+  "room": {
+    "keys": "files/google_token.json",
+    "timetable": "files/timetable.json",
+    "spreadsheet": "1UHRZeVOl2uzEZEVQs-dpBya6FmrvyXxZwM8D1cEzg68"
+  }
 }

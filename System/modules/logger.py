@@ -1,14 +1,31 @@
 import logging
+import os
 from logging import INFO, WARNING
 import json
 import sys
 from typing import Union
 from System.units import notice as nt
 
+from System import configurator
+
 _std_format = '%(asctime)s - %(levelname)s - %(message)s'
 global message  # объект логирования сообщений
 global data  # объект логирования записи данных
 global notice  # объект логирования уведомлений
+
+
+def start():
+    print(f'Запуск модуля {os.path.basename(__file__)}')
+    global message, data, notice
+
+    if configurator.log_out() == 'console':
+        message = create_logger('message')
+        data = create_logger('data')
+        notice = create_logger('notice')
+    else:
+        message = create_logger('message', configurator.log_message_file())
+        data = create_logger('data', configurator.log_data_file())
+        notice = create_logger('notice', configurator.log_notice_file())
 
 
 class Logger:
@@ -86,7 +103,7 @@ def init_message(log_out: str, file_info: str, file_warning: str) -> Logger:
     return msg
 
 
-def init_log_info(name: str, log_out: str, file: str) -> Logger:
+def create_logger(name: str, log_out: str = 'console', file: str = None) -> Logger:
     """
     Возвращает объект Logger с одним хэндлером уровня INFO
     :param name: имя логгера
@@ -147,6 +164,37 @@ def mess_input_warning(text: str, _id: str):
     message.logger.warning(text)
 
 
+def vk_connect_error(attempt_number: int, error):
+    """
+    Функция для записи лога попытки подключения уровня WARNING
+    :param attempt_number: номер попытки подключения
+    :param error: подробности ошибки подключения
+    """
+    global message
+    text = f'Ошибка подключения к VK №{attempt_number}: {error}'
+    message.logger.warning(text)
+
+
+def vk_connect():
+    """
+    Функция для записи лога попытки подключения уровня WARNING
+    """
+    global message
+    text = f'Подключение к VK: выполнено'
+    message.logger.info(text)
+
+
+def vk_listener_error(error):
+    """
+    Функция для записи лога попытки подключения уровня WARNING
+    :param attempt_number: номер попытки подключения
+    :param error: подробности ошибки подключения
+    """
+    global message
+    text = f'Ошибка модуля vk_bot: {error}'
+    message.logger.warning(text)
+
+
 def data_log_read(file: str, _data: Union[dict, list]) -> None:
     global data
     pass
@@ -176,19 +224,3 @@ def notice_create(obj) -> None:
 
 def notice_send() -> None:
     pass
-
-
-def start():
-    global message, data, notice
-
-    with open('config.json', 'r') as config_file:
-        configs = json.load(config_file)
-        log_out = configs['logger_output']
-        message_file_info = configs['message_info']
-        message_file_warning = configs['message_warning']
-        data_file = configs['data_info']
-        notice_file = configs['notice_info']
-
-    message = init_message(log_out, message_file_info, message_file_warning)
-    data = init_log_info('data', log_out, data_file)
-    notice = init_log_info('notice', log_out, notice_file)

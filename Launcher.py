@@ -29,10 +29,11 @@ def listener():
 
 
 if __name__ == '__main__':
+    logger.start()
     data_manager.start()
     message_manager.start()
     command_manager.start()
-    logger.start()
+    print()
 
     listen = Thread(target=listener)
     listen.start()
@@ -40,7 +41,7 @@ if __name__ == '__main__':
 
     send = Thread(target=sender)
     send.start()
-    print(f"Поток отправки сообщений: запущен")
+    print(f"Поток отправки сообщений:      запущен")
     print()
 
     for thread in [listen, send]:

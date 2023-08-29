@@ -1,4 +1,5 @@
 import re
+import os
 from datetime import datetime
 
 from System import data_manager, message_manager
@@ -11,12 +12,13 @@ global commands
 
 
 def start():
+    print(f'Запуск модуля {os.path.basename(__file__)}')
     global commands
     commands = {
         'task': 'задач',
         'hello': 'прив|здрав',
-        'open': 'открыл',
-        'close': 'закрыл',
+        'open': 'открыть',
+        'close': 'закрыть',
         'is_open': '(.*открыт.*лаб.*)|(.*лаб.*открыт.*)|(.*закрыт.*лаб.*)|(.*лаб.*закрыт.*)|(.*лаб.*ест.*)|(.*ест.*лаб.*)'
     }
 
