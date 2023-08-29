@@ -1,24 +1,11 @@
 import logging
-import os
 from logging import INFO, WARNING, ERROR
 import json
 import sys
-from typing import Union
-from System.units import notice as nt
 
-from System import configurator
+from System import config_manager
 
 _std_format = '%(asctime)s - %(levelname)s - %(message)s'
-global log
-
-
-def start() -> None:
-    print(f'Запуск модуля {os.path.basename(__file__)}')
-    global log
-    if configurator.log_out() == 'console':
-        log = create_logger('message')
-    else:
-        log = create_logger('message', configurator.log_file())
 
 
 def info(msg: str, **data) -> None:
@@ -95,6 +82,15 @@ def create_logger(name: str, log_out: str = 'console', file: str = None) -> Logg
         log.add_file_handler(file, ERROR)
     elif log_out == 'console':
         log.add_console_handler(INFO)
+        log.add_console_handler(WARNING)
     else:
         raise ValueError('Unexpected value for log out')
     return log
+
+
+print('Запуск модуля logger')
+global log
+if config_manager.log_out() == 'console':
+    log = create_logger('message')
+else:
+    log = create_logger('message', config_manager.log_file())

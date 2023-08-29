@@ -2,8 +2,8 @@ import asyncio
 import socket
 from threading import Thread
 
-from System import message_manager, data_manager, command_manager
 from System.modules import logger
+from System import message_manager, data_manager, command_manager
 
 
 def sender():
@@ -29,7 +29,7 @@ def listener():
 
 
 if __name__ == '__main__':
-    logger.start()
+    command_manager.start()
     data_manager.start()
     message_manager.start()
     command_manager.start()
