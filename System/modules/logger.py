@@ -6,25 +6,32 @@ import sys
 
 from System import config_manager
 
-_std_format = '%(asctime)s - %(levelname)s - %(message)s'
+_std_format = '%(asctime)s - %(levelname)s - %(message)s - %(args)s'
 
 
 def info(msg: str, **data) -> None:
     global log
-    text = log.format_text(msg, **data)
-    log.logger.info(text)
+    # text = log.format_text(msg, **data)
+    if len(data)==0:
+        log.logger.info(msg)
+    else:
+        log.logger.info(msg, data)
 
 
 def warning(msg: str, **data) -> None:
     global log
-    text = log.format_text(msg, **data)
-    log.logger.warning(text)
+    if len(data) == 0:
+        log.logger.warning(msg)
+    else:
+        log.logger.warning(msg, data)
 
 
 def error(msg: str, **data) -> None:
     global log
-    text = log.format_text(msg, **data)
-    log.logger.error(text)
+    if len(data) == 0:
+        log.logger.error(msg)
+    else:
+        log.logger.error(msg, data)
 
 
 class Logger:
@@ -36,10 +43,6 @@ class Logger:
         self.logger = logging.getLogger(log_name)  # создание логгера
         self.logger.setLevel(level)  # задание минимального уровня логирования
 
-    def format_text(self, msg: str, **data) -> str:
-        if len(data) == 0:
-            return msg
-        return f"{msg} - {json.dumps(data, ensure_ascii=False)}"
 
     def set_formatters(self, format_: str) -> None:
         """
@@ -86,7 +89,6 @@ def create_logger(name: str, log_out: str = 'console', file: str = None) -> Logg
     else:
         raise ValueError('Unexpected value for log out')
     return log
-
 
 
 print('Запуск модуля logger')
