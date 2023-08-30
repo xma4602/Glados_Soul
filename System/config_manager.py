@@ -54,3 +54,7 @@ def log_out():
 
 def log_file():
     return config['logging']['file']
+
+
+def log_level():
+    return config['logging']['level']

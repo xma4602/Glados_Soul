@@ -3,6 +3,7 @@ system:
   in: vk
 logging:
   out: console
+  level: INFO
   file: files/log.log
 vk:
   keys: files/vk_bot_keys.json
