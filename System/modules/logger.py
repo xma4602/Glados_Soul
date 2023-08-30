@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import logging
 from logging import INFO, WARNING, ERROR
 import json
@@ -77,17 +78,15 @@ def create_logger(name: str, log_out: str = 'console', file: str = None) -> Logg
     :param file: путь к файлу логирования
     """
     log = Logger(name, INFO)
-    log.add_console_handler(ERROR)
     if log_out == 'file':
         log.add_file_handler(file, INFO)
-        log.add_file_handler(file, WARNING)
-        log.add_file_handler(file, ERROR)
+        log.add_console_handler(ERROR)
     elif log_out == 'console':
         log.add_console_handler(INFO)
-        log.add_console_handler(WARNING)
     else:
         raise ValueError('Unexpected value for log out')
     return log
+
 
 
 print('Запуск модуля logger')
