@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import json
 import logging
 from logging import INFO, ERROR
 import sys
@@ -60,7 +59,6 @@ def info(massage: str, **data) -> None:
     if len(data) == 0:
         log.logger.info(massage)
     else:
-        data = json.dumps(data, ensure_ascii=False)
         log.logger.info(massage, data)
 
 
@@ -69,7 +67,6 @@ def warning(massage: str, **data) -> None:
     if len(data) == 0:
         log.logger.info(massage)
     else:
-        data = json.dumps(data, ensure_ascii=False)
         log.logger.warning(massage, data)
 
 
@@ -78,5 +75,4 @@ def error(massage: str, **data) -> None:
     if len(data) == 0:
         log.logger.info(massage)
     else:
-        data = json.dumps(data, ensure_ascii=False)
         log.logger.error(massage, data)
