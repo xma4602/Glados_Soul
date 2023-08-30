@@ -6,7 +6,7 @@ from datetime import datetime
 from System import config_manager
 from System.modules import logger
 
-logger.info(f'Запуск модуля room')
+logger.info('Запуск модуля room')
 opened = False
 schedule_enable = config_manager.schedule_enable()
 spreadsheet_id = config_manager.spreadsheet_id()
@@ -45,23 +45,33 @@ def load_timetable() -> list[str]:
 
 def open_room():
     global opened
-    opened = True
-    logger.info('Лаборатория переведена в состояние ОТКРЫТО')
+    if opened:
+        logger.warning('Повторная попытка перевести лабораторию в состояние ОТКРЫТО')
+        return 'Лаборатория уже в состоянии ОТКРЫТО ✅'
+    else:
+        opened = True
+        logger.info('Лаборатория переведена в состояние ОТКРЫТО')
+        return 'Лаборатория переведена в состояние ОТКРЫТО ✅'
 
 
 def close_room():
     global opened
-    opened = False
-    logger.info('Лаборатория переведена в состояние ЗАКРЫТО')
+    if opened:
+        opened = False
+        logger.info('Лаборатория переведена в состояние ЗАКРЫТО')
+        return 'Лаборатория переведена в состояние ЗАКРЫТО ⛔'
+    else:
+        logger.warning('Повторная попытка перевести лабораторию в состояние ЗАКРЫТО')
+        return 'Лаборатория уже в состоянии ЗАКРЫТО ⛔'
 
 
 def is_opened():
     if datetime.now().hour < 8 or datetime.now().hour >= 21:  # с 21:00 по 8:00 лаборатория автоматически закрывается
         close_room()
     if opened:
-        answer = '✅ Лаборатория открыта\n\n'
+        answer = '✅ Лаборатория открыта'
     else:
-        answer = "⛔ Лаборатория закрыта\n\n"
+        answer = "⛔ Лаборатория закрыта"
 
     if schedule_enable:
         values = load_timetable()
@@ -87,10 +97,10 @@ def parse_schedule(values: list[str]) -> str:
     """Возвращает расписание лабы на сегодняшний день"""
     week = 1 - current_week() % 2
     day = datetime.now().weekday()
-    schedule = "Расписание на сегодня\n"
+    schedule = "\n\nРасписание на сегодня\n"
     if datetime.now().hour > 21:
         day += 1
-        schedule = "Расписание на завтра\n"
+        schedule = "\n\nРасписание на завтра\n"
 
     num = (week * 7 + day) * 8
     stats = values[num:(num + 8)]

@@ -38,7 +38,7 @@ class Logger:
     def format_text(self, msg: str, **data) -> str:
         if len(data) == 0:
             return msg
-        return f" {msg} data: {json.dumps(data, ensure_ascii=False)}"
+        return f"{msg} - {json.dumps(data, ensure_ascii=False)}"
 
     def set_formatters(self, format_: str) -> None:
         """

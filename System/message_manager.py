@@ -2,7 +2,7 @@ import asyncio
 from datetime import datetime
 
 from System import data_manager, config_manager
-from System.modules import vk_bot, console
+from System.modules import vk_bot, console, logger
 from System.units.notice import Notice
 
 global nearest_event
@@ -11,7 +11,7 @@ global input
 
 
 def start():
-    print(f'Запуск модуля message_manager')
+    logger.info('Запуск модуля message_manager')
     global nearest_event
     global output
     global input

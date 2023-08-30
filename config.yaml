@@ -13,5 +13,5 @@ data:
 room:
   keys: files/google_token.json
   schedule:
-    enable: true
+    enable: false
     spreadsheet: 1UHRZeVOl2uzEZEVQs-dpBya6FmrvyXxZwM8D1cEzg68

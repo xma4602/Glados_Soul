@@ -18,7 +18,7 @@ def start():
 
 
 def save(file_name, *args):
-    logger.info('Сохранены данные', data=args)
+    #logger.info('Сохранены данные', data=args)
     with open(file_name, 'w') as file:
         json.dump(args, file, indent=4, ensure_ascii=False)
 
@@ -26,7 +26,7 @@ def save(file_name, *args):
 def load(file_name: str):
     with open(file_name, 'r') as file:
         data = json.load(file)
-        logger.info('Загружены данные', data=data)
+        #logger.info('Загружены данные', data=data)
         return data
 
 

@@ -138,14 +138,15 @@ def is_opened(sender_id: str):
 
 def open_room(sender_id: str):
     if data_manager.is_council(sender_id):
-        room.open_room()
+        message = room.open_room()
         message = Notice(
-            'Лаборатория переведена в состояние ОТКРЫТО',
+            message,
             [sender_id],
             datetime.now(),
             []
         )
     else:
+        logger.warning('Попытка получить доступ к команде совета клуба', id=sender_id)
         message = Notice(
             'У вас нет доступа к этой команде',
             [sender_id],
@@ -158,14 +159,15 @@ def open_room(sender_id: str):
 
 def close_room(sender_id):
     if data_manager.is_council(sender_id):
-        room.close_room()
+        message = room.close_room()
         message = Notice(
-            'Лаборатория переведена в состояние ЗАКРЫТО',
+            message,
             [sender_id],
             datetime.now(),
             []
         )
     else:
+        logger.warning('Попытка получить доступ к команде совета клуба', id=sender_id)
         message = Notice(
             'У вас нет доступа к этой команде',
             [sender_id],
