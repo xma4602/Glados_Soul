@@ -67,7 +67,7 @@ def info(massage: str, **data) -> None:
 def warning(massage: str, **data) -> None:
     global log
     if len(data) == 0:
-        log.logger.info(massage)
+        log.logger.warning(massage)
     else:
         data = json.dumps(data, ensure_ascii=False)
         log.logger.warning(massage, data)
@@ -76,7 +76,7 @@ def warning(massage: str, **data) -> None:
 def error(massage: str, **data) -> None:
     global log
     if len(data) == 0:
-        log.logger.info(massage)
+        log.logger.error(massage)
     else:
         data = json.dumps(data, ensure_ascii=False)
         log.logger.error(massage, data)
