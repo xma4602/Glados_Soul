@@ -2,7 +2,7 @@ import asyncio
 import time
 
 import vk_api
-from requests.exceptions import ConnectionError
+from requests.exceptions import ConnectionError, ReadTimeout
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 from vk_api.exceptions import ApiError
@@ -33,7 +33,7 @@ def connect():
             longpoll = VkBotLongPoll(vk, keys['group_id'])
             not_connected = False
             logger.info(f'Соединение с VK №{counter}: установлено')
-        except ConnectionError as err:
+        except ConnectionError or ReadTimeout as err:
             counter += 1
             logger.error(f'Соединение с VK №{counter}: провалено', error=err)
             time.sleep(10)
