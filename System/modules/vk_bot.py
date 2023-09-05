@@ -7,14 +7,14 @@ from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 from vk_api.exceptions import ApiError
 
-from System.modules import logger
+import logging
 from System import command_manager, config_manager, data_manager
 
 global vk, keys, longpoll, api, keyboard_user, keyboard_council
 
 
 def start():
-    logger.info('Запуск модуля vk_bot')
+    logging.info('Запуск модуля vk_bot')
     global vk, keys, api, keyboard_user, keyboard_council
     keys = config_manager.get_vk_group_data()
     vk = vk_api.VkApi(token=keys['api_token'])
@@ -32,10 +32,10 @@ def connect():
         try:
             longpoll = VkBotLongPoll(vk, keys['group_id'])
             not_connected = False
-            logger.info(f'Соединение с VK №{counter}: установлено')
+            logging.info(f'Соединение с VK №{counter}: установлено')
         except ConnectionError or ReadTimeout as err:
             counter += 1
-            logger.error(f'Соединение с VK №{counter}: провалено', error=err)
+            logging.error(f'Соединение с VK №{counter}: провалено', {'error': err})
             time.sleep(10)
 
 
@@ -43,7 +43,7 @@ async def handle(event):
     if event.type == VkBotEventType.MESSAGE_NEW:
         message = event.object.get('message').get('text')
         sender_id = str(event.object.get('message').get('from_id'))
-        logger.info('Получено сообщение VK', message=message, sender_id=sender_id)
+        logging.info('Получено сообщение VK', {'message': message, 'sender_id': sender_id})
         if event.from_user:
             command_manager.parse(message, sender_id)
 
@@ -54,7 +54,7 @@ async def listener(loop):
             for event in longpoll.listen():
                 await asyncio.wait([loop.create_task(handle(event))])
         except IOError as err:
-            logger.error(f'Соединение с VK: провалено', error=err)
+            logging.error(f'Соединение с VK: провалено', {'error': err})
             connect()
 
 
@@ -71,9 +71,10 @@ def send(message: str, ids: list):
                 random_id=0,
                 keyboard=board.get_keyboard()
             )
-            logger.info('Отправлено сообщение VK', message=message.replace('\n', ' '), peer_id=id)
+            logging.info('Отправлено сообщение VK', {'message': message.replace('\n', ' '), 'peer_id' :id})
         except ApiError as err:
-            logger.error('Не удалось отправить сообщение VK', message=message.replace('\n', ' '), id=id, error=err)
+            logging.error('Не удалось отправить сообщение VK',
+                          {'message': message.replace('\n', ' '), 'id': id, 'error': err})
 
 
 def create_keyboard_user():

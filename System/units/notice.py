@@ -1,6 +1,5 @@
 from System.units.time_event import TimeEvent
 from datetime import datetime
-from System.modules.logger import Logger
 
 
 class Notice(TimeEvent):

@@ -1,9 +1,9 @@
 import asyncio
+import logging
 import socket
 from threading import Thread
-
-from System.modules import logger
 from System import message_manager, data_manager, command_manager
+from System.modules import room, logger
 
 
 def sender():
@@ -29,15 +29,16 @@ def listener():
 
 
 if __name__ == '__main__':
-    command_manager.start()
+    logger.start()
+    room.start()
+    logging.info('запуск лаунчера')
     data_manager.start()
     message_manager.start()
     command_manager.start()
-    print()
 
     listen = Thread(target=listener)
     listen.start()
-    print(f"Поток прослушивания сообщений: запущен")
+    print(f"\nПоток прослушивания сообщений: запущен")
 
     send = Thread(target=sender)
     send.start()

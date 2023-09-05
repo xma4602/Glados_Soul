@@ -1,12 +1,11 @@
 import System.modules.logger as l
-import System.modules.vk_bot as vk
-import System.data_manager as dm
-dm.start()
-l.start()
-vk.start()
+import logging
+#l.start()
 
-
-l.mess_output_warning('hello', 3)
-l.mess_input_warning('hi', 986898797)
-l.mess_output_info('info', 8)
+logging.info('Все работает', {'firts arg': 3, 'type': 'test'})
+try:
+    a = 1/0
+except Exception:
+    logging.error('Ошибка', stack_info=True)
+#logging.basicConfig(force=True, filename=r'System\files\log\')
 

@@ -1,9 +1,9 @@
 import re
 from datetime import datetime
-
+import logging
 from System import data_manager, message_manager
 
-from System.modules import room, logger
+from System.modules import room
 from System.units.notice import Notice
 from System.units.task import Task
 
@@ -11,7 +11,7 @@ global commands
 
 
 def start():
-    logger.info('Запуск модуля command_manager')
+    logging.info('Запуск модуля command_manager')
     global commands
     commands = {
         'task': 'задач',
@@ -146,7 +146,7 @@ def open_room(sender_id: str):
             []
         )
     else:
-        logger.warning('Попытка получить доступ к команде совета клуба', id=sender_id)
+        logging.warning('Попытка получить доступ к команде совета клуба', {'id': sender_id})
         message = Notice(
             'У вас нет доступа к этой команде',
             [sender_id],
@@ -167,7 +167,7 @@ def close_room(sender_id):
             []
         )
     else:
-        logger.warning('Попытка получить доступ к команде совета клуба', id=sender_id)
+        logging.warning('Попытка получить доступ к команде совета клуба', {'id': sender_id})
         message = Notice(
             'У вас нет доступа к этой команде',
             [sender_id],

@@ -2,33 +2,40 @@ import httplib2
 from apiclient import discovery
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
-
 from System import config_manager
-from System.modules import logger
+import logging
 
-logger.info('Запуск модуля room')
-opened = False
-schedule_enable = config_manager.schedule_enable()
-spreadsheet_id = config_manager.spreadsheet_id()
-credentials_file = config_manager.credentials_file()
-times = ('08:00-09:35',
-         '09:45-11:20',
-         '11:30-13:05',
-         '13:30-15:05',
-         '15:15-16:50',
-         '17:00-18:35',
-         '18:45-20:15',
-         '20:20-21:55')
-statuses = ('⛔ закрыто',
-            '⚠ возможно открыто',
-            '✅ открыто')
+
+def start():
+    global schedule_enable, \
+        credentials_file, \
+        spreadsheet_id, \
+        times, \
+        statuses, \
+        opened
+    logging.info('Запуск модуля room')
+    opened = False
+    schedule_enable = config_manager.schedule_enable()
+    spreadsheet_id = config_manager.spreadsheet_id()
+    credentials_file = config_manager.credentials_file()
+    times = ('08:00-09:35',
+             '09:45-11:20',
+             '11:30-13:05',
+             '13:30-15:05',
+             '15:15-16:50',
+             '17:00-18:35',
+             '18:45-20:15',
+             '20:20-21:55')
+    statuses = ('⛔ закрыто',
+                '⚠ возможно открыто',
+                '✅ открыто')
 
 
 def load_timetable() -> list[str]:
     """
     Загружает данные таблицы в файл
     """
-    logger.info('Запрос данных расписания')
+    logging.info('Запрос данных расписания')
     credentials = ServiceAccountCredentials.from_json_keyfile_name(
         credentials_file,
         ['https://www.googleapis.com/auth/spreadsheets']
@@ -46,11 +53,11 @@ def load_timetable() -> list[str]:
 def open_room():
     global opened
     if opened:
-        logger.warning('Повторная попытка перевести лабораторию в состояние ОТКРЫТО')
+        logging.warning('Повторная попытка перевести лабораторию в состояние ОТКРЫТО')
         return 'Лаборатория уже в состоянии ОТКРЫТО ✅'
     else:
         opened = True
-        logger.info('Лаборатория переведена в состояние ОТКРЫТО')
+        logging.info('Лаборатория переведена в состояние ОТКРЫТО')
         return 'Лаборатория переведена в состояние ОТКРЫТО ✅'
 
 
@@ -58,10 +65,10 @@ def close_room():
     global opened
     if opened:
         opened = False
-        logger.info('Лаборатория переведена в состояние ЗАКРЫТО')
+        logging.info('Лаборатория переведена в состояние ЗАКРЫТО')
         return 'Лаборатория переведена в состояние ЗАКРЫТО ⛔'
     else:
-        logger.warning('Повторная попытка перевести лабораторию в состояние ЗАКРЫТО')
+        logging.warning('Повторная попытка перевести лабораторию в состояние ЗАКРЫТО')
         return 'Лаборатория уже в состоянии ЗАКРЫТО ⛔'
 
 

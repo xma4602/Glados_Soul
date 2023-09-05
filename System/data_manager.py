@@ -2,12 +2,12 @@ import json
 from datetime import datetime, timedelta
 from System.units.time_event import TimeEvent
 from System.units.notice import Notice
-
+import logging
 from System import config_manager
-from System.modules import logger
+
 
 def start():
-    logger.info('Запуск модуля data_manager')
+    logging.info('Запуск модуля data_manager')
     global fired_events_file
     global events_file
     global council_file
@@ -18,7 +18,7 @@ def start():
 
 
 def save(file_name, *args):
-    #logger.info('Сохранены данные', data=args)
+    # logger.info('Сохранены данные', data=args)
     with open(file_name, 'w') as file:
         json.dump(args, file, indent=4, ensure_ascii=False)
 
@@ -26,7 +26,7 @@ def save(file_name, *args):
 def load(file_name: str):
     with open(file_name, 'r') as file:
         data = json.load(file)
-        #logger.info('Загружены данные', data=data)
+        # logger.info('Загружены данные', data=data)
         return data
 
 
