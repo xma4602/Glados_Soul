@@ -58,3 +58,15 @@ def log_file():
 
 def log_level():
     return config['logging']['level']
+
+
+def about_club_file():
+    return config['data']['club']['about']
+
+
+def about_projects_file():
+    return config['data']['club']['projects']
+
+
+def join_club_file():
+    return config['data']['club']['join']

@@ -6,6 +6,7 @@ import logging
 from System import config_manager
 
 
+
 def start():
     logging.info('Запуск модуля data_manager')
     global fired_events_file
@@ -17,21 +18,26 @@ def start():
     council_file = config_manager.council_file()
 
 
-def save(file_name, *args):
+def save_json(file_name, *args):
     # logger.info('Сохранены данные', data=args)
     with open(file_name, 'w') as file:
         json.dump(args, file, indent=4, ensure_ascii=False)
 
 
-def load(file_name: str):
+def load_json(file_name: str):
     with open(file_name, 'r') as file:
         data = json.load(file)
         # logger.info('Загружены данные', data=data)
         return data
 
 
+def load_txt(file_name: str):
+    with open(file_name, 'r', encoding='utf-8') as file:
+        return file.readlines()
+
+
 def is_council(id: str):
-    users = load(council_file)
+    users = load_json(council_file)
     return id in users.keys()
 
 
@@ -40,7 +46,7 @@ def store_event(event):
     Сохраняет событие в файл
     :param event: объект события
     """
-    events = load(events_file)
+    events = load_json(events_file)
     if len(events) == 0:
         event = event.to_dict()
         events.append(event)
@@ -51,7 +57,7 @@ def store_event(event):
                 event = event.to_dict()
                 events.insert(index, event)
                 break
-    save(events_file, events)
+    save_json(events_file, events)
 
 
 def get_nearest_event(old_event=None):
@@ -59,13 +65,13 @@ def get_nearest_event(old_event=None):
     Возвращает ближайшее событие
     :params old_event: исполнившееся событие
     """
-    events = load(config_manager.events_file())  # считывает список событий из файла
+    events = load_json(config_manager.events_file())  # считывает список событий из файла
     if len(events) == 0:  # если событий нет, то возвращает None
         return None
     else:
         if old_event is not None:  # если передано старое событие, то удаляет его из списка
             events.pop(0)
-            save(config_manager.events_file(), events)  # записывает измененный список обратно в файл
+            save_json(config_manager.events_file(), events)  # записывает измененный список обратно в файл
         if len(events) == 0:
             return None
         nearest_event = events[0]  # получаем ближайшее событие
@@ -79,7 +85,7 @@ def check_fired_events():
     Используется единожды при запуске, возвращает ближайшее не просроченное событие
     """
 
-    events = load(config_manager.events_file())  # считываем список событий
+    events = load_json(config_manager.events_file())  # считываем список событий
 
     fired_events = []  # список просроченных событий
     event = events[0]  # получаем ближайшее событие
@@ -93,19 +99,19 @@ def check_fired_events():
         event = events[0]
         delta = datetime.now() - TimeEvent.get_datetime(event)
 
-    save(config_manager.events_file(), events)  # записываем в файл список запланированных событий без просрочек
+    save_json(config_manager.events_file(), events)  # записываем в файл список запланированных событий без просрочек
 
     if len(fired_events) != 0:
-        load_fired_events = load(config_manager.events_file())  # загружаем список просрочек из файла
+        load_fired_events = load_json(config_manager.events_file())  # загружаем список просрочек из файла
         load_fired_events += fired_events  # добавляем в список новые просрочки
-        save(config_manager.events_file(), load_fired_events)  # загружаем все обратно в файл
+        save_json(config_manager.events_file(), load_fired_events)  # загружаем все обратно в файл
 
 
 def get_fired_events():
     """
     Возвращает список просроченных событий
     """
-    fired_events = load(fired_events_file)
+    fired_events = load_json(fired_events_file)
 
     if len(fired_events) == 0:
         return None
@@ -124,7 +130,7 @@ def id_to_names(users_id: list):
     :return: список соответствующих фамилиям id
     """
     names = []
-    users = load(council_file)
+    users = load_json(council_file)
     for user_id in users_id:
         for name, id in users.items():
             if int(id) == user_id:
@@ -141,9 +147,21 @@ def names_to_id(users_surnames: list):
     :return: список соответствующих фамилиям id
     """
     # по ключам фамилий из словаря users формируем список id
-    users = load(council_file)
+    users = load_json(council_file)
     for i in range(len(users_surnames)):
         for id, name in users.items():
             if users_surnames[i] == name:
                 users_surnames[i] = id
     return users_surnames
+
+
+def about_club():
+    return load_txt(config_manager.about_club_file())
+
+
+def about_projects():
+    return load_txt(config_manager.about_projects_file())
+
+
+def join_club():
+    return load_txt(config_manager.join_club_file())

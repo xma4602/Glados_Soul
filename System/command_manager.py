@@ -18,7 +18,10 @@ def start():
         'hello': 'прив|здрав',
         'open': 'открыть',
         'close': 'закрыть',
-        'is_open': '(.*открыт.*лаб.*)|(.*лаб.*открыт.*)|(.*закрыт.*лаб.*)|(.*лаб.*закрыт.*)|(.*лаб.*ест.*)|(.*ест.*лаб.*)'
+        'is_open': '(.*открыт.*лаб.*)|(.*лаб.*открыт.*)|(.*закрыт.*лаб.*)|(.*лаб.*закрыт.*)|(.*лаб.*ест.*)|(.*ест.*лаб.*)',
+        'about_club': 'что такое robotic?',
+        'projects': 'проекты и мероприятия',
+        'join_club': 'как попасть в robotic?'
     }
 
 
@@ -41,6 +44,7 @@ def parse(text: str, sender_id: str):
     # если в заголовке тег задачи, отправляем на парсинг задачи
     if re.search(commands['task'], title) is not None:
         new_task(sender_id, text[1:])
+    # приветствие
     if re.search(commands['hello'], title) is not None:
         hello(sender_id)
     # команда открытия лабы
@@ -52,6 +56,15 @@ def parse(text: str, sender_id: str):
     # вопрос, открыта ли лаба
     elif re.search(commands['is_open'], title) is not None:
         is_opened(sender_id)
+    # общая инфа о клубе
+    elif re.search(commands['about_club'], title) is not None:
+        about_club(sender_id)
+    # инфа о проектах клуба
+    elif re.search(commands['projects'], title) is not None:
+        about_projects(sender_id)
+    # как понасть в клуб
+    elif re.search(commands['join_club'], title) is not None:
+        join_club(sender_id)
     # ответ на нераспознанную команду
     else:
         unknown_command(sender_id)
@@ -184,5 +197,38 @@ def hello(sender_id):
         [sender_id],
         datetime.now(),
         []
+    )
+    message_manager.send(message)
+
+
+def about_club(sender_id):
+    about_club = data_manager.about_club()
+    message = Notice(
+        about_club[0],
+        [sender_id],
+        datetime.now(),
+        about_club[1:]
+    )
+    message_manager.send(message)
+
+
+def about_projects(sender_id):
+    about_projects = data_manager.about_projects()
+    message = Notice(
+        about_projects[0],
+        [sender_id],
+        datetime.now(),
+        about_projects[1:]
+    )
+    message_manager.send(message)
+
+
+def join_club(sender_id):
+    join_club = data_manager.join_club()
+    message = Notice(
+        join_club[0],
+        [sender_id],
+        datetime.now(),
+        join_club[1:]
     )
     message_manager.send(message)
