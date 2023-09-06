@@ -50,11 +50,11 @@ async def listener(loop):
 async def sender():
     if nearest_event is not None:
         if nearest_event.time <= datetime.now():
-            send_nearest_notice()
+            send_nearest_message()
     await asyncio.sleep(60)
 
 
-def send_nearest_notice():
+def send_nearest_message():
     global nearest_event
     _send(nearest_event)
     nearest_event = data_manager.get_nearest_event(nearest_event)

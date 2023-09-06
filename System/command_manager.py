@@ -66,9 +66,6 @@ def parse(text: str, sender_id: str):
     # как попасть в клуб
     elif re.search(commands['join_club'], title) is not None:
         join_club(sender_id)
-    # ответ на нераспознанную команду
-    else:
-        unknown_command(sender_id)
 
 
 def new_task(sender_id: str, task_data: list):

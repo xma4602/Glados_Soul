@@ -40,7 +40,7 @@ class Task:
     def notice_recipients(self) -> Message:
         return Message(
             title='Вам поступила новая задача от ' + data_manager.id_to_names([self.manager_id])[0],
-            recipients_id=self.performers_id,
+            peer_ids=self.performers_id,
             time=datetime.now(),
             description=[self.title] + self.description
         )
@@ -54,7 +54,7 @@ class Task:
             notices.append(
                 Message(
                     title=f'Остался один час до окончания задачи \"{self.title}\"',
-                    recipients_id=self.performers_id,
+                    peer_ids=self.performers_id,
                     time=self.deadline - timedelta(hours=1),
                     description=[self.title] + self.description
                 )
@@ -66,7 +66,7 @@ class Task:
                 notices.append(
                     Message(
                         title=f'Остался один день до окончания задачи \"{self.title}\"',
-                        recipients_id=self.performers_id,
+                        peer_ids=self.performers_id,
                         time=self.deadline - timedelta(days=1),
                         description=[self.title] + self.description
                     )
@@ -76,7 +76,7 @@ class Task:
                     notices.append(
                         Message(
                             title=f'Осталась одна неделя до окончания задачи \"{self.title}\"',
-                            recipients_id=self.performers_id,
+                            peer_ids=self.performers_id,
                             time=self.deadline - timedelta(days=7),
                             description=[self.title] + self.description
                         )
