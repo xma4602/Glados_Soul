@@ -14,6 +14,7 @@ def start():
     logging.info('Запуск модуля command_manager')
     global commands
     commands = {
+        'start': 'начать',
         'task': 'задач',
         'hello': 'прив|здрав',
         'open': 'открыть',
@@ -42,10 +43,13 @@ def parse(text: str, sender_id: str):
 
     title = text[0].lower()
     # если в заголовке тег задачи, отправляем на парсинг задачи
-    if re.search(commands['task'], title) is not None:
+    # ответ на начать
+    if re.search(commands['start'], title) is not None:
+        command_start(sender_id)
+    elif re.search(commands['task'], title) is not None:
         new_task(sender_id, text[1:])
     # приветствие
-    if re.search(commands['hello'], title) is not None:
+    elif re.search(commands['hello'], title) is not None:
         hello(sender_id)
     # команда открытия лабы
     elif re.search(commands['open'], title) is not None:
@@ -62,7 +66,7 @@ def parse(text: str, sender_id: str):
     # инфа о проектах клуба
     elif re.search(commands['projects'], title) is not None:
         about_projects(sender_id)
-    # как понасть в клуб
+    # как попасть в клуб
     elif re.search(commands['join_club'], title) is not None:
         join_club(sender_id)
     # ответ на нераспознанную команду
@@ -230,5 +234,21 @@ def join_club(sender_id):
         [sender_id],
         datetime.now(),
         join_club[1:]
+    )
+    message_manager.send(message)
+
+
+def command_start(sender_id):
+    message = Notice(
+        'Привет!',
+        [sender_id],
+        datetime.now(),
+        ["Я бот клуба Robotic!\n"
+         "С моей помощью вы можете узнать: \n"
+         "- о нашем клубе\n"
+         "- где мы находимся\n"
+         "- открыта ли лаборатория\n"
+         "- какие у нас ведутся проекты и мероприятия\n"
+         "По остальным вопросам пишите заместителю председателя [id322610705|Маркарян Петросу]"]
     )
     message_manager.send(message)
