@@ -2,7 +2,7 @@ from System.units.time_event import TimeEvent
 from datetime import datetime
 
 
-class Notice(TimeEvent):
+class Message(TimeEvent):
     """
     Атрибуты:
     """
@@ -29,7 +29,7 @@ class Notice(TimeEvent):
         Отображает содержимое в строку
         :return: строка, представляющая экземпляр
         """
-        return f"Notice(title=\"{self.title}\", " \
+        return f"Message(title=\"{self.title}\", " \
                f"recipients_id={self.recipients_id}, " \
                f"time={self.time}, " \
                f"description={self.description})"
@@ -37,7 +37,7 @@ class Notice(TimeEvent):
     @classmethod
     def from_dict(cls, notice_data: dict):
         time = TimeEvent.get_datetime(notice_data)
-        return Notice(
+        return Message(
             notice_data['title'],
             notice_data['recipients_id'],
             time,

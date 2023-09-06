@@ -1,10 +1,9 @@
 import json
 from datetime import datetime, timedelta
 from System.units.time_event import TimeEvent
-from System.units.notice import Notice
+from System.units.message import Message
 import logging
 from System import config_manager
-
 
 
 def start():
@@ -26,7 +25,10 @@ def save_json(file_name, *args):
 
 def load_json(file_name: str):
     with open(file_name, 'r') as file:
-        data = json.load(file)
+        try:
+            data = json.load(file)
+        except json.decoder.JSONDecodeError:
+            return None
         # logger.info('Загружены данные', data=data)
         return data
 
@@ -46,17 +48,20 @@ def store_event(event):
     Сохраняет событие в файл
     :param event: объект события
     """
-    events = load_json(events_file)
+    events = load_json(events_file)[0]
     if len(events) == 0:
-        event = event.to_dict()
-        events.append(event)
+        events = [event.to_dict()]
     else:
+        flag = False
         for index in range(len(events)):
             ev = TimeEvent.get_datetime(events[index])
             if event.time < ev:
+                flag = True
                 event = event.to_dict()
                 events.insert(index, event)
                 break
+        if not flag:
+            events.append(event.to_dict())
     save_json(events_file, events)
 
 
@@ -65,8 +70,8 @@ def get_nearest_event(old_event=None):
     Возвращает ближайшее событие
     :params old_event: исполнившееся событие
     """
-    events = load_json(config_manager.events_file())  # считывает список событий из файла
-    if len(events) == 0:  # если событий нет, то возвращает None
+    events = load_json(config_manager.events_file())[0]  # считывает список событий из файла
+    if events is None or len(events) == 0:  # если событий нет, то возвращает None
         return None
     else:
         if old_event is not None:  # если передано старое событие, то удаляет его из списка

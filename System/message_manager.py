@@ -1,13 +1,16 @@
 import asyncio
 from datetime import datetime
-
+from apscheduler.schedulers.background import BackgroundScheduler
 from System import data_manager, config_manager
 from System.modules import vk_bot, console
-from System.units.notice import Notice
+from System.units.message import Message
 import logging
+from System.units.time_event import TimeEvent
+
 global nearest_event
 global output
 global input
+scheduler: BackgroundScheduler
 
 
 def start():
@@ -15,6 +18,8 @@ def start():
     global nearest_event
     global output
     global input
+    global scheduler
+    scheduler = BackgroundScheduler()
 
     input = config_manager.message_in()
     if input == 'vk':
@@ -32,7 +37,10 @@ def start():
     if input != output:
         output.start()
 
-    nearest_event = data_manager.get_nearest_event()
+    event: TimeEvent = data_manager.get_nearest_event()
+    if event is not None:
+        _plan(event)
+    scheduler.start()
 
 
 async def listener(loop):
@@ -48,17 +56,32 @@ async def sender():
 
 def send_nearest_notice():
     global nearest_event
-    send(nearest_event)
+    _send(nearest_event)
     nearest_event = data_manager.get_nearest_event(nearest_event)
 
 
-def send(notice: Notice):
+def _send(notice: Message):
     output.send(notice.message_somebody(), notice.recipients_id)
+    event = data_manager.get_nearest_event(notice)
+    if event is not None:
+        _plan(event)
 
 
-def plan(notices: list):
-    for notice in notices:
-        data_manager.store_event(notice)
+def send(msg: Message):
+    global scheduler
+    if msg.time is None:
+        output.send(msg.message_somebody(), msg.recipients_id)
+    else:
+        data_manager.store_event(msg)
+        job = scheduler.get_jobs()
+        if len(job)!=0:
+            if msg.time < job[0].next_run_time.replace(tzinfo=None):
+                job[0].remove()
+        _plan(msg)
+
+
+def _plan(msg: Message):
+    scheduler.add_job(_send, 'date', run_date=msg.time, args=(msg,), misfire_grace_time=60)
 
 
 def add_event(event):

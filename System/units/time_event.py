@@ -1,4 +1,5 @@
 from datetime import datetime
+from uuid import uuid4
 
 
 class TimeEvent:
@@ -28,4 +29,3 @@ class TimeEvent:
     @classmethod
     def datetime_to_str(cls, date: datetime):
         return datetime.strftime(TimeEvent.time_format)
-

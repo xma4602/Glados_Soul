@@ -4,7 +4,7 @@ import logging
 from System import data_manager, message_manager
 
 from System.modules import room
-from System.units.notice import Notice
+from System.units.message import Message
 from System.units.task import Task
 
 global commands
@@ -131,7 +131,7 @@ def pasrse_time(date_time):
 
 
 def unknown_command(sender_id: str):
-    message = Notice(
+    message = Message(
         'Неизвестная команда',
         [sender_id],
         datetime.now(),
@@ -141,7 +141,7 @@ def unknown_command(sender_id: str):
 
 
 def is_opened(sender_id: str):
-    message = Notice(
+    message = Message(
         room.is_opened(),
         [sender_id],
         datetime.now(),
@@ -153,7 +153,7 @@ def is_opened(sender_id: str):
 def open_room(sender_id: str):
     if data_manager.is_council(sender_id):
         message = room.open_room()
-        message = Notice(
+        message = Message(
             message,
             [sender_id],
             datetime.now(),
@@ -161,7 +161,7 @@ def open_room(sender_id: str):
         )
     else:
         logging.warning('Попытка получить доступ к команде совета клуба', {'id': sender_id})
-        message = Notice(
+        message = Message(
             'У вас нет доступа к этой команде',
             [sender_id],
             datetime.now(),
@@ -174,7 +174,7 @@ def open_room(sender_id: str):
 def close_room(sender_id):
     if data_manager.is_council(sender_id):
         message = room.close_room()
-        message = Notice(
+        message = Message(
             message,
             [sender_id],
             datetime.now(),
@@ -182,7 +182,7 @@ def close_room(sender_id):
         )
     else:
         logging.warning('Попытка получить доступ к команде совета клуба', {'id': sender_id})
-        message = Notice(
+        message = Message(
             'У вас нет доступа к этой команде',
             [sender_id],
             datetime.now(),
@@ -193,7 +193,7 @@ def close_room(sender_id):
 
 
 def hello(sender_id):
-    message = Notice(
+    message = Message(
         'Привет!',
         [sender_id],
         datetime.now(),
@@ -204,7 +204,7 @@ def hello(sender_id):
 
 def about_club(sender_id):
     about_club = data_manager.about_club()
-    message = Notice(
+    message = Message(
         about_club[0],
         [sender_id],
         datetime.now(),
@@ -215,7 +215,7 @@ def about_club(sender_id):
 
 def about_projects(sender_id):
     about_projects = data_manager.about_projects()
-    message = Notice(
+    message = Message(
         about_projects[0],
         [sender_id],
         datetime.now(),
@@ -226,7 +226,7 @@ def about_projects(sender_id):
 
 def join_club(sender_id):
     join_club = data_manager.join_club()
-    message = Notice(
+    message = Message(
         join_club[0],
         [sender_id],
         datetime.now(),
