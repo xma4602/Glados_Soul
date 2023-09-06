@@ -3,7 +3,7 @@ from datetime import datetime
 
 from System import data_manager, config_manager
 from System.modules import vk_bot, console
-from System.units.notice import Notice
+from System.units.message import Message
 import logging
 global nearest_event
 global output
@@ -42,23 +42,23 @@ async def listener(loop):
 async def sender():
     if nearest_event is not None:
         if nearest_event.time <= datetime.now():
-            send_nearest_notice()
+            send_nearest_message()
     await asyncio.sleep(60)
 
 
-def send_nearest_notice():
+def send_nearest_message():
     global nearest_event
     send(nearest_event)
     nearest_event = data_manager.get_nearest_event(nearest_event)
 
 
-def send(notice: Notice):
-    output.send(notice.message_somebody(), notice.recipients_id)
+def send(message: Message):
+    output.send(message)
 
 
-def plan(notices: list):
-    for notice in notices:
-        data_manager.store_event(notice)
+def plan(messages: list):
+    for message in messages:
+        data_manager.store_event(message)
 
 
 def add_event(event):

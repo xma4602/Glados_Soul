@@ -1,7 +1,7 @@
 import json
 from datetime import datetime, timedelta
 from System.units.time_event import TimeEvent
-from System.units.notice import Notice
+from System.units.message import Message
 import logging
 from System import config_manager
 

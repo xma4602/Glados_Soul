@@ -6,7 +6,7 @@ start()
 from System.message_manager import start as st
 st()
 from System.message_manager import send
-from System.units.notice import Notice
+from System.units.message import Message
 from System.modules.logger import start
 start()
 
@@ -18,7 +18,7 @@ description = ('ура\n',
                'наконец-то\n',
                'бот\n',
                'работает ')
-n = Notice(title, recipients_id, deadline, description)
+n = Message(title, recipients_id, deadline, description)
 print(n.message_everyone())
 
 

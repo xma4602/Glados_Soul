@@ -10,23 +10,45 @@ from vk_api.exceptions import ApiError
 
 import logging
 from System import command_manager, config_manager, data_manager
+from System.units.message import Message
 
-global vk, keys, longpoll, api
+global commands, texts
+global vk, keys, longpoll, api, upload
 global keyboard_user, keyboard_council, keyboard_club
 
 
 def start():
     logging.info('Запуск модуля vk_bot')
-    global vk, keys, api
+    global commands, texts
+    global vk, keys, api, upload
     global keyboard_user, keyboard_council, keyboard_club
 
     keys = config_manager.get_vk_group_data()
     vk = vk_api.VkApi(token=keys['api_token'])
     api = vk.get_api()
+    upload = vk_api.VkUpload(vk)
 
     keyboard_user = create_keyboard_user()
     keyboard_council = create_keyboard_council()
     keyboard_club = create_keyboard_club()
+
+    commands = {
+        'back': 'Назад',
+        'about_club': 'О клубе',
+        'start': 'Начать'
+    }
+    texts = {
+        'back': 'Возвращаюсь к главному',
+        'about_club': 'Что вы хотите о нас узнать?',
+        'start': "Привет! "
+                 "Я бот клуба Robotic! 🤖\n\n"
+                 "С моей помощью вы можете узнать: \n"
+                 "🔹 о нашем клубе\n"
+                 "🔹 где мы находимся\n"
+                 "🔹 открыта ли лаборатория\n"
+                 "🔹 какие у нас ведутся проекты и мероприятия\n\n"
+                 "❓ По остальным вопросам пишите заместителю председателя [id322610705|Маркарян Петросу]"
+    }
 
     connect()
 
@@ -58,65 +80,76 @@ async def listener(loop):
 
 async def handle(event):
     if event.type == VkBotEventType.MESSAGE_NEW:
-        message = event.object.get('message').get('text')
+        text = event.object.get('message').get('text')
         sender_id = str(event.object.get('message').get('from_id'))
-        logging.info('Получено сообщение VK', {'message': message, 'sender_id': sender_id})
+        logging.info('Получено сообщение VK', {'message': text, 'sender_id': sender_id})
 
         if event.from_user:
-            msg, board = change_board(message, sender_id)
+            message, board = pre_parse(text, sender_id)
             if board is None:
-                command_manager.parse(message, sender_id)
+                command_manager.parse(text, sender_id)
             else:
-                send(msg, [sender_id], board)
+                change_board(message, sender_id, board)
 
 
-def change_board(text: str, sender_id):
-    if text == 'О клубе':
-        return 'Что вы хотите о нас узнать?', keyboard_club
-    elif text == 'Начать':
-        return "Привет! " \
-               "Я бот клуба Robotic! 🤖\n\n" \
-               "С моей помощью вы можете узнать: \n" \
-               "🔹 о нашем клубе\n" \
-               "🔹 где мы находимся\n" \
-               "🔹 открыта ли лаборатория\n" \
-               "🔹 какие у нас ведутся проекты и мероприятия\n\n" \
-               "❓ По остальным вопросам пишите заместителю председателя [id322610705|Маркарян Петросу]", \
-            get_base_keyboard(sender_id)
-    elif text == 'Назад':
-        return 'Возвращаюсь к главному', get_base_keyboard(sender_id)
+def pre_parse(text: str, sender_id):
+    if text == commands['start']:
+        return texts['start'], get_base_keyboard(sender_id)
+    elif text == commands['about_club']:
+        return texts['about_club'], keyboard_club
+    elif text == commands['back']:
+        return texts['back'], get_base_keyboard(sender_id)
     else:
         return None, None
 
 
-def get_base_keyboard(id):
-    if data_manager.is_council(id):
-        return keyboard_council
-    else:
-        return keyboard_user
+def change_board(message, peer_id, board):
+    try:
+        api.messages.send(
+            message=message,
+            peer_id=int(peer_id),
+            random_id=0,
+            keyboard=board.get_keyboard()
+        )
+    except ApiError as err:
+        logging.error(
+            'Не удалось отправить сообщение VK',
+            {'message': message.replace('\n', ' '), 'id': id, 'error': err}
+        )
 
 
-def send(message: str, ids: list, board=None):
-    for id in ids:
+def send(message: Message):
+    for id in message.peer_ids:
         try:
-            if board is None:
-                api.messages.send(
-                    message=message,
-                    peer_id=int(id),
-                    random_id=0,
-                )
-            else:
-                api.messages.send(
-                    message=message,
-                    peer_id=int(id),
-                    random_id=0,
-                    keyboard=board.get_keyboard()
-                )
-
-            logging.info('Отправлено сообщение VK', {'message': message.replace('\n', ' '), 'peer_id': id})
+            api.messages.send(
+                message=message.message_somebody(),
+                peer_id=int(id),
+                random_id=0,
+            )
+            logging.info(
+                'Отправлено сообщение VK',
+                {'message': message.message_somebody().replace('\n', ' '), 'peer_id': id}
+            )
         except ApiError as err:
-            logging.error('Не удалось отправить сообщение VK',
-                          {'message': message.replace('\n', ' '), 'id': id, 'error': err})
+            logging.error(
+                'Не удалось отправить сообщение VK',
+                {'message': message.message_somebody().replace('\n', ' '), 'id': id, 'error': err}
+            )
+
+
+def send_photo(peer_id, photo_path):
+    try:
+        photo = upload.photo_messages(photo_path)[0]
+        owner_id = photo['owner_id']
+        photo_id = photo['id']
+        access_key = photo['access_key']
+        attachment = f'photo{owner_id}_{photo_id}_{access_key}'
+        vk.messages.send(peer_id=peer_id, random_id=0, attachment=attachment)
+    except ApiError as err:
+        logging.error(
+            'Не удалось отправить фотографию VK',
+            {'photo': photo_path, 'id': id, 'error': err}
+        )
 
 
 def create_keyboard_user():
@@ -148,3 +181,10 @@ def create_keyboard_club():
     keyboard.add_button("Назад", color=VkKeyboardColor.NEGATIVE)
 
     return keyboard
+
+
+def get_base_keyboard(id):
+    if data_manager.is_council(id):
+        return keyboard_council
+    else:
+        return keyboard_user
