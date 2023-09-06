@@ -1,10 +1,11 @@
 import asyncio
+import logging
+
 from datetime import datetime
 from apscheduler.schedulers.background import BackgroundScheduler
 from System import data_manager, config_manager
 from System.modules import vk_bot, console
 from System.units.message import Message
-import logging
 from System.units.time_event import TimeEvent
 
 global nearest_event
@@ -60,9 +61,9 @@ def send_nearest_message():
     nearest_event = data_manager.get_nearest_event(nearest_event)
 
 
-def _send(notice: Message):
-    output.send(notice.message_somebody(), notice.recipients_id)
-    event = data_manager.get_nearest_event(notice)
+def _send(message: Message):
+    output.send(message.message_somebody(), message.peer_ids)
+    event = data_manager.get_nearest_event(message)
     if event is not None:
         _plan(event)
 
@@ -70,11 +71,11 @@ def _send(notice: Message):
 def send(msg: Message):
     global scheduler
     if msg.time is None:
-        output.send(msg.message_somebody(), msg.recipients_id)
+        output.send(msg.message_somebody(), msg.peer_ids)
     else:
         data_manager.store_event(msg)
         job = scheduler.get_jobs()
-        if len(job)!=0:
+        if len(job) != 0:
             if msg.time < job[0].next_run_time.replace(tzinfo=None):
                 job[0].remove()
         _plan(msg)
