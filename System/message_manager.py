@@ -6,8 +6,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from System import data_manager, config_manager
 from System.modules import vk_bot, console
 from System.units.message import Message
-from System.units.time_event import TimeEvent
 from System.data_manager import check_fired_events
+
 global nearest_event
 global output
 global input
@@ -40,12 +40,13 @@ def start():
     if input != output:
         output.start()
 
+    nearest_event = data_manager.get_nearest_event()
     # получаем ближайшее событие
-    event: TimeEvent = data_manager.get_nearest_event()
-    if event is not None:
-        # если событие есть, то планируем его
-        _plan(event)
-    scheduler.start()
+    # event: TimeEvent = data_manager.get_nearest_event()
+    # if event is not None:
+    # если событие есть, то планируем его
+    #   _plan(event)
+    # scheduler.start()
 
 
 async def listener(loop):
@@ -53,62 +54,68 @@ async def listener(loop):
 
 
 async def sender():
+    global nearest_event
     if nearest_event is not None:
         if nearest_event.time <= datetime.now():
-            send_nearest_message()
+            output.send(nearest_event)
+            nearest_event = data_manager.get_nearest_event(nearest_event)
     await asyncio.sleep(60)
 
 
-def send_nearest_message():
-    global nearest_event
-    _send(nearest_event)
-    nearest_event = data_manager.get_nearest_event(nearest_event)
-
-
-def _send(message: Message):
-    """Исполняет запланированное событие"""
-    # отправляем запланированное сообщени
-    output.send(message)
-    # получаем ближайшее событие из бд
-    event = data_manager.get_nearest_event(message)
-    if event is not None:
-        # если оно есть, то планируем его
-        _plan(event)
-
-
 def send(msg: Message):
-    """
-    Отправляет или планирует отправку сообщения
-    :param msg: сообщение
-    """
-    global scheduler
-    if msg.time is None:
-        # если время отправки не указано, то отправляем сейчас
-        output.send(msg.message_somebody(), msg.peer_ids)
+    if msg.time <= datetime.now():
+        output.send(msg)
     else:
-        # иначе сохраняем сообщение в бд
+        global nearest_event
+        if msg.time <= nearest_event.time:
+            nearest_event = msg
         data_manager.store_event(msg)
-        # получаем список запланированных событий из sheduler
-        job = scheduler.get_jobs()  # в списке должно оказаться одно событие или не быть его
-        if len(job) != 0:
-            # если список не пустой, то сравниваем время msg и события из sheduler
-            if msg.time < job[0].next_run_time.replace(tzinfo=None):
-                # replace(...) нужен чтобы убрать часовой пояс, иначе время не сравнивается
-                # next_run_time возвращает время следующего запуска события из sheduler
-                job[0].remove()  # если msg должен наступить раньше, то удаляем из sheduler старое событие
-                _plan(msg)  # планируем msg
-        else:
-            _plan(msg)  # если ничего не запланировано, то планируем msg
 
-
-def _plan(msg: Message):
-    """Планирует событие в sheduler"""
-    scheduler.add_job(_send,  # функция, которая выполнится по истечении времени
-                      'date',  # тип триггера для определения времени срабатывания
-                      run_date=msg.time,  # время срабатывания триггера datetime
-                      args=(msg,),  # аргументы вызываемой функции
-                      misfire_grace_time=60)  # время, в течение которого задача не будет считатья просроченной
-
-
-def add_event(event):
-    data_manager.store_event(event)
+# def send_nearest_message():
+#     global nearest_event
+#     _send(nearest_event)
+#     nearest_event = data_manager.get_nearest_event(nearest_event)
+#
+#
+# def _send(message: Message):
+#     """Исполняет запланированное событие"""
+#     # отправляем запланированное сообщение
+#     output.send(message)
+#     # получаем ближайшее событие из бд
+#     event = data_manager.get_nearest_event(message)
+#     if event is not None:
+#         # если оно есть, то планируем его
+#         _plan(event)
+#
+#
+# def send(msg: Message):
+#     """
+#     Отправляет или планирует отправку сообщения
+#     :param msg: сообщение
+#     """
+#     global scheduler
+#     if msg.time is None:
+#         # если время отправки не указано, то отправляем сейчас
+#         output.send(msg.message_somebody(), msg.peer_ids)
+#     else:
+#         data_manager.store_event(msg)  # иначе сохраняем сообщение в бд
+#         jobs = scheduler.get_jobs()  # получаем список запланированных событий из scheduler
+#
+#         if len(jobs) != 0:  # в списке должно оказаться одно событие или не быть его
+#             # если список не пустой, то сравниваем время msg и события из scheduler
+#             if msg.time < jobs[0].next_run_time.replace(tzinfo=None):
+#                 # next_run_time возвращает время следующего запуска события из scheduler
+#                 # replace(...) нужен чтобы убрать часовой пояс, иначе время не сравнивается.
+#                 jobs[0].remove()  # если msg должен наступить раньше, то удаляем из scheduler старое событие
+#                 _plan(msg)  # планируем msg
+#         else:
+#             _plan(msg)  # если ничего не запланировано, то планируем msg
+#
+#
+# def _plan(msg: Message):
+#     """Планирует событие в scheduler"""
+#     scheduler.add_job(_send,  # функция, которая выполнится по истечении времени
+#                       'date',  # тип триггера для определения времени срабатывания
+#                       run_date=msg.time,  # время срабатывания триггера datetime
+#                       args=(msg,),  # аргументы вызываемой функции
+#                       misfire_grace_time=60)  # время, в течение которого задача не будет считаться просроченной
