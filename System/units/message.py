@@ -11,7 +11,7 @@ class Message(TimeEvent):
         """
         Принимает список параметров и присваивает их полям
         :param title:  заголовок уведомления
-        :param peer_id: список id получателей
+        :param peer_ids: список id получателей
         :param time: время уведомления
         :param description: описание уведомления
         """
@@ -20,9 +20,6 @@ class Message(TimeEvent):
         self.peer_ids = peer_ids
         self.description = description
         self.class_name = self.__class__.__name__
-
-        # Logger.notice.info(f'Создано напоминание на {self.time.strftime(TimeEvent.time_format)} \
-        # "{title}" для {recipients_id}')
 
     def __str__(self):
         """
@@ -35,13 +32,13 @@ class Message(TimeEvent):
                f"description={self.description})"
 
     @classmethod
-    def from_dict(cls, notice_data: dict):
-        time = TimeEvent.get_datetime(notice_data)
+    def from_dict(cls, message_data: dict):
+        time = TimeEvent.get_datetime(message_data)
         return Message(
-            notice_data['title'],
-            notice_data['peer_ids'],
+            message_data['title'],
+            message_data['peer_ids'],
             time,
-            notice_data['description'],
+            message_data['description'],
         )
 
     def message_somebody(self):

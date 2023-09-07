@@ -1,10 +1,11 @@
 import asyncio
+import logging
+
 from datetime import datetime
 from apscheduler.schedulers.background import BackgroundScheduler
 from System import data_manager, config_manager
 from System.modules import vk_bot, console
 from System.units.message import Message
-import logging
 from System.units.time_event import TimeEvent
 
 global nearest_event
@@ -63,12 +64,12 @@ def send_nearest_message():
     nearest_event = data_manager.get_nearest_event(nearest_event)
 
 
-def _send(notice: Message):
+def _send(message: Message):
     """Исполняет запланированное событие"""
-    # отправляем запланированное сообщение
-    output.send(notice.message_somebody(), notice.peer_ids)
+    # отправляем запланированное сообщени
+    output.send(message.message_somebody(), message.peer_ids)
     # получаем ближайшее событие из бд
-    event = data_manager.get_nearest_event(notice)
+    event = data_manager.get_nearest_event(message)
     if event is not None:
         # если оно есть, то планируем его
         _plan(event)
