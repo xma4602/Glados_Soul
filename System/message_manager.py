@@ -7,7 +7,7 @@ from System import data_manager, config_manager
 from System.modules import vk_bot, console
 from System.units.message import Message
 from System.units.time_event import TimeEvent
-
+from System.data_manager import check_fired_events
 global nearest_event
 global output
 global input
@@ -21,6 +21,7 @@ def start():
     global input
     global scheduler
     # создание объекта шедулера, в который будем все планировать
+    check_fired_events()
     scheduler = BackgroundScheduler()
 
     input = config_manager.message_in()
@@ -67,7 +68,7 @@ def send_nearest_message():
 def _send(message: Message):
     """Исполняет запланированное событие"""
     # отправляем запланированное сообщени
-    output.send(message.message_somebody(), message.peer_ids)
+    output.send(message)
     # получаем ближайшее событие из бд
     event = data_manager.get_nearest_event(message)
     if event is not None:
