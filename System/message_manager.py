@@ -59,7 +59,7 @@ async def sender():
         if nearest_event.time <= datetime.now():
             output.send(nearest_event)
             nearest_event = data_manager.get_nearest_event(nearest_event)
-    await asyncio.sleep(60)
+    await asyncio.sleep(30)
 
 
 def send(msg: Message):
@@ -67,7 +67,7 @@ def send(msg: Message):
         output.send(msg)
     else:
         global nearest_event
-        if msg.time <= nearest_event.time:
+        if nearest_event is None or msg.time <= nearest_event.time:
             nearest_event = msg
         data_manager.store_event(msg)
 

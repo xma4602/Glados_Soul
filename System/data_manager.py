@@ -43,12 +43,17 @@ def is_council(id: str):
     return id in users.keys()
 
 
+def council_ids():
+    global council_file
+    return load_json(council_file).keys()
+
+
 def store_event(event):
     """
     Сохраняет событие в файл
     :param event: объект события
     """
-    events = load_json(events_file)[0]
+    events = load_json(events_file)
     if len(events) == 0:
         events = [event.to_dict()]
     else:
@@ -70,7 +75,7 @@ def get_nearest_event(old_event=None):
     Возвращает ближайшее событие
     :params old_event: исполнившееся событие
     """
-    events = load_json(config_manager.events_file())[0]  # считывает список событий из файла
+    events = load_json(config_manager.events_file())  # считывает список событий из файла
     if events is None or len(events) == 0:  # если событий нет, то возвращает None
         return None
     else:
@@ -90,7 +95,7 @@ def check_fired_events():
     Используется единожды при запуске, возвращает ближайшее не просроченное событие
     """
 
-    events = load_json(config_manager.events_file())[0]  # считываем список событий
+    events = load_json(config_manager.events_file())  # считываем список событий
     if len(events) != 0:
         fired_events = []  # список просроченных событий
         event = events[0]  # получаем ближайшее событие

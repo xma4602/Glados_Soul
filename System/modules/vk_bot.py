@@ -114,7 +114,7 @@ def change_board(message, peer_id, board):
     except ApiError as err:
         logging.error(
             'Не удалось отправить сообщение VK',
-            {'message': message.replace('\n', ' '), 'id': id, 'error': err}
+            {'message': message.replace('\n', ' '), 'id': id, 'error': err.__str__()}
         )
 
 

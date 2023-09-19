@@ -1,9 +1,9 @@
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
 from System import data_manager, message_manager
 
-from System.modules import room
+from System.modules import room, time_parser
 from System.units.message import Message
 from System.units.task import Task
 
@@ -21,7 +21,8 @@ def start():
         'is_open': '(.*открыт.*лаб.*)|(.*лаб.*открыт.*)|(.*закрыт.*лаб.*)|(.*лаб.*закрыт.*)|(.*лаб.*ест.*)|(.*ест.*лаб.*)',
         'about_club': 'что такое robotic?',
         'projects': 'проекты и мероприятия',
-        'join_club': 'как попасть в robotic?'
+        'join_club': 'как попасть в robotic?',
+        'remind': 'напомни'
     }
 
 
@@ -66,6 +67,9 @@ def parse(text: str, sender_id: str):
     # как попасть в клуб
     elif re.search(commands['join_club'], title) is not None:
         join_club(sender_id)
+    # напоминание
+    elif re.search(commands['remind'], title) is not None:
+        remind(sender_id, text)
 
 
 def new_task(sender_id: str, task_data: list):
@@ -79,7 +83,7 @@ def new_task(sender_id: str, task_data: list):
 
     # вызываем методы парсинга для каждого поля
     task_data[1] = data_manager.names_to_id(task_data[1].replace(',', '').split())
-    task_data[2] = pasrse_time(task_data[2])
+    task_data[2] = pasrse_date(task_data[2])
 
     return Task(
         title=task_data[0],
@@ -87,43 +91,6 @@ def new_task(sender_id: str, task_data: list):
         performers_id=task_data[1],
         deadline=task_data[2],
         description=task_data[3:]
-    )
-
-
-def pasrse_time(date_time):
-    """
-    Получает и парсит данные о времени
-    :param date_time: дата и время
-    :return: экземпляр datetime
-    """
-    # регуляркой находим дату
-    date = re.search(r'(\d{1,2})\.(\d{1,2})(.(\d{2,4}))?', date_time)
-    # удаляем дату из текста
-    date_time = date_time.replace(date[0], '')
-    # регуляркой находим времяя
-    time = re.search(r'(\d{1,2})([: ](\d{1,2}))?', date_time)
-
-    # проверяем наличие года и дообрабатываем его
-    year = date.group(4)
-    if year is None:
-        year = datetime.today().year
-    else:
-        if len(year) == 4:
-            year = int(year)
-        else:
-            year = int(year) + 2000
-
-    minute = time.group(3)
-    # проверяем наличие минут и дообрабатываем их
-    minute = int(minute) if len(minute) == 2 else 0
-
-    # возвращаем экземпляр даты-времени
-    return datetime(
-        year=year,
-        month=int(date.group(2)),
-        day=int(date.group(1)),
-        hour=int(time.group(1)),
-        minute=minute
     )
 
 
@@ -231,3 +198,61 @@ def join_club(sender_id):
     )
     message_manager.send(message)
 
+
+def remind(sender_id, text):
+    try:
+        peer = parse_peer(sender_id, re.sub(r'напомни\s*', '', text[0].lower()))
+        time = parse_datetime(text[1].lower())
+
+        message = Message(text[2], peer, time, text[3:])
+        message_manager.send(message)
+        logging.info('Создано напоминание', {'notice': message.__str__()})
+
+        message_manager.send(Message(
+            'Напоминание создано',
+            [sender_id],
+            datetime.now(),
+            []
+        ))
+    except ValueError as err:
+        message_manager.send(Message(
+            err.__str__(),
+            [sender_id],
+            datetime.now(),
+            []
+        ))
+
+
+def parse_peer(sender_id, peer):
+    if peer == '':
+        return [sender_id]
+    if re.search(r'совет[а-я]*\s*', peer) is not None:
+        return data_manager.council_ids()
+    raise ValueError('Неверный формат получателя напоминания')
+
+
+def parse_datetime(string):
+    result = datetime.now()
+    if string.startswith('через'):
+        string, delta = time_parser.parse_time(re.sub(r'через\s*', '', string))
+        result += delta
+        if len(string) != 0:
+            result = parse_time_in(result, string)
+    elif string.startswith('в'):
+        result = parse_time_in(result, string)
+    else:
+        string, delta = time_parser.parse_date(string)
+        result = delta
+        if len(string) != 0:
+            result = parse_time_in(result, string)
+
+    return result
+
+
+def parse_time_in(result, string):
+    string, delta = time_parser.parse_time(re.sub(r'в\s*', '', string))
+    result = result.replace(
+        hour=int(delta.total_seconds() // 3600),
+        minute=int(delta.total_seconds() % 60)
+    )
+    return result
