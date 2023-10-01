@@ -17,7 +17,7 @@ def start():
     __council_file = config_manager.council_file()
 
 
-def __save_json(file_name, *args):
+def __save_json(file_name, args):
     # logger.info('Сохранены данные', data=args)
     with open(file_name, 'w') as file:
         json.dump(args, file, indent=4, ensure_ascii=False)
@@ -95,27 +95,25 @@ def _check_fired_events():
     Используется единожды при запуске, возвращает ближайшее не просроченное событие
     """
 
-    events = __load_json(config_manager.events_file())  # считываем список событий
+    events = __load_json(config_manager.events_file())
     if len(events) != 0:
-        fired_events = []  # список просроченных событий
-        event = events[0]  # получаем ближайшее событие
-        delta = datetime.now() - TimeEvent.get_datetime(event)  # вычисляем разницу между сейчас и временем события
-        while delta > timedelta(minutes=1):
-            fired_events.append(event)  # если событие просрочено, добавляем его в список
-            events.pop(0)  # удаляем просроченное из списка запланированных событий
-            if len(events) == 0:  # если список событий закончился, значит все события просрочены
-                event = []
-                break
-            event = events[0]
+        fired_events = []
+        actual_events = []
+        for event in events:
             delta = datetime.now() - TimeEvent.get_datetime(event)
+            if delta > timedelta(minutes=1):
+                fired_events.append(event)
+            else:
+                actual_events.append(event)
 
-        __save_json(config_manager.events_file(),
-                    events)  # записываем в файл список запланированных событий без просрочек
+        # записываем список запланированных событий без просрочек
+
+        __save_json(config_manager.events_file(), actual_events)
 
         if len(fired_events) != 0:
-            load_fired_events = __load_json(config_manager.fired_events_file())  # загружаем список просрочек из файла
+            load_fired_events = __load_json(config_manager.fired_events_file())  # загружаем список просрочек
             load_fired_events += fired_events  # добавляем в список новые просрочки
-            __save_json(config_manager.fired_events_file(), load_fired_events)  # загружаем все обратно в файл
+            __save_json(config_manager.fired_events_file(), load_fired_events)  # загружаем все обратно
 
 
 def get_fired_events():

@@ -63,7 +63,7 @@ async def sender():
 
 
 def send(msg: Message):
-    if msg.__time <= datetime.now():
+    if msg <= datetime.now():
         __output.send(msg)
     else:
         global __nearest_event

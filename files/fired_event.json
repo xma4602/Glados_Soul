@@ -1,119 +1,18 @@
 [
-    [
-        {
-            "time": "21.03.2023 21:10:21",
-            "regular": [
-                -1
-            ],
-            "title": "Будильник 0",
-            "class_name": "AlarmClock"
-        },
-        {
-            "time": "21.03.2023 19:10:38",
-            "regular": [
-                -1
-            ],
-            "title": "Будильник 0",
-            "class_name": "AlarmClock"
-        },
-        {
-            "time": "21.03.2023 21:57:25",
-            "regular": [
-                -1
-            ],
-            "title": "Будильник 0",
-            "class_name": "AlarmClock"
-        },
-        {
-            "time": "22.03.2023 09:20:00",
-            "regular": [
-                -1
-            ],
-            "title": "Будильник 0",
-            "class_name": "AlarmClock"
-        },
-        {
-            "time": "22.03.2023 10:38:12",
-            "regular": [
-                -1
-            ],
-            "title": "Будильник 0",
-            "class_name": "AlarmClock"
-        },
-        {
-            "time": "22.03.2023 10:40:17",
-            "regular": [
-                -1
-            ],
-            "title": "Будильник 0",
-            "class_name": "AlarmClock"
-        },
-        {
-            "time": "22.03.2023 10:42:21",
-            "regular": [
-                -1
-            ],
-            "title": "Будильник 0",
-            "class_name": "AlarmClock"
-        },
-        {
-            "time": "19.03.2023 17:53:52",
-            "title": "Test notice",
-            "recipients_id": [
-                1
-            ],
-            "description": "Попытка сохранить уведомление",
-            "class_name": "Notice"
-        },
-        {
-            "time": "22.03.2023 16:49:15",
-            "regular": [
-                -1
-            ],
-            "title": "Test alarm",
-            "class_name": "AlarmClock"
-        },
-        {
-            "time": "22.03.2023 16:49:45",
-            "regular": [
-                -1
-            ],
-            "title": "Test alarm",
-            "class_name": "AlarmClock"
-        },
-        {
-            "time": "22.03.2023 16:51:11",
-            "regular": [
-                -1
-            ],
-            "title": "Test alarm",
-            "class_name": "AlarmClock"
-        },
-        {
-            "time": "22.03.2023 16:53:52",
-            "regular": [
-                -1
-            ],
-            "title": "Test alarm",
-            "class_name": "AlarmClock"
-        },
-        {
-            "time": "25.03.2023 17:51:11",
-            "title": "Test notice",
-            "recipients_id": [
-                1
-            ],
-            "description": "Попытка сохранить уведомление",
-            "class_name": "Notice"
-        },
-        {
-            "time": "19.09.2023 21:18:30",
-            "title": "Напоминание создано",
-            "peer_ids": "257165020",
-            "description": [
-                "Уведомление пришло"
-            ],
-            "class_name": "Message"
-        }
-    ]
+    {
+        "time": "21.03.2023 21:10:21",
+        "regular": [
+            -1
+        ],
+        "title": "Будильник 0",
+        "class_name": "AlarmClock"
+    },
+    {
+        "time": "21.03.2023 19:10:38",
+        "regular": [
+            -1
+        ],
+        "title": "Будильник 0",
+        "class_name": "AlarmClock"
+    }
 ]

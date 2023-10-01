@@ -9,22 +9,22 @@ class TimeEvent:
         self.__time = time
 
     def __eq__(self, other):
-        return self.__time == other.__time
-
-    def __ne__(self, other):
-        return self.__time != other.__time
+        if isinstance(other, TimeEvent):
+            return self.__time == other.__time
+        if isinstance(other, datetime):
+            return self.__time == other
 
     def __le__(self, other):
-        return self.__time <= other.__time
+        if isinstance(other, TimeEvent):
+            return self.__time <= other.__time
+        if isinstance(other, datetime):
+            return self.__time <= other
 
     def __lt__(self, other):
-        return self.__time < other.__time
-
-    def __ge__(self, other):
-        return self.__time >= other.__time
-
-    def __gt__(self, other):
-        return self.__time > other.__time
+        if isinstance(other, TimeEvent):
+            return self.__time <= other.__time
+        if isinstance(other, datetime):
+            return self.__time <= other
 
     @property
     def time(self):
