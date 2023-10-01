@@ -12,32 +12,32 @@ import logging
 from System import command_manager, config_manager, data_manager
 from System.units.message import Message
 
-global commands, texts
-global vk, keys, longpoll, api, upload
-global keyboard_user, keyboard_council, keyboard_club
+global __commands, __texts
+global __vk, __keys, __longpoll, __api, __upload
+global __keyboard_user, __keyboard_council, __keyboard_club
 
 
 def start():
     logging.info('Запуск модуля vk_bot')
-    global commands, texts
-    global vk, keys, api, upload
-    global keyboard_user, keyboard_council, keyboard_club
+    global __commands, __texts
+    global __vk, __keys, __api, __upload
+    global __keyboard_user, __keyboard_council, __keyboard_club
 
-    keys = config_manager.get_vk_group_data()
-    vk = vk_api.VkApi(token=keys['api_token'])
-    api = vk.get_api()
-    upload = vk_api.VkUpload(vk)
+    __keys = config_manager.get_vk_group_data()
+    __vk = vk_api.VkApi(token=__keys['api_token'])
+    __api = __vk.get_api()
+    __upload = vk_api.VkUpload(__vk)
 
-    keyboard_user = create_keyboard_user()
-    keyboard_council = create_keyboard_council()
-    keyboard_club = create_keyboard_club()
+    __keyboard_user = __create_keyboard_user()
+    __keyboard_council = __create_keyboard_council()
+    __keyboard_club = __create_keyboard_club()
 
-    commands = {
+    __commands = {
         'back': 'Назад',
         'about_club': 'О клубе',
         'start': 'Начать'
     }
-    texts = {
+    __texts = {
         'back': 'Возвращаюсь к главному',
         'about_club': 'Что вы хотите о нас узнать?',
         'start': "Привет! "
@@ -50,16 +50,16 @@ def start():
                  "❓ По остальным вопросам пишите заместителю председателя [id322610705|Маркарян Петросу]"
     }
 
-    connect()
+    __connect()
 
 
-def connect():
-    global longpoll
+def __connect():
+    global __longpoll
     counter = 0
     not_connected = True
     while not_connected:
         try:
-            longpoll = VkBotLongPoll(vk, keys['group_id'])
+            __longpoll = VkBotLongPoll(__vk, __keys['group_id'])
             not_connected = False
             logging.info(f'Соединение с VK №{counter}: установлено')
         except ConnectionError or ReadTimeout or TimeoutError or ReadTimeoutError as err:
@@ -71,41 +71,41 @@ def connect():
 async def listener(loop):
     while True:
         try:
-            for event in longpoll.listen():
-                await asyncio.wait([loop.create_task(handle(event))])
+            for event in __longpoll.listen():
+                await asyncio.wait([loop.create_task(__handle(event))])
         except IOError as err:
             logging.error(f'Соединение с VK: провалено', {'error': err})
-            connect()
+            __connect()
 
 
-async def handle(event):
+async def __handle(event):
     if event.type == VkBotEventType.MESSAGE_NEW:
         text = event.object.get('message').get('text')
         sender_id = str(event.object.get('message').get('from_id'))
         logging.info('Получено сообщение VK', {'message': text, 'sender_id': sender_id})
 
         if event.from_user:
-            message, board = pre_parse(text, sender_id)
+            message, board = __pre_parse(text, sender_id)
             if board is None:
                 command_manager.parse(text, sender_id)
             else:
-                change_board(message, sender_id, board)
+                __change_board(message, sender_id, board)
 
 
-def pre_parse(text: str, sender_id):
-    if text == commands['start']:
-        return texts['start'], get_base_keyboard(sender_id)
-    elif text == commands['about_club']:
-        return texts['about_club'], keyboard_club
-    elif text == commands['back']:
-        return texts['back'], get_base_keyboard(sender_id)
+def __pre_parse(text: str, sender_id):
+    if text == __commands['start']:
+        return __texts['start'], __get_base_keyboard(sender_id)
+    elif text == __commands['about_club']:
+        return __texts['about_club'], __keyboard_club
+    elif text == __commands['back']:
+        return __texts['back'], __get_base_keyboard(sender_id)
     else:
         return None, None
 
 
-def change_board(message, peer_id, board):
+def __change_board(message, peer_id, board):
     try:
-        api.messages.send(
+        __api.messages.send(
             message=message,
             peer_id=int(peer_id),
             random_id=0,
@@ -121,7 +121,7 @@ def change_board(message, peer_id, board):
 def send(message: Message):
     for id in message.peer_ids:
         try:
-            api.messages.send(
+            __api.messages.send(
                 message=message.message_somebody(),
                 peer_id=int(id),
                 random_id=0,
@@ -139,12 +139,12 @@ def send(message: Message):
 
 def send_photo(peer_id, photo_path):
     try:
-        photo = upload.photo_messages(photo_path)[0]
+        photo = __upload.photo_messages(photo_path)[0]
         owner_id = photo['owner_id']
         photo_id = photo['id']
         access_key = photo['access_key']
         attachment = f'photo{owner_id}_{photo_id}_{access_key}'
-        vk.messages.send(peer_id=peer_id, random_id=0, attachment=attachment)
+        __vk.messages.send(peer_id=peer_id, random_id=0, attachment=attachment)
     except ApiError as err:
         logging.error(
             'Не удалось отправить фотографию VK',
@@ -152,7 +152,7 @@ def send_photo(peer_id, photo_path):
         )
 
 
-def create_keyboard_user():
+def __create_keyboard_user():
     keyboard = vk_api.keyboard.VkKeyboard(one_time=False)
     keyboard.add_button("Лаборатория открыта?", color=VkKeyboardColor.PRIMARY)
     keyboard.add_line()
@@ -161,8 +161,8 @@ def create_keyboard_user():
     return keyboard
 
 
-def create_keyboard_council():
-    keyboard = create_keyboard_user()
+def __create_keyboard_council():
+    keyboard = __create_keyboard_user()
     keyboard.add_line()
     keyboard.add_button("Закрыть", color=VkKeyboardColor.NEGATIVE)
     keyboard.add_button("Открыть", color=VkKeyboardColor.POSITIVE)
@@ -170,7 +170,7 @@ def create_keyboard_council():
     return keyboard
 
 
-def create_keyboard_club():
+def __create_keyboard_club():
     keyboard = vk_api.keyboard.VkKeyboard(one_time=False)
     keyboard.add_button("Что такое ROBOTIC?", color=VkKeyboardColor.PRIMARY)
     keyboard.add_line()
@@ -183,8 +183,8 @@ def create_keyboard_club():
     return keyboard
 
 
-def get_base_keyboard(id):
+def __get_base_keyboard(id):
     if data_manager.is_council(id):
-        return keyboard_council
+        return __keyboard_council
     else:
-        return keyboard_user
+        return __keyboard_user

@@ -1,11 +1,13 @@
 import os
 import subprocess
+
 """ Системные функции, которые отвечают за выключение, перезагрузку и остановку гладоса"""
 actions = {
     1: 'power-off',
     2: 'reboot',
     3: 'exit'
 }
+
 
 def malina_control(params):
     if len(params) == 0 or params[0] == "help":
@@ -20,4 +22,4 @@ def malina_control(params):
     elif action == 'reboot':
         return subprocess.check_call('reboot')
     elif action == 'exit':
-        return "exit" #возвращает в лаунчер флаг, что нужно остановить гладос
+        return "exit"  # возвращает в лаунчер флаг, что нужно остановить гладос

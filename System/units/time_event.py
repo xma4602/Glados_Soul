@@ -1,26 +1,38 @@
 from datetime import datetime
-from uuid import uuid4
 
 
 class TimeEvent:
     time_format = "%d.%m.%Y %H:%M:%S"
+    __slots__ = ('__time',)
 
     def __init__(self, time: datetime):
-        self.time = time
+        self.__time = time
 
-    @classmethod
-    def compare(cls, event1, event2):
-        if event1.time < event2.time:
-            return -1
-        if event1.time > event2.time:
-            return 1
-        if event1.time == event2.time:
-            return 0
+    def __eq__(self, other):
+        return self.__time == other.__time
+
+    def __ne__(self, other):
+        return self.__time != other.__time
+
+    def __le__(self, other):
+        return self.__time <= other.__time
+
+    def __lt__(self, other):
+        return self.__time < other.__time
+
+    def __ge__(self, other):
+        return self.__time >= other.__time
+
+    def __gt__(self, other):
+        return self.__time > other.__time
+
+    @property
+    def time(self):
+        return self.__time
 
     @classmethod
     def from_dict(cls, event: dict):
-        time = datetime.strptime(event['time'], TimeEvent.time_format)
-        return TimeEvent(time)
+        return TimeEvent(datetime.strptime(event['time'], TimeEvent.time_format))
 
     @classmethod
     def get_datetime(cls, event: dict):
@@ -28,4 +40,4 @@ class TimeEvent:
 
     @classmethod
     def datetime_to_str(cls, date: datetime):
-        return datetime.strftime(TimeEvent.time_format)
+        return date.strftime(TimeEvent.time_format)

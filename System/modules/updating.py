@@ -1,7 +1,7 @@
 import enum
 import subprocess
 
-""" Обновление кода гладоса """
+""" Обновление кода гладос """
 _branches = {
     "st": "system_test",
     "mt": "mechanics_test",

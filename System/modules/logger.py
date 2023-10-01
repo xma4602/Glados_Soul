@@ -4,9 +4,8 @@ import sys
 
 
 def start():
-    handlers = []
     print('Запуск логгера')
-    # формат вывовда логов
+    # формат вывода логов
     log_format = '%(asctime)s - %(levelname)s - %(message)s - %(args)s'
 
     output = config_manager.log_out()
@@ -28,5 +27,3 @@ def start():
         level=config_manager.log_level(),
         format=log_format
     )
-
-

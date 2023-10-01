@@ -8,22 +8,22 @@ from System import config_manager
 
 def start():
     logging.info('Запуск модуля data_manager')
-    global fired_events_file
-    global events_file
-    global council_file
+    global __fired_events_file
+    global __events_file
+    global __council_file
 
-    fired_events_file = config_manager.fired_events_file()
-    events_file = config_manager.events_file()
-    council_file = config_manager.council_file()
+    __fired_events_file = config_manager.fired_events_file()
+    __events_file = config_manager.events_file()
+    __council_file = config_manager.council_file()
 
 
-def save_json(file_name, *args):
+def __save_json(file_name, *args):
     # logger.info('Сохранены данные', data=args)
     with open(file_name, 'w') as file:
         json.dump(args, file, indent=4, ensure_ascii=False)
 
 
-def load_json(file_name: str):
+def __load_json(file_name: str):
     with open(file_name, 'r') as file:
         try:
             data = json.load(file)
@@ -33,19 +33,19 @@ def load_json(file_name: str):
         return data
 
 
-def load_txt(file_name: str):
+def __load_txt(file_name: str) -> list[str]:
     with open(file_name, 'r', encoding='utf-8') as file:
         return file.readlines()
 
 
-def is_council(id: str):
-    users = load_json(council_file)
+def is_council(id: str) -> bool:
+    users = __load_json(__council_file)
     return id in users.keys()
 
 
-def council_ids():
-    global council_file
-    return load_json(council_file).keys()
+def council_ids() -> list[str]:
+    global __council_file
+    return __load_json(__council_file).keys()
 
 
 def store_event(event):
@@ -53,35 +53,35 @@ def store_event(event):
     Сохраняет событие в файл
     :param event: объект события
     """
-    events = load_json(events_file)
+    events = __load_json(__events_file)
     if len(events) == 0:
         events = [event.to_dict()]
     else:
         flag = False
         for index in range(len(events)):
             ev = TimeEvent.get_datetime(events[index])
-            if event.time < ev:
+            if event.__time < ev:
                 flag = True
                 event = event.to_dict()
                 events.insert(index, event)
                 break
         if not flag:
             events.append(event.to_dict())
-    save_json(events_file, events)
+    __save_json(__events_file, events)
 
 
-def get_nearest_event(old_event=None):
+def get_nearest_event(old_event=None) -> TimeEvent:
     """
     Возвращает ближайшее событие
     :params old_event: исполнившееся событие
     """
-    events = load_json(config_manager.events_file())  # считывает список событий из файла
+    events = __load_json(config_manager.events_file())  # считывает список событий из файла
     if events is None or len(events) == 0:  # если событий нет, то возвращает None
         return None
     else:
         if old_event is not None:  # если передано старое событие, то удаляет его из списка
             events.pop(0)
-            save_json(config_manager.events_file(), events)  # записывает измененный список обратно в файл
+            __save_json(config_manager.events_file(), events)  # записывает измененный список обратно в файл
         if len(events) == 0:
             return None
         nearest_event = events[0]  # получаем ближайшее событие
@@ -90,12 +90,12 @@ def get_nearest_event(old_event=None):
         return event_class.from_dict(nearest_event)
 
 
-def check_fired_events():
+def _check_fired_events():
     """
     Используется единожды при запуске, возвращает ближайшее не просроченное событие
     """
 
-    events = load_json(config_manager.events_file())  # считываем список событий
+    events = __load_json(config_manager.events_file())  # считываем список событий
     if len(events) != 0:
         fired_events = []  # список просроченных событий
         event = events[0]  # получаем ближайшее событие
@@ -109,20 +109,20 @@ def check_fired_events():
             event = events[0]
             delta = datetime.now() - TimeEvent.get_datetime(event)
 
-        save_json(config_manager.events_file(),
-                  events)  # записываем в файл список запланированных событий без просрочек
+        __save_json(config_manager.events_file(),
+                    events)  # записываем в файл список запланированных событий без просрочек
 
         if len(fired_events) != 0:
-            load_fired_events = load_json(config_manager.fired_events_file())  # загружаем список просрочек из файла
+            load_fired_events = __load_json(config_manager.fired_events_file())  # загружаем список просрочек из файла
             load_fired_events += fired_events  # добавляем в список новые просрочки
-            save_json(config_manager.fired_events_file(), load_fired_events)  # загружаем все обратно в файл
+            __save_json(config_manager.fired_events_file(), load_fired_events)  # загружаем все обратно в файл
 
 
 def get_fired_events():
     """
     Возвращает список просроченных событий
     """
-    fired_events = load_json(fired_events_file)
+    fired_events = __load_json(__fired_events_file)
 
     if len(fired_events) == 0:
         return None
@@ -141,7 +141,7 @@ def id_to_names(users_id: list):
     :return: список соответствующих фамилиям id
     """
     names = []
-    users = load_json(council_file)
+    users = __load_json(__council_file)
     for user_id in users_id:
         for name, id in users.items():
             if int(id) == user_id:
@@ -158,7 +158,7 @@ def names_to_id(users_surnames: list):
     :return: список соответствующих фамилиям id
     """
     # по ключам фамилий из словаря users формируем список id
-    users = load_json(council_file)
+    users = __load_json(__council_file)
     for i in range(len(users_surnames)):
         for id, name in users.items():
             if users_surnames[i] == name:
@@ -167,12 +167,12 @@ def names_to_id(users_surnames: list):
 
 
 def about_club():
-    return load_txt(config_manager.about_club_file())
+    return __load_txt(config_manager.about_club_file())
 
 
 def about_projects():
-    return load_txt(config_manager.about_projects_file())
+    return __load_txt(config_manager.about_projects_file())
 
 
 def join_club():
-    return load_txt(config_manager.join_club_file())
+    return __load_txt(config_manager.join_club_file())

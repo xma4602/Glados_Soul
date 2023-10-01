@@ -6,8 +6,9 @@ class Message(TimeEvent):
     """
     Атрибуты:
     """
+    __slots__ = ('title', 'peer_ids', 'description', 'class_name')
 
-    def __init__(self, title: str, peer_ids: list, time: datetime, description: list):
+    def __init__(self, title: str, peer_ids: list[str], time: datetime, description: list[str]):
         """
         Принимает список параметров и присваивает их полям
         :param title:  заголовок уведомления
@@ -17,8 +18,10 @@ class Message(TimeEvent):
         """
         super().__init__(time)
         self.title = title
-        self.peer_ids = peer_ids
         self.description = description
+        if isinstance(peer_ids, str):
+            peer_ids = [peer_ids]
+        self.peer_ids = peer_ids
         self.class_name = self.__class__.__name__
 
     def __str__(self):
@@ -28,7 +31,7 @@ class Message(TimeEvent):
         """
         return f"Message(title=\"{self.title}\", " \
                f"recipients_id={self.peer_ids}, " \
-               f"time={self.time}, " \
+               f"time={self.__time}, " \
                f"description={self.description})"
 
     @classmethod

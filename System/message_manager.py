@@ -6,41 +6,41 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from System import data_manager, config_manager
 from System.modules import vk_bot, console
 from System.units.message import Message
-from System.data_manager import check_fired_events
+from System.data_manager import _check_fired_events
 
-global nearest_event
-global output
-global input
-scheduler: BackgroundScheduler
+global __nearest_event
+global __output
+global __input
+__scheduler: BackgroundScheduler
 
 
 def start():
     logging.info('Запуск модуля message_manager')
-    global nearest_event
-    global output
-    global input
-    global scheduler
+    global __nearest_event
+    global __output
+    global __input
+    global __scheduler
     # создание объекта шедулера, в который будем все планировать
-    check_fired_events()
-    scheduler = BackgroundScheduler()
+    _check_fired_events()
+    __scheduler = BackgroundScheduler()
 
-    input = config_manager.message_in()
-    if input == 'vk':
-        input = vk_bot
+    __input = config_manager.message_in()
+    if __input == 'vk':
+        __input = vk_bot
     else:
-        input = console
+        __input = console
 
-    output = config_manager.message_in()
-    if output == 'vk':
-        output = vk_bot
+    __output = config_manager.message_in()
+    if __output == 'vk':
+        __output = vk_bot
     else:
-        output = console
+        __output = console
 
-    input.start()
-    if input != output:
-        output.start()
+    __input.start()
+    if __input != __output:
+        __output.start()
 
-    nearest_event = data_manager.get_nearest_event()
+    __nearest_event = data_manager.get_nearest_event()
     # получаем ближайшее событие
     # event: TimeEvent = data_manager.get_nearest_event()
     # if event is not None:
@@ -50,25 +50,25 @@ def start():
 
 
 async def listener(loop):
-    await input.listener(loop)
+    await __input.listener(loop)
 
 
 async def sender():
-    global nearest_event
-    if nearest_event is not None:
-        if nearest_event.time <= datetime.now():
-            output.send(nearest_event)
-            nearest_event = data_manager.get_nearest_event(nearest_event)
+    global __nearest_event
+    if __nearest_event is not None:
+        if __nearest_event.__time <= datetime.now():
+            __output.send(__nearest_event)
+            __nearest_event = data_manager.get_nearest_event(__nearest_event)
     await asyncio.sleep(30)
 
 
 def send(msg: Message):
-    if msg.time <= datetime.now():
-        output.send(msg)
+    if msg.__time <= datetime.now():
+        __output.send(msg)
     else:
-        global nearest_event
-        if nearest_event is None or msg.time <= nearest_event.time:
-            nearest_event = msg
+        global __nearest_event
+        if __nearest_event is None or msg.__time <= __nearest_event.__time:
+            __nearest_event = msg
         data_manager.store_event(msg)
 
 # def send_nearest_message():

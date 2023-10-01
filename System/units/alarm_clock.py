@@ -19,9 +19,11 @@ class RegularDay(enum.Enum):
 class AlarmClock(TimeEvent):
     count = 0
 
-    def __init__(self, time: datetime, reg=[RegularDay.never], title=None):
+    def __init__(self, time: datetime, reg=None, title=None):
         super().__init__(time)
 
+        if reg is None:
+            reg = [RegularDay.never]
         if RegularDay(-1) in reg and len(reg) > 1:
             raise ValueError("Недопустимые аргументы в списке повторений будильника reg")
 
@@ -40,7 +42,7 @@ class AlarmClock(TimeEvent):
         """
         return f"AlarmClock(title=\"{self.title}\", " \
                f"reg={self.regular}, " \
-               f"time={self.time}, )"
+               f"time={self.__time}, )"
 
     def postpone(self, time: datetime):
         pass
@@ -51,7 +53,7 @@ class AlarmClock(TimeEvent):
         for item in dict_copy['regular']:
             list_of_regular.append(item.value)
         dict_copy['regular'] = list_of_regular
-        dict_copy['time'] = self.time.strftime(TimeEvent.time_format)
+        dict_copy['time'] = self.__time.strftime(TimeEvent.time_format)
         return dict_copy
 
     @classmethod
