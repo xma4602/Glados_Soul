@@ -95,23 +95,19 @@ def __new_task(sender_id: str, task_data: list):
 
 
 def __unknown_command(sender_id: str):
-    message = Message(
+    message_manager.send(Message(
         'Неизвестная команда',
         [sender_id],
-        datetime.now(),
-        []
-    )
-    message_manager.send(message)
+        datetime.now()
+    ))
 
 
 def __is_opened(sender_id: str):
-    message = Message(
+    message_manager.send(Message(
         room.is_opened(),
         [sender_id],
-        datetime.now(),
-        []
-    )
-    message_manager.send(message)
+        datetime.now()
+    ))
 
 
 def __open_room(sender_id: str):
@@ -120,16 +116,14 @@ def __open_room(sender_id: str):
         message = Message(
             message,
             [sender_id],
-            datetime.now(),
-            []
+            datetime.now()
         )
     else:
         logging.warning('Попытка получить доступ к команде совета клуба', {'id': sender_id})
         message = Message(
             'У вас нет доступа к этой команде',
             [sender_id],
-            datetime.now(),
-            []
+            datetime.now()
         )
 
     message_manager.send(message)
@@ -141,65 +135,65 @@ def __close_room(sender_id):
         message = Message(
             message,
             [sender_id],
-            datetime.now(),
-            []
+            datetime.now()
         )
     else:
         logging.warning('Попытка получить доступ к команде совета клуба', {'id': sender_id})
         message = Message(
             'У вас нет доступа к этой команде',
             [sender_id],
-            datetime.now(),
-            []
+            datetime.now()
         )
 
     message_manager.send(message)
 
 
 def __hello(sender_id):
-    message = Message(
+    message_manager.send(Message(
         'Привет!',
         [sender_id],
-        datetime.now(),
-        []
-    )
-    message_manager.send(message)
+        datetime.now()
+    ))
 
 
 def __about_club(sender_id):
     about_club = data_manager.about_club()
-    message = Message(
+    message_manager.send(Message(
         about_club[0],
         [sender_id],
         datetime.now(),
         about_club[1:]
-    )
-    message_manager.send(message)
+    ))
 
 
 def __about_projects(sender_id):
     about_projects = data_manager.about_projects()
-    message = Message(
+    message_manager.send(Message(
         about_projects[0],
         [sender_id],
         datetime.now(),
         about_projects[1:]
-    )
-    message_manager.send(message)
+    ))
 
 
 def __join_club(sender_id):
     join_club = data_manager.join_club()
-    message = Message(
+    message_manager.send(Message(
         join_club[0],
         [sender_id],
         datetime.now(),
         join_club[1:]
-    )
-    message_manager.send(message)
+    ))
 
 
 def __remind(sender_id, text):
+    """
+    Формат команды:
+    Напомни [КОМУ (мне - по умолчанию)]
+    (в ВРЕМЯ | через ВРЕМЯ | через ВРЕМЯ в ВРЕМЯ)
+    СООБЩЕНИЕ
+    ПРОДОЛЖЕНИЕ СООБЩЕНИЯ ...
+    """
     try:
         peer = __parse_peer(sender_id, re.sub(r'напомни\s*', '', text[0].lower()))
         time = __parse_datetime(text[1].lower())
@@ -211,15 +205,13 @@ def __remind(sender_id, text):
         message_manager.send(Message(
             'Напоминание создано',
             [sender_id],
-            datetime.now(),
-            []
+            datetime.now()
         ))
     except ValueError as err:
         message_manager.send(Message(
             err.__str__(),
             [sender_id],
-            datetime.now(),
-            []
+            datetime.now()
         ))
 
 
