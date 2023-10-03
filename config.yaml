@@ -6,7 +6,7 @@ logging:
   level: INFO
   file: files/log.log
 vk:
-  keys: files/vk_bot_keys_old.json
+  keys: files/vk_bot_keys.json
 data:
   council: files/council.json
   events: files/notice.json
@@ -18,5 +18,5 @@ data:
 room:
   keys: files/google_token.json
   schedule:
-    enable: false
+    enable: true
     spreadsheet: 1UHRZeVOl2uzEZEVQs-dpBya6FmrvyXxZwM8D1cEzg68

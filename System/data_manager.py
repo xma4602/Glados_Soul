@@ -55,7 +55,7 @@ def store_event(event):
     """
     events = __load_json(__events_file)
     if len(events) == 0:
-        events = [event.to_dict()]
+        events = [event.__dict__()]
     else:
         flag = False
         for index in range(len(events)):

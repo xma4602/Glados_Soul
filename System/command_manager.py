@@ -226,7 +226,7 @@ def __parse_peer(sender_id, peer):
 def __parse_datetime(string):
     result = datetime.now()
     if string.startswith('через'):
-        string, delta = time_parser.parse_time(re.sub(r'через\s*', '', string))
+        string, delta = timing.parse_time(re.sub(r'через\s*', '', string))
         result += delta
         if len(string) != 0:
             result = __parse_time_in(result, string)

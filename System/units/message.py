@@ -6,7 +6,7 @@ class Message(TimeEvent):
     """
     Атрибуты:
     """
-    __slots__ = ('title', 'peer_ids', 'description', 'class_name')
+    __slots__ = ['__title', '__peer_ids', '__description', '__class_name']
 
     def __init__(self, title: str, peer_ids: list[str], time: datetime, description: list[str] = None):
         """
@@ -17,20 +17,51 @@ class Message(TimeEvent):
         :param description: описание уведомления
         """
         super().__init__(time)
-        self.title = title
-        self.description = description if description is not None else []
-        self.peer_ids = [peer_ids] if isinstance(peer_ids, str) else peer_ids
-        self.class_name = self.__class__.__name__
+        self.__title = title
+        self.__description = description if description is not None else []
+        self.__peer_ids = [peer_ids] if isinstance(peer_ids, str) else peer_ids
+        self.__class_name = self.__class__.__name__
 
     def __str__(self):
         """
         Отображает содержимое в строку
         :return: строка, представляющая экземпляр
         """
-        return f"Message(title=\"{self.title}\", " \
-               f"recipients_id={self.peer_ids}, " \
-               f"time={self.__time}, " \
-               f"description={self.description})"
+        return f"Message(title=\"{self.__title}\", " \
+               f"__peer_ids={self.__peer_ids}, " \
+               f"time={super().time}, " \
+               f"description={self.__description})"
+
+    def __dict__(self):  # ОСТОРОЖНО КОСТЫЛЬ
+        return {
+            'time': TimeEvent.datetime_to_str(self.time),
+            'title': self.title,
+            'peer_ids': self.peer_ids,
+            'description': self.description,
+            'class_name': self.__class_name,
+        }
+
+        # cls = self.__class__.__base__.__name__
+        # d = {slot: getattr(self, f"_{cls}{slot}") for slot in super().__slots__}
+        # cls = self.__class_name
+        # d.update({slot: getattr(self, f"_{cls}{slot}") for slot in self.__slots__})
+        # return d
+
+    @property
+    def time(self):
+        return super().time
+
+    @property
+    def title(self):
+        return self.__title
+
+    @property
+    def peer_ids(self):
+        return self.__peer_ids
+
+    @property
+    def description(self):
+        return self.__description
 
     @classmethod
     def from_dict(cls, message_data: dict):
@@ -67,8 +98,3 @@ class Message(TimeEvent):
             message += des + '\n'
 
         return message
-
-    def to_dict(self):
-        dict_copy = self.__dict__.copy()
-        dict_copy['time'] = dict_copy['time'].strftime(TimeEvent.time_format)
-        return dict_copy

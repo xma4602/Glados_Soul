@@ -3,7 +3,7 @@ from datetime import datetime
 
 class TimeEvent:
     time_format = "%d.%m.%Y %H:%M:%S"
-    __slots__ = ('__time',)
+    __slots__ = ['__time']
 
     def __init__(self, time: datetime):
         self.__time = time
