@@ -6,7 +6,7 @@ class Message(TimeEvent):
     """
     Атрибуты:
     """
-    __slots__ = ['__title', '__peer_ids', '__description', '__class_name']
+    __slots__ = ['__title', '__peer_ids', '__description']
 
     def __init__(self, title: str, peer_ids: list[str], time: datetime, description: list[str] = None):
         """
@@ -20,7 +20,6 @@ class Message(TimeEvent):
         self.__title = title
         self.__description = description if description is not None else []
         self.__peer_ids = [peer_ids] if isinstance(peer_ids, str) else peer_ids
-        self.__class_name = self.__class__.__name__
 
     def __str__(self):
         """
@@ -38,14 +37,8 @@ class Message(TimeEvent):
             'title': self.title,
             'peer_ids': self.peer_ids,
             'description': self.description,
-            'class_name': self.__class_name,
+            'class_name': self.__class__.__name__,
         }
-
-        # cls = self.__class__.__base__.__name__
-        # d = {slot: getattr(self, f"_{cls}{slot}") for slot in super().__slots__}
-        # cls = self.__class_name
-        # d.update({slot: getattr(self, f"_{cls}{slot}") for slot in self.__slots__})
-        # return d
 
     @property
     def time(self):

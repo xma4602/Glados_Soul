@@ -8,7 +8,7 @@ logging:
 vk:
   keys: files/vk_bot_keys.json
 data:
-  council: files/council.json
+  council: files/council2.json
   events: files/notice.json
   fired: files/fired_event.json
   club:

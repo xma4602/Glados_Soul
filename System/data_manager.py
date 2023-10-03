@@ -60,13 +60,13 @@ def store_event(event):
         flag = False
         for index in range(len(events)):
             ev = TimeEvent.get_datetime(events[index])
-            if event.__time < ev:
+            if event < ev:
                 flag = True
-                event = event.to_dict()
+                event = event.__dict__()
                 events.insert(index, event)
                 break
         if not flag:
-            events.append(event.to_dict())
+            events.append(event.__dict__())
     __save_json(__events_file, events)
 
 
@@ -132,36 +132,35 @@ def get_fired_events():
     return fired_events
 
 
-def id_to_names(users_id: list):
+def id_to_names(ids: list):
     """
     Получиет имена пользователей и возвращает их id
-    :param users_id: список фамилий пользователей
+    :param ids: список фамилий пользователей
     :return: список соответствующих фамилиям id
     """
     names = []
+    ids = [ids] if isinstance(ids, str) else ids
     users = __load_json(__council_file)
-    for user_id in users_id:
-        for name, id in users.items():
-            if int(id) == user_id:
-                names.append(name)
-                break
+    for id in ids:
+        if id in users.keys():
+            names.append(users[id]['name'])
 
     return names
 
 
-def names_to_id(users_surnames: list):
+def names_to_id(names: list[str]):
     """
     Получиет имена пользователей и возвращает их id
-    :param users_surnames: список фамилий пользователей
+    :param names: список фамилий пользователей
     :return: список соответствующих фамилиям id
     """
-    # по ключам фамилий из словаря users формируем список id
+    names = [names] if isinstance(names, str) else names
     users = __load_json(__council_file)
-    for i in range(len(users_surnames)):
-        for id, name in users.items():
-            if users_surnames[i] == name:
-                users_surnames[i] = id
-    return users_surnames
+    for i in range(len(names)):
+        for id, data in users.items():
+            if names[i].startswith(data['name_index']) or names[i].startswith(data['surname']):
+                names[i] = id
+    return names
 
 
 def about_club():

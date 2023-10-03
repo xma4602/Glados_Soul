@@ -186,7 +186,7 @@ def __join_club(sender_id):
     ))
 
 
-def __remind(sender_id, text):
+def __remind(sender_id: str, text: list[str]):
     """
     Формат команды:
     Напомни [КОМУ (мне - по умолчанию)]
@@ -194,6 +194,7 @@ def __remind(sender_id, text):
     СООБЩЕНИЕ
     ПРОДОЛЖЕНИЕ СООБЩЕНИЯ ...
     """
+
     try:
         peer = __parse_peer(sender_id, re.sub(r'напомни\s*', '', text[0].lower()))
         time = __parse_datetime(text[1].lower())
@@ -215,12 +216,18 @@ def __remind(sender_id, text):
         ))
 
 
-def __parse_peer(sender_id, peer):
+def __parse_peer(sender_id: str, peer: str):
     if peer == '':
         return [sender_id]
     if re.search(r'совет[а-я]*\s*', peer) is not None:
         return data_manager.council_ids()
-    raise ValueError('Неверный формат получателя напоминания')
+    if re.search(r'совет[а-я]*\s*', peer) is not None:
+        return data_manager.council_ids()
+    peer = re.split(r"[, ]+", peer)
+    peer = data_manager.names_to_id(peer)
+    if len(peer) != 0:
+        return peer
+    raise ValueError('Неверный формат получателя(-ей) напоминания')
 
 
 def __parse_datetime(string):
