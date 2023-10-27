@@ -54,8 +54,9 @@ def close_room():
 
 
 def is_opened():
-    if datetime.now().hour < 8 or datetime.now().hour >= 21:  # с 21:00 по 8:00 лаборатория автоматически закрывается
+    if __opened and datetime.now().hour < 8 or datetime.now().hour >= 21:  # с 21:00 по 8:00 лаборатория автоматически закрывается
         close_room()
+
     if __opened:
         answer = '✅ Лаборатория открыта'
     else:

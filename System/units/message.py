@@ -66,7 +66,7 @@ class Message(TimeEvent):
             message_data['description'],
         )
 
-    def message_somebody(self):
+    def message_somebody(self) -> str:
         """
         Формирует текст уведомления для одного получателя
         :return: строка текста уведомления

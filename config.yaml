@@ -1,6 +1,6 @@
 system:
-  out: vk
-  in: vk
+  out: console
+  in: console
 logging:
   out: console
   level: INFO

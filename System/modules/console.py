@@ -1,30 +1,27 @@
-""" Файл, отвечающий за вывод на консоль """
+import logging
+import sys
+
+from System import command_manager
+from System.units.message import Message
 
 
-def send(obj):
-    pass
+def start():
+    logging.info('Запуск модуля console')
 
 
-def show(info=()):
-    # рекурсивная функция, выводящая все типы, кроме словаря и списочных типов
-    if type(info) is dict:
-        showDict(info)
-    elif type(info) in [list, tuple, set]:
-        for item in info:
-            if type(item) in [list, tuple, set]:
-                showList(item)
+def send(msg: Message):
+    print(msg.message_somebody())
+
+
+async def listener(loop):
+    command = ''
+    while True:
+        try:
+            input_str = await loop.run_in_executor(None, sys.stdin.read)
+            if input_str == '    \n':
+                command_manager.parse(command, '0')
+                command = ''
             else:
-                show(item)
-    else:
-        print(info)
-
-
-def showDict(info):
-    # Вывод словаря
-    for k, v in info.items():
-        print(f'{k}: {v}')
-
-
-def showList(info):
-    # Вывод list, tuple или set
-    print(" ".join([str(x) for x in list(info)]))
+                command += input_str
+        except IOError as err:
+            logging.error(f'Ошибка потока ввода', {'error': err})
