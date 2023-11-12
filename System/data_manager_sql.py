@@ -61,7 +61,7 @@ def create_db():
 #         _close_connection(conn, cursor)
 
 
-def _create_table_users(cursor: ptyping.cursor):
+def _create_table_users(cursor: ptyping.cursor, conn: ptyping.connection):
     create_table_query = "CREATE TABLE users(" \
                          "id INT PRIMARY KEY NOT NULL, " \
                          "phone VARCHAR(11), " \
@@ -71,70 +71,75 @@ def _create_table_users(cursor: ptyping.cursor):
                          "university_id VARCHAR(8));"
     try:
         cursor.execute(create_table_query)
+        conn.commit()
         logging.info("create a table users in database")
     except (Exception, Error) as error:
         logging.error("Error for creating a table users in database", {'error': error})
 
 
-def create_table_nicknames():
-    conn = None
-    cursor = None
-    try:
-        conn = _make_connection_to_db()
-        cursor = conn.cursor()
-        create_table_query = "CREATE TABLE nicknames(" \
-                             "owner_id INT NOT NULL REFERENCES users(id), " \
-                             "named_id INT NOT NULL REFERENCES users(id), " \
-                             "nickname VARCHAR(255));"
-        cursor.execute(create_table_query)
-        conn.commit()
-        logging.info('Create a table nicknames in database')
-    except (Exception, Error) as error:
-        logging.error('Error by creating a table nicknames in database', {"error": error})
-    finally:
-        _close_connection(conn, cursor)
+# def create_table_nicknames():
+#     conn = None
+#     cursor = None
+#     try:
+#         conn = _make_connection_to_db()
+#         cursor = conn.cursor()
+#         create_table_query = "CREATE TABLE nicknames(" \
+#                              "owner_id INT NOT NULL REFERENCES users(id), " \
+#                              "named_id INT NOT NULL REFERENCES users(id), " \
+#                              "nickname VARCHAR(255));"
+#         cursor.execute(create_table_query)
+#         conn.commit()
+#         logging.info('Create a table nicknames in database')
+#     except (Exception, Error) as error:
+#         logging.error('Error by creating a table nicknames in database', {"error": error})
+#     finally:
+#         _close_connection(conn, cursor)
 
 
-def _create_table_nicknames(cursor: ptyping.cursor):
+def _create_table_nicknames(cursor: ptyping.cursor, conn: ptyping.connection):
     create_table_query = "CREATE TABLE nicknames(" \
                          "owner_id INT NOT NULL REFERENCES users(id), " \
                          "named_id INT NOT NULL REFERENCES users(id), " \
                          "nickname VARCHAR(255));"
     try:
         cursor.execute(create_table_query)
+        conn.commit()
         logging.info('Create a table nicknames in database')
     except (Exception, Error) as error:
         logging.error('Error by creating a table nicknames in database', {"error": error})
 
 
-def _create_table_user_vk(cursor: ptyping.cursor):
+def _create_table_user_vk(cursor: ptyping.cursor, conn: ptyping.connection):
     create_table_query = "CREATE TABLE user_vk(" \
                          "vk_id INT PRIMARY KEY NOT NULL, " \
                          "user_id INT NOT NULL REFERENCES users(id));"
     try:
         cursor.execute(create_table_query)
+        conn.commit()
         logging.info("Create a table user_vk in database")
     except (Exception, Error) as error:
         logging.error("Error by creating a table user_vk", {'error': error})
 
 
-def _create_table_group(cursor: ptyping.cursor):
+def _create_table_group(cursor: ptyping.cursor, conn: ptyping.connection):
     create_table_query = "CREATE TABLE groups(" \
                          "group_id INT PRIMARY KEY NOT NULL, " \
                          "name VARCHAR(255) NOT NULL);"
     try:
         cursor.execute(create_table_query)
+        conn.commit()
         logging.info("Create a table groups in database")
     except (Exception, Error) as error:
         logging.error("Error by creating a table groups", {'error': error})
 
 
-def _create_table_group_user(cursor: ptyping.cursor):
+def _create_table_group_user(cursor: ptyping.cursor, conn: ptyping.connection):
     create_table_query = "CREATE TABLE group_user(" \
                          "group_id INT NOT NULL REFERENCES groups(group_id), " \
                          "user_id INT NOT NULL REFERENCES users(id));"
     try:
         cursor.execute(create_table_query)
+        conn.commit()
         logging.info("Create a table group_user in database")
     except (Exception, Error) as error:
         logging.error("Error by creating a table group_user", {'error': error})
@@ -146,16 +151,11 @@ def create_tables():
     try:
         conn = _make_connection_to_db()
         cursor = conn.cursor()
-        _create_table_users(cursor)
-        conn.commit()
-        _create_table_nicknames(cursor)
-        conn.commit()
-        _create_table_user_vk(cursor)
-        conn.commit()
-        _create_table_group(cursor)
-        conn.commit()
-        _create_table_group_user(cursor)
-        conn.commit()
+        _create_table_users(cursor, conn)
+        _create_table_nicknames(cursor, conn)
+        _create_table_user_vk(cursor, conn)
+        _create_table_group(cursor, conn)
+        _create_table_group_user(cursor, conn)
     except (Exception, Error) as error:
         logging.error("Error by creating tables in database", {"error": error})
     finally:
