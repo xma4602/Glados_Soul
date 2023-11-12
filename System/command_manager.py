@@ -221,8 +221,6 @@ def __parse_peer(sender_id: str, peer: str):
         return [sender_id]
     if re.search(r'совет[а-я]*\s*', peer) is not None:
         return data_manager.council_ids()
-    if re.search(r'совет[а-я]*\s*', peer) is not None:
-        return data_manager.council_ids()
     peer = re.split(r"[, ]+", peer)
     peer = data_manager.names_to_id(peer)
     if len(peer) != 0:
