@@ -1,4 +1,4 @@
-import System.modules.logger as l
+import src.services.logger as l
 import logging
 #l.start()
 
@@ -7,5 +7,5 @@ try:
     a = 1/0
 except Exception:
     logging.error('Ошибка', stack_info=True)
-#logging.basicConfig(force=True, filename=r'System\files\log\')
+#logging.basicConfig(force=True, filename=r'src\files\log\')
 

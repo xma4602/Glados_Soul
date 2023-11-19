@@ -2,8 +2,8 @@ import asyncio
 import logging
 import socket
 from threading import Thread
-from System import message_manager, data_manager, command_manager
-from System.modules import room, logger
+from managers import command_manager, data_manager, message_manager
+from src.services import room, logger
 
 
 def sender():

@@ -1,7 +1,6 @@
 import os
-os.chdir('../')
-from System import config_manager
-from System import data_manager
+os.chdir('../src/')
+from managers import data_manager
 
 data_manager.start()
 print(data_manager.is_council("257165020"))

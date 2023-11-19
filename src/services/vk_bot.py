@@ -9,8 +9,8 @@ from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 from vk_api.exceptions import ApiError
 
 import logging
-from System import command_manager, config_manager, data_manager
-from System.units.message import Message
+from managers import command_manager, config_manager, data_manager
+from src.entities.message import Message
 
 global __commands, __texts
 global __vk, __keys, __longpoll, __api, __upload

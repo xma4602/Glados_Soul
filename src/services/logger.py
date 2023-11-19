@@ -1,5 +1,5 @@
 import logging
-from System import config_manager
+from managers import config_manager
 import sys
 
 

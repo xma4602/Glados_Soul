@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from System.units.time_event import TimeEvent
+from src.entities.time_event import TimeEvent
 
 
 class Timer(TimeEvent):

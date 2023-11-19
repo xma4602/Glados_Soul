@@ -2,7 +2,7 @@ import httplib2
 from apiclient import discovery
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
-from System import config_manager
+from managers import config_manager
 import logging
 
 global __schedule_enable, __credentials_file, __spreadsheet_id

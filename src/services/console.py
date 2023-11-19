@@ -1,8 +1,8 @@
 import logging
 import sys
 
-from System import command_manager
-from System.units.message import Message
+from managers import command_manager
+from src.entities.message import Message
 
 
 def start():

@@ -1,5 +1,5 @@
-from System.command_manager import parse
-from System.modules.vk_bot import send
+from managers.command_manager import parse
+
 task = '#задача  \n' \
        'Написать бота  \n' \
        'Ханов  ,     Макурин  \n' \

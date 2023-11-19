@@ -1,7 +1,7 @@
 from datetime import datetime
 import enum
 
-from System.units.time_event import TimeEvent
+from src.entities.time_event import TimeEvent
 
 
 class RegularDay(enum.Enum):

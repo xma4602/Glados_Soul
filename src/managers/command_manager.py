@@ -1,11 +1,11 @@
 import re
-from datetime import datetime, timedelta
+from datetime import datetime
 import logging
-from System import data_manager, message_manager
+from managers import data_manager, message_manager
 
-from System.modules import room, timing
-from System.units.message import Message
-from System.units.task import Task
+from src.services import room, timing
+from src.entities.message import Message
+from src.entities.task import Task
 
 global __commands
 

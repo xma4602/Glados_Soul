@@ -1,9 +1,8 @@
 import json
 from datetime import datetime, timedelta
-from System.units.time_event import TimeEvent
-from System.units.message import Message
+from src.entities.time_event import TimeEvent
 import logging
-from System import config_manager
+from managers import config_manager
 
 
 def start():
