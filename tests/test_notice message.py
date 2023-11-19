@@ -1,15 +1,15 @@
 import datetime
 
-from System.data_manager import start
+from managers.data_manager import start
 
 start()
 
-from System.message_manager import start as st
+from managers.message_manager import start as st
 
 st()
-from System.message_manager import send
-from System.units.message import Message
-from System.modules.logger import start
+from managers.message_manager import send
+from src.entities.message import Message
+from src.services.logger import start
 
 start()
 

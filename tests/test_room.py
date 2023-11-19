@@ -1,6 +1,5 @@
-from System import command_manager
-from System import data_manager, message_manager
-from System.modules import logger, room
+from managers import command_manager, data_manager, message_manager
+from src.services import logger, room
 id = '441449409'
 command_manager.start()
 data_manager.start()

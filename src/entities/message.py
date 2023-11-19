@@ -1,4 +1,4 @@
-from System.units.time_event import TimeEvent
+from src.entities.time_event import TimeEvent
 from datetime import datetime
 
 

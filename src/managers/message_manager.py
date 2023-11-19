@@ -3,10 +3,10 @@ import logging
 
 from datetime import datetime
 from apscheduler.schedulers.background import BackgroundScheduler
-from System import data_manager, config_manager
-from System.modules import vk_bot, console
-from System.units.message import Message
-from System.data_manager import _check_fired_events
+from managers import config_manager, data_manager
+from src.services import vk_bot, console
+from src.entities.message import Message
+from managers.data_manager import _check_fired_events
 
 global __nearest_event
 global __output

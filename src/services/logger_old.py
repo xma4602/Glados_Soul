@@ -3,7 +3,7 @@ import logging
 from logging import INFO, ERROR
 import sys
 
-from System import config_manager
+from managers import config_manager
 
 
 class Logger:

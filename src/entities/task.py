@@ -1,9 +1,9 @@
 from datetime import datetime
 from datetime import timedelta
 
-from System import data_manager
-from System.units.message import Message
-from System.units.time_event import TimeEvent
+from managers import data_manager
+from src.entities.message import Message
+from src.entities.time_event import TimeEvent
 
 
 class Task(TimeEvent):
