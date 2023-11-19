@@ -69,5 +69,4 @@ def join_club_file():
 
 
 def database_auth():
-    with open(__config['data']['database']['auth'], 'r') as file:
-        return yaml.load(file, Loader=yaml.FullLoader)
+    return __config['data']['database']['auth']
