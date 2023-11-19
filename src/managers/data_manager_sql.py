@@ -4,6 +4,8 @@ from psycopg2 import Error
 import logging
 import psycopg2._psycopg as ptyping
 import config_manager as conf
+from os import path
+from string import Template
 
 
 class DB:
@@ -12,6 +14,7 @@ class DB:
     host: str
     port: str
     database: str
+    scripts_dir: str
 
     @classmethod
     def config(cls) -> None:
@@ -20,6 +23,7 @@ class DB:
         cls.host = conf.database_host()
         cls.port = conf.database_port()
         cls.database = conf.database_name()
+        cls.scripts_dir = path.join('files', 'sql')
 
     @classmethod
     def _create_db(cls) -> None:
@@ -83,6 +87,12 @@ class DB:
         cls._close_connection(conn, cursor)
         return result
 
+    @classmethod
+    def get_query(cls, file_: str, map_: dict = {}):
+        with open(path.join(cls.scripts_dir, file_)) as file:
+            query = Template(file.read())
+            return query.substitute(map_)
+
 
 class Users:
     @classmethod
@@ -100,5 +110,5 @@ class Users:
         except (Exception, Error) as error:
             logging.error("Error for creating a table users in database", {'error': error})
 
-    @classmethod
-    def add_user
+DB.config()
+print(DB.get_query(path.join('users', 'create.sql')))
