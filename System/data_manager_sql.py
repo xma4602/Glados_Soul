@@ -6,7 +6,7 @@ import psycopg2._psycopg as ptyping
 import config_manager as conf
 
 
-class DataBase:
+class DB:
     user: str
     password: str
     host: str
@@ -56,7 +56,7 @@ class DataBase:
             logging.info("Connection to database is closed")
 
     @classmethod
-    def _make_query_without_result(cls, query: str):
+    def make_query_without_result(cls, query: str):
         conn = cls._make_connection()
         cursor = conn.cursor()
         cursor.execute(query)
@@ -84,3 +84,21 @@ class DataBase:
         return result
 
 
+class Users:
+    @classmethod
+    def create_table(cls):
+        create_table_query = "CREATE TABLE users(" \
+                             "id INT PRIMARY KEY NOT NULL, " \
+                             "phone VARCHAR(11), " \
+                             "name VARCHAR(255) NOT NULL, " \
+                             "surname VARCHAR(255) NOT NULL, " \
+                             "patroname VARCHAR(255) ," \
+                             "university_id VARCHAR(8));"
+        try:
+            DB.make_query_without_result(create_table_query)
+            logging.info("create a table users in database")
+        except (Exception, Error) as error:
+            logging.error("Error for creating a table users in database", {'error': error})
+
+    @classmethod
+    def add_user
