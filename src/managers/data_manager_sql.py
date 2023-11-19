@@ -3,7 +3,7 @@ from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 from psycopg2 import Error
 import logging
 import psycopg2._psycopg as ptyping
-import config_manager as conf
+import managers.config_manager as conf
 from os import path
 from string import Template
 
@@ -18,11 +18,12 @@ class DB:
 
     @classmethod
     def config(cls) -> None:
-        cls.user = conf.database_user_name()
-        cls.password = conf.database_user_password()
-        cls.host = conf.database_host()
-        cls.port = conf.database_port()
-        cls.database = conf.database_name()
+        configs = conf.database_auth()
+        cls.user = configs['user']
+        cls.password = configs['password']
+        cls.host = configs['host']
+        cls.port = configs['port']
+        cls.database = configs['database']
         cls.scripts_dir = path.join('files', 'sql')
 
     @classmethod
@@ -89,26 +90,12 @@ class DB:
 
     @classmethod
     def get_query(cls, file_: str, map_: dict = {}):
-        with open(path.join(cls.scripts_dir, file_)) as file:
-            query = Template(file.read())
-            return query.substitute(map_)
-
-
-class Users:
-    @classmethod
-    def create_table(cls):
-        create_table_query = "CREATE TABLE users(" \
-                             "id INT PRIMARY KEY NOT NULL, " \
-                             "phone VARCHAR(11), " \
-                             "name VARCHAR(255) NOT NULL, " \
-                             "surname VARCHAR(255) NOT NULL, " \
-                             "patroname VARCHAR(255) ," \
-                             "university_id VARCHAR(8));"
         try:
-            DB.make_query_without_result(create_table_query)
-            logging.info("create a table users in database")
-        except (Exception, Error) as error:
-            logging.error("Error for creating a table users in database", {'error': error})
+            with open(path.join(cls.scripts_dir, file_), 'r') as file:
+                query = Template(file.read())
+                return query.substitute(map_)
+        except OSError as error:
+            logging.error("Error by read a sql-script file", {'script': file_, 'error': error})
 
-DB.config()
-print(DB.get_query(path.join('users', 'create.sql')))
+
+
