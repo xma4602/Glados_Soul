@@ -70,3 +70,23 @@ def about_projects_file():
 
 def join_club_file():
     return __config['data']['club']['join']
+
+
+def database_user_name():
+    return __config['database']['name']
+
+
+def database_user_password():
+    return __config['database']['password']
+
+
+def database_host():
+    return __config['database']['host']
+
+
+def database_port():
+    return __config['database']['port']
+
+
+def database_name():
+    return __config['database']['database']
