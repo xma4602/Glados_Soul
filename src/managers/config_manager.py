@@ -36,11 +36,7 @@ def credentials_file():
     return __config['room']['keys']
 
 
-def timetable_file():
-    return __config['room']['timetable']
-
-
-def spreadsheet_id():
+def schedule_id():
     return __config['room']['schedule']['spreadsheet']
 
 
@@ -61,32 +57,17 @@ def log_level():
 
 
 def about_club_file():
-    return __config['data']['club']['about']
+    return __config['data']['texts']['about']
 
 
 def about_projects_file():
-    return __config['data']['club']['projects']
+    return __config['data']['texts']['projects']
 
 
 def join_club_file():
-    return __config['data']['club']['join']
+    return __config['data']['texts']['join']
 
 
-def database_user_name():
-    return __config['database']['name']
-
-
-def database_user_password():
-    return __config['database']['password']
-
-
-def database_host():
-    return __config['database']['host']
-
-
-def database_port():
-    return __config['database']['port']
-
-
-def database_name():
-    return __config['database']['database']
+def database_auth():
+    with open(__config['database']['auth'], 'r') as file:
+        return yaml.load(file, Loader=yaml.FullLoader)

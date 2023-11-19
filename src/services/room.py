@@ -13,10 +13,10 @@ def start():
     global __schedule_enable, __credentials_file, __spreadsheet_id
     global __times, __statuses, __opened
 
-    logging.info('Запуск модуля room')
+    logging.info('Запуск модуля room.json')
     __opened = False
     __schedule_enable = config_manager.schedule_enable()
-    __spreadsheet_id = config_manager.spreadsheet_id()
+    __spreadsheet_id = config_manager.schedule_id()
     __credentials_file = config_manager.credentials_file()
     __times = ('08:00-09:35',
                '09:45-11:20',
