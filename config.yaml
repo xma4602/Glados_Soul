@@ -4,25 +4,28 @@ system:
 logging:
   out: console
   level: INFO
-  file: files/log.log
+  file: files/logs/log.log
 vk:
-  keys: files/vk_bot_keys.json
-data:
-  council: files/council2.json
-  events: files/notice.json
-  fired: files/fired_event.json
-  club:
-    about: files/about_club.txt
-    projects: files/projects.txt
-    join: files/join.txt
+  keys: files/data/vk_bot_keys.json
 room:
-  keys: files/google_token.json
+  keys: files/data/google_token.json
   schedule:
     enable: true
     spreadsheet: 1UHRZeVOl2uzEZEVQs-dpBya6FmrvyXxZwM8D1cEzg68
-database:
-  user: postgres
-  password: 1234
-  host: localhost
-  port: 5432
-  database: glados_db
+data:
+  council: files/info/council2.json
+  events: files/info/notice.json
+  fired: files/fired_event.json
+  texts:
+    about: files/texts/about_club.txt
+    projects: files/texts/projects.txt
+    join: files/texts/join.txt
+  database:
+    auth:
+      user: postgres
+      password: 1234
+      host: localhost
+      port: 5432
+      database: glados_db
+
+

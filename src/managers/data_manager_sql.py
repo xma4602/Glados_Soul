@@ -15,11 +15,12 @@ class DataBase:
 
     @classmethod
     def config(cls) -> None:
-        cls.user = conf.database_user_name()
-        cls.password = conf.database_user_password()
-        cls.host = conf.database_host()
-        cls.port = conf.database_port()
-        cls.database = conf.database_name()
+        auth = conf.database_auth()
+        cls.user = auth["user"]
+        cls.password = auth["password"]
+        cls.host = auth["host"]
+        cls.port = auth["port"]
+        cls.database = auth["database"]
 
     @classmethod
     def _create_db(cls) -> None:
